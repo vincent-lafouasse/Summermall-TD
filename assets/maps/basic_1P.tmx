@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="../../Downloads/kenney.tsx"/>
+ <tileset firstgid="1" source="kenney.tsx"/>
  <layer id="1" name="Tile Layer 1" width="25" height="45">
   <data encoding="csv">
 392,392,392,392,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,565,392,392,392,392,
