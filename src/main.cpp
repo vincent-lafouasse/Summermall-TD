@@ -4,9 +4,8 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-int main(int argc, char *args[]) {
-
-  SDL_Window *window = SDL_CreateWindow(
+int main(int argc, char* args[]) {
+  SDL_Window* window = SDL_CreateWindow(
       "Summermall TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
       SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
 
@@ -15,7 +14,7 @@ int main(int argc, char *args[]) {
     return -1;
   }
 
-  SDL_Renderer *renderer =
+  SDL_Renderer* renderer =
       SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   if (renderer == nullptr) {
     SDL_Log("Could not create a renderer: %s", SDL_GetError());
