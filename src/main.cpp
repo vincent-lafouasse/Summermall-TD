@@ -57,7 +57,7 @@ int main(int argc, char* args[]) {
     }
 
     // FPS Cap: if fps is too high
-    // wait for actual time/frame - target time/frame (in s)
+    // wait for target time/frame - actual time/frame (in s)
     if (fps_current_fps > FPS_TARGET_FPS) {
       sleep((1. / FPS_TARGET_FPS) - (1. / (float)fps_current_fps));
     }
