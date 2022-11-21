@@ -6,6 +6,40 @@
 #define SCREEN_HEIGHT 480
 #define FPS_TARGET_FPS 60.
 
+/*
+  Returns the current FPS estimate which is regulated to fit
+  `FPS_TARGET_FPS` in the case where its bigger.
+
+  @param tick_start The tick given by `SDL_GetTicks()` at the start of
+  game loop.
+  @return The current regulated FPS estimate.
+*/
+float fps_regulate_fps(Uint32 tick_start) {
+  Uint32 tick_end = SDL_GetTicks();
+
+  // Edge case where game loop runs in less than a 1ms
+  if (tick_start == tick_end) {
+    SDL_Delay(1);
+    tick_end = SDL_GetTicks();
+  }
+
+  // FPS computation and regulation
+  float ms_per_frame = (float)(tick_end - tick_start);
+  float frame_per_s = 1 / (ms_per_frame / 1000.);
+
+  if (frame_per_s > FPS_TARGET_FPS) {
+    float ms_to_wait = ((1. / FPS_TARGET_FPS) - (1. / frame_per_s)) * 1000;
+    SDL_Delay(ms_to_wait);
+  }
+
+  tick_end = SDL_GetTicks();
+
+  ms_per_frame = (float)(tick_end - tick_start);
+  frame_per_s = 1 / (ms_per_frame / 1000.);
+
+  return frame_per_s;
+}
+
 int main(int argc, char* args[]) {
   SDL_Window* window = SDL_CreateWindow(
       "Summermall TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -24,7 +58,7 @@ int main(int argc, char* args[]) {
   }
 
   while (true) {
-    Uint32 start = SDL_GetTicks();
+    Uint32 tick_start = SDL_GetTicks();
 
     // Get the next event
     SDL_Event event;
@@ -41,27 +75,8 @@ int main(int argc, char* args[]) {
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
-    // Otherwise, loop might take less than 1 ms
-    // and ms_per_frame is 0
-    SDL_Delay(1);
-
-    Uint32 end = SDL_GetTicks();
-
-    // FPS computation and regulation
-    float ms_per_frame = (float)(end - start);
-    float frame_per_s = 1 / (ms_per_frame / 1000.);
-
-    if (frame_per_s > FPS_TARGET_FPS) {
-      float ms_to_wait = ((1. / FPS_TARGET_FPS) - (1. / frame_per_s)) * 1000;
-      SDL_Delay(ms_to_wait);
-    }
-
-    end = SDL_GetTicks();
-
-    ms_per_frame = (float)(end - start);
-    frame_per_s = 1 / (ms_per_frame / 1000.);
-
-    printf("%f\n", frame_per_s);
+    float fps = fps_regulate_fps(tick_start);
+    printf("%f\n", fps);
   }
 
   //
