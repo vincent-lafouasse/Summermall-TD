@@ -4,14 +4,9 @@
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
-#define FPS_INTERVAL_IN_MS 1000.0  // milliseconds
 #define FPS_TARGET_FPS 60.
 
 int main(int argc, char* args[]) {
-  Uint32 fps_last_time_fps_was_computed = SDL_GetTicks();
-  Uint32 fps_current_fps = 0;
-  Uint32 fps_elapsed_frames_since_last_measure = 0;
-
   SDL_Window* window = SDL_CreateWindow(
       "Summermall TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
       SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
@@ -29,6 +24,8 @@ int main(int argc, char* args[]) {
   }
 
   while (true) {
+    Uint32 start = SDL_GetTicks();
+
     // Get the next event
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
@@ -44,26 +41,30 @@ int main(int argc, char* args[]) {
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
-    // FPS measure and cap
-    fps_elapsed_frames_since_last_measure++;
-    // FPS measure;
-    if (SDL_GetTicks() - fps_last_time_fps_was_computed > FPS_INTERVAL_IN_MS) {
-      // If more than 1000 ms has elapsed since fps_last_time_fps_was_computed
-      // then compute estimated fps and reset fps_last_time[...] and
-      // fps_elapsed_frames[...]
-      fps_current_fps = fps_elapsed_frames_since_last_measure;
-      fps_last_time_fps_was_computed = SDL_GetTicks();
-      fps_elapsed_frames_since_last_measure = 0;
+    // Otherwise, loop might take less than 1 ms
+    // and ms_per_frame is 0
+    SDL_Delay(1);
+
+    Uint32 end = SDL_GetTicks();
+
+    // FPS computation and regulation
+    float ms_per_frame = (float)(end - start);
+    float frame_per_s = 1 / (ms_per_frame / 1000.);
+
+    if (frame_per_s > FPS_TARGET_FPS) {
+      float ms_to_wait = ((1. / FPS_TARGET_FPS) - (1. / frame_per_s)) * 1000;
+      SDL_Delay(ms_to_wait);
     }
 
-    // FPS Cap: if fps is too high
-    // wait for target time/frame - actual time/frame (in s)
-    if (fps_current_fps > FPS_TARGET_FPS) {
-      sleep((1. / FPS_TARGET_FPS) - (1. / (float)fps_current_fps));
-    }
-    printf("%i\n", fps_current_fps);
+    end = SDL_GetTicks();
+
+    ms_per_frame = (float)(end - start);
+    frame_per_s = 1 / (ms_per_frame / 1000.);
+
+    printf("%f\n", frame_per_s);
   }
 
+  //
   // Tidy up
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
