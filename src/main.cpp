@@ -79,7 +79,6 @@ int main(int argc, char* args[]) {
     printf("%f\n", fps);
   }
 
-  //
   // Tidy up
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
