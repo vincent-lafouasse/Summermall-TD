@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "tinyxml2.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -57,6 +58,11 @@ int main(int argc, char* args[]) {
     return -1;
   }
 
+  // Loading and parsing map
+  tinyxml2::XMLDocument map;
+  bool loaded = map.LoadFile("../assets/maps/basic_1P.tmx");
+  printf("loaded : %s\n", loaded == tinyxml2::XML_SUCCESS ? "true" : "false");
+
   while (true) {
     Uint32 tick_start = SDL_GetTicks();
 
@@ -76,7 +82,6 @@ int main(int argc, char* args[]) {
     SDL_RenderPresent(renderer);
 
     float fps = fps_regulate_fps(tick_start);
-    printf("%f\n", fps);
   }
 
   // Tidy up
