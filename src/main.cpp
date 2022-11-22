@@ -60,7 +60,7 @@ int main(int argc, char* args[]) {
 
   // Loading and parsing map
   tinyxml2::XMLDocument map;
-  tinyxml2::XMLError loaded = map.LoadFile("../assets/maps/basic_1P.tmx");
+  tinyxml2::XMLError loaded = map.LoadFile("assets/maps/basic_1P.tmx");
   printf("loaded : %s\n", loaded == tinyxml2::XML_SUCCESS ? "true" : "false");
 
   while (true) {
