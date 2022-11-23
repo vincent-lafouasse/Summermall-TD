@@ -117,5 +117,16 @@ Map make_map_from_tmx(char* tmx_path) {
   map.height = atoi(root->Attribute("height"));
   map.tilewidth = atoi(root->Attribute("tilewidth"));
   map.tileheight = atoi(root->Attribute("tileheight"));
+
+  tinyxml2::XMLElement* layer = root->FirstChildElement("layer");
+  printf("layer id: %i\n", atoi(layer->Attribute("id")));
+  printf("\n");
+
+  tinyxml2::XMLElement* data = layer->FirstChildElement("data");
+  printf("encoding: %s\n", data->Attribute("encoding"));
+  printf("\n");
+
+  const char* csv = data->GetText();
+  printf("%s\n", csv);
   return map;
 }
