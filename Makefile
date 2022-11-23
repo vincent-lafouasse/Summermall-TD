@@ -29,7 +29,7 @@ CPPFLAGS := $(INC_FLAGS) -MMD -MP -Wall -Wextra -pedantic -std=c++11
 
 # The final build step.
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	ln -sf $(shell pwd)/assets $(BUILD_DIR)/assets
+	ln -sf $(shell pwd)/assets $(BUILD_DIR)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIB_SDL)
 
 # Build step for C source
