@@ -107,13 +107,13 @@ Map make_map_from_tmx(char* tmx_path) {
   Map map;
   tinyxml2::XMLDocument map_xml;
   tinyxml2::XMLError loaded = map_xml.LoadFile(tmx_path);
-  printf("loaded : %s\n", loaded == tinyxml2::XML_SUCCESS ? "true" : "false");
+  printf("loading tmx: %s\n",
+         loaded == tinyxml2::XML_SUCCESS ? "done" : "fail");
 
-  map.width = atoi(map_xml.FirstChildElement("map")->Attribute("width"));
-  map.height = atoi(map_xml.FirstChildElement("map")->Attribute("height"));
-  map.tilewidth =
-      atoi(map_xml.FirstChildElement("map")->Attribute("tilewidth"));
-  map.tileheight =
-      atoi(map_xml.FirstChildElement("map")->Attribute("tileheight"));
+  tinyxml2::XMLElement* root = map_xml.FirstChildElement("map");
+  map.width = atoi(root->Attribute("width"));
+  map.height = atoi(root->Attribute("height"));
+  map.tilewidth = atoi(root->Attribute("tilewidth"));
+  map.tileheight = atoi(root->Attribute("tileheight"));
   return map;
 }
