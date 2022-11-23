@@ -1,23 +1,27 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string>
 #include <vector>
 #include "tinyxml2.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define FPS_TARGET_FPS 60.
+#define int_vector_1D std::vector<int>
+#define int_vector_2D std::vector<std::vector<int>>
+#define int_vector_3D std::vector<std::vector<std::vector<int>>>
 
 struct Map {
   unsigned int width;
   unsigned int height;
   unsigned int tilewidth;
   unsigned int tileheight;
-  std::vector<std::vector<std::vector<int>>> vec;
+  int_vector_3D vec;
 };
 
 Map make_map_from_tmx(char* tmx_path);
-std::vector<std::vector<int>> csv_string_to_vec(char* csv_string);
+int_vector_2D csv_string_to_vec(char* csv_string);
 
 /*
   Returns the current FPS estimate which is regulated to fit
@@ -127,13 +131,25 @@ Map make_map_from_tmx(char* tmx_path) {
   printf("encoding: %s\n", data->Attribute("encoding"));
   printf("\n");
 
-  const char* csv = data->GetText();
-  printf("%s\n", csv);
+  char* csv = (char*)data->GetText();
+  std::vector<std::vector<int>> base_layer = csv_string_to_vec(csv);
   return map;
 }
 
-std::vector<std::vector<int>> csv_string_to_vec(char* csv_string) {
-  std::vector<std::vector<int>> output;
+int_vector_2D csv_string_to_vec(char* csv_string) {
+    std::vector<std::string> csv_lines;
+    char delims[] = "\n";
+    char *line = NULL;
 
+    line = strtok(csv_string, delims);
+    while(line != NULL)
+    {
+        printf("%s\n", line);
+        csv_lines.push_back(line);
+        line = strtok(NULL, delims);
+    }
+
+
+    int_vector_2D output;
   return output;
 }
