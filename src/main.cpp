@@ -68,7 +68,12 @@ int main(int argc, char* args[]) {
     return -1;
   }
 
+  // Load and parse map
   Map map = make_map_from_tmx((char*)"assets/maps/basic_1P.tmx");
+  printf("width = %i\n", map.width);
+  printf("height = %i\n", map.height);
+  printf("tileheight = %i\n", map.tileheight);
+  printf("tileheight = %i\n", map.tileheight);
 
   while (true) {
     Uint32 tick_start = SDL_GetTicks();
@@ -104,8 +109,11 @@ Map make_map_from_tmx(char* tmx_path) {
   tinyxml2::XMLError loaded = map_xml.LoadFile(tmx_path);
   printf("loaded : %s\n", loaded == tinyxml2::XML_SUCCESS ? "true" : "false");
 
-  const char* width =
-      map_xml.FirstChildElement("map")->Attribute("width");
-  printf("width = %s\n", width);
+  map.width = atoi(map_xml.FirstChildElement("map")->Attribute("width"));
+  map.height = atoi(map_xml.FirstChildElement("map")->Attribute("height"));
+  map.tilewidth =
+      atoi(map_xml.FirstChildElement("map")->Attribute("tilewidth"));
+  map.tileheight =
+      atoi(map_xml.FirstChildElement("map")->Attribute("tileheight"));
   return map;
 }
