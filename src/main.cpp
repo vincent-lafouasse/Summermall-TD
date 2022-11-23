@@ -68,10 +68,7 @@ int main(int argc, char* args[]) {
     return -1;
   }
 
-  // Loading and parsing map
-  tinyxml2::XMLDocument map;
-  tinyxml2::XMLError loaded = map.LoadFile("assets/maps/basic_1P.tmx");
-  printf("loaded : %s\n", loaded == tinyxml2::XML_SUCCESS ? "true" : "false");
+  Map map = make_map_from_tmx((char*)"assets/maps/basic_1P.tmx");
 
   while (true) {
     Uint32 tick_start = SDL_GetTicks();
@@ -100,4 +97,15 @@ int main(int argc, char* args[]) {
   SDL_Quit();
 
   return 0;
+}
+Map make_map_from_tmx(char* tmx_path) {
+  Map map;
+  tinyxml2::XMLDocument map_xml;
+  tinyxml2::XMLError loaded = map_xml.LoadFile(tmx_path);
+  printf("loaded : %s\n", loaded == tinyxml2::XML_SUCCESS ? "true" : "false");
+
+  const char* width =
+      map_xml.FirstChildElement("map")->Attribute("width");
+  printf("width = %s\n", width);
+  return map;
 }
