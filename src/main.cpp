@@ -72,7 +72,7 @@ int main(int argc, char* args[]) {
   Map map = make_map_from_tmx((char*)"assets/maps/basic_1P.tmx");
   printf("width = %i\n", map.width);
   printf("height = %i\n", map.height);
-  printf("tileheight = %i\n", map.tileheight);
+  printf("tilewidth = %i\n", map.tilewidth);
   printf("tileheight = %i\n", map.tileheight);
 
   while (true) {
