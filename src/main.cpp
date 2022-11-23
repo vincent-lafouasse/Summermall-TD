@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include <vector>
 #include <unistd.h>
 #include "tinyxml2.h"
 
@@ -8,11 +9,11 @@
 #define FPS_TARGET_FPS 60.
 
 struct Map {
-  // TODO layers as vector
   unsigned int width;
   unsigned int height;
   unsigned int tilewidth;
   unsigned int tileheight;
+  std::vector<std::vector<std::vector<int>>> vec;
 };
 
 Map make_map_from_tmx(char* tmx_path);
@@ -103,6 +104,7 @@ int main(int argc, char* args[]) {
 
   return 0;
 }
+
 Map make_map_from_tmx(char* tmx_path) {
   Map map;
   tinyxml2::XMLDocument map_xml;
