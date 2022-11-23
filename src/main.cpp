@@ -132,24 +132,22 @@ Map make_map_from_tmx(char* tmx_path) {
   printf("\n");
 
   char* csv = (char*)data->GetText();
-  std::vector<std::vector<int>> base_layer = csv_string_to_vec(csv);
+  int_vector_2D base_layer = csv_string_to_vec(csv);
   return map;
 }
 
 int_vector_2D csv_string_to_vec(char* csv_string) {
-    std::vector<std::string> csv_lines;
-    char delims[] = "\n";
-    char *line = NULL;
+  std::vector<std::string> csv_lines;
+  char delims[] = "\n";
+  char* line = NULL;
 
-    line = strtok(csv_string, delims);
-    while(line != NULL)
-    {
-        printf("%s\n", line);
-        csv_lines.push_back(line);
-        line = strtok(NULL, delims);
-    }
+  line = strtok(csv_string, delims);
+  while (line != NULL) {
+    printf("%s\n", line);
+    csv_lines.push_back(line);
+    line = strtok(NULL, delims);
+  }
 
-
-    int_vector_2D output;
+  int_vector_2D output;
   return output;
 }
