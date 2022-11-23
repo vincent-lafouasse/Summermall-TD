@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
-#include <vector>
 #include <unistd.h>
+#include <vector>
 #include "tinyxml2.h"
 
 #define SCREEN_WIDTH 640
@@ -17,6 +17,7 @@ struct Map {
 };
 
 Map make_map_from_tmx(char* tmx_path);
+std::vector<std::vector<int>> csv_string_to_vec(char* csv_string);
 
 /*
   Returns the current FPS estimate which is regulated to fit
@@ -129,4 +130,10 @@ Map make_map_from_tmx(char* tmx_path) {
   const char* csv = data->GetText();
   printf("%s\n", csv);
   return map;
+}
+
+std::vector<std::vector<int>> csv_string_to_vec(char* csv_string) {
+  std::vector<std::vector<int>> output;
+
+  return output;
 }
