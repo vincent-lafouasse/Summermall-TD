@@ -8,9 +8,9 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define FPS_TARGET_FPS 60.
-#define int_vector_1D std::vector<int>
-#define int_vector_2D std::vector<std::vector<int>>
-#define int_vector_3D std::vector<std::vector<std::vector<int>>>
+typedef std::vector<int> int_vector_1D;
+typedef std::vector<std::vector<int>> int_vector_2D;
+typedef std::vector<std::vector<std::vector<int>>> int_vector_3D;
 
 struct Map {
   unsigned int width;
