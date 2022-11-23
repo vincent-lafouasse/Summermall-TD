@@ -8,12 +8,14 @@
 #define FPS_TARGET_FPS 60.
 
 struct Map {
-    // TODO layers as vector
-    unsigned int width;
-    unsigned int height;
-    unsigned int tilewidth;
-    unsigned int tileheight;
+  // TODO layers as vector
+  unsigned int width;
+  unsigned int height;
+  unsigned int tilewidth;
+  unsigned int tileheight;
 };
+
+Map make_map_from_tmx(char* tmx_path);
 
 /*
   Returns the current FPS estimate which is regulated to fit
