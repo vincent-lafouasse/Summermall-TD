@@ -25,11 +25,10 @@ Map make_map_from_tmx(char* tmx_path);
 int_vector_2D vec_2D_from_string_csv(char* csv_string);
 
 /*
-  Returns the current FPS estimate which is regulated to fit
-  `FPS_TARGET_FPS` in the case where its bigger.
+  Returns the estimated FPS which is regulated to not exceed `FPS_TARGET_FPS`.
 
-  @param tick_start The tick given by `SDL_GetTicks()` at the start of
-  game loop.
+  @param tick_start The tick given by `SDL_GetTicks()` at the start of game
+  loop.
   @return The current regulated FPS estimate.
 */
 float fps_regulate_fps(Uint32 tick_start);
