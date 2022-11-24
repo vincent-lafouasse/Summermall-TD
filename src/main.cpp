@@ -125,27 +125,25 @@ Map make_map_from_tmx(char* tmx_path) {
   map.tileheight = atoi(root->Attribute("tileheight"));
 
   XMLElement* layer = root->FirstChildElement("layer");
-  printf("layer id: %i\n", atoi(layer->Attribute("id")));
-  printf("\n");
+  XMLElement* data = NULL;
+  char* layer_csv;
+  int_vector_3D layers;
+  while (layer) {
+    printf("\n");
+    printf("layer id: %i\n", atoi(layer->Attribute("id")));
 
-  XMLElement* data = layer->FirstChildElement("data");
+    data = layer->FirstChildElement("data");
 
-  char* csv = (char*)data->GetText();
-  int_vector_2D base_layer = csv_string_to_vec(csv);
+    layer_csv = (char*)data->GetText();
+    layers.push_back(csv_string_to_vec(layer_csv));
 
-  layer = layer->NextSiblingElement();
-  printf("layer id: %i\n", atoi(layer->Attribute("id")));
-  printf("\n");
-
-  data = layer->FirstChildElement("data");
-
-  csv = (char*)data->GetText();
-  int_vector_2D top_layer = csv_string_to_vec(csv);
+    layer = layer->NextSiblingElement();
+  }
   return map;
 }
 
 void print(std::vector<int> const& input) {
-  for (int i = 0; i < input.size(); i++) {
+  for (unsigned long i = 0; i < input.size(); i++) {
     std::cout << input.at(i) << ' ';
   }
 }
