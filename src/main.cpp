@@ -111,23 +111,24 @@ int main(int argc, char* args[]) {
 }
 
 Map make_map_from_tmx(char* tmx_path) {
+  using namespace tinyxml2;
   Map map;
-  tinyxml2::XMLDocument map_xml;
-  tinyxml2::XMLError loaded = map_xml.LoadFile(tmx_path);
+  XMLDocument map_xml;
+  XMLError loaded = map_xml.LoadFile(tmx_path);
   printf("loading tmx: %s\n",
-         loaded == tinyxml2::XML_SUCCESS ? "done" : "fail");
+         loaded == XML_SUCCESS ? "done" : "fail");
 
-  tinyxml2::XMLElement* root = map_xml.FirstChildElement("map");
+  XMLElement* root = map_xml.FirstChildElement("map");
   map.width = atoi(root->Attribute("width"));
   map.height = atoi(root->Attribute("height"));
   map.tilewidth = atoi(root->Attribute("tilewidth"));
   map.tileheight = atoi(root->Attribute("tileheight"));
 
-  tinyxml2::XMLElement* layer = root->FirstChildElement("layer");
+  XMLElement* layer = root->FirstChildElement("layer");
   printf("layer id: %i\n", atoi(layer->Attribute("id")));
   printf("\n");
 
-  tinyxml2::XMLElement* data = layer->FirstChildElement("data");
+  XMLElement* data = layer->FirstChildElement("data");
   printf("encoding: %s\n", data->Attribute("encoding"));
   printf("\n");
 
