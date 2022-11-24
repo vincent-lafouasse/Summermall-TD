@@ -22,7 +22,7 @@ struct Map {
 };
 
 Map make_map_from_tmx(char* tmx_path);
-int_vector_2D csv_string_to_vec(char* csv_string);
+int_vector_2D vec_2D_from_string_csv(char* csv_string);
 
 /*
   Returns the current FPS estimate which is regulated to fit
@@ -115,27 +115,28 @@ Map make_map_from_tmx(char* tmx_path) {
   using namespace tinyxml2;
   Map map;
   XMLDocument map_xml;
-  XMLError loaded = map_xml.LoadFile(tmx_path);
-  printf("loading tmx: %s\n", loaded == XML_SUCCESS ? "done" : "fail");
+  // Load tmx
+  printf("loading tmx: %s\n",
+         map_xml.LoadFile(tmx_path) == XML_SUCCESS ? "done" : "fail");
 
+  // Extract metadata
   XMLElement* root = map_xml.FirstChildElement("map");
   map.width = atoi(root->Attribute("width"));
   map.height = atoi(root->Attribute("height"));
   map.tilewidth = atoi(root->Attribute("tilewidth"));
   map.tileheight = atoi(root->Attribute("tileheight"));
 
+  // Extract map layers into 3D vector from csv
   XMLElement* layer = root->FirstChildElement("layer");
-  XMLElement* data = NULL;
   char* layer_csv;
   int_vector_3D layers;
   while (layer) {
     printf("\n");
     printf("layer id: %i\n", atoi(layer->Attribute("id")));
 
-    data = layer->FirstChildElement("data");
+    layer_csv = (char*)layer->FirstChildElement("data")->GetText();
 
-    layer_csv = (char*)data->GetText();
-    layers.push_back(csv_string_to_vec(layer_csv));
+    layers.push_back(vec_2D_from_string_csv(layer_csv));
 
     layer = layer->NextSiblingElement();
   }
@@ -148,7 +149,7 @@ void print(std::vector<int> const& input) {
   }
 }
 
-int_vector_2D csv_string_to_vec(char* csv_string) {
+int_vector_2D vec_2D_from_string_csv(char* csv_string) {
   std::vector<std::string> csv_lines;
   char delims[] = "\n";
   char* line = NULL;
