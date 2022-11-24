@@ -18,7 +18,7 @@ struct Map {
   unsigned int height;
   unsigned int tilewidth;
   unsigned int tileheight;
-  int_vector_3D vec;
+  int_vector_3D layers;
 };
 
 Map make_map_from_tmx(char* tmx_path);
@@ -32,33 +32,10 @@ int_vector_2D vec_2D_from_string_csv(char* csv_string);
   game loop.
   @return The current regulated FPS estimate.
 */
-float fps_regulate_fps(Uint32 tick_start) {
-  Uint32 tick_end = SDL_GetTicks();
-
-  // Edge case where game loop runs in less than a 1ms
-  if (tick_start == tick_end) {
-    SDL_Delay(1);
-    tick_end = SDL_GetTicks();
-  }
-
-  // FPS computation and regulation
-  float ms_per_frame = (float)(tick_end - tick_start);
-  float frame_per_s = 1 / (ms_per_frame / 1000.);
-
-  if (frame_per_s > FPS_TARGET_FPS) {
-    float ms_to_wait = ((1. / FPS_TARGET_FPS) - (1. / frame_per_s)) * 1000;
-    SDL_Delay(ms_to_wait);
-  }
-
-  tick_end = SDL_GetTicks();
-
-  ms_per_frame = (float)(tick_end - tick_start);
-  frame_per_s = 1 / (ms_per_frame / 1000.);
-
-  return frame_per_s;
-}
+float fps_regulate_fps(Uint32 tick_start);
 
 int main(int argc, char* args[]) {
+  // Set up
   SDL_Window* window = SDL_CreateWindow(
       "Summermall TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
       SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
@@ -82,6 +59,7 @@ int main(int argc, char* args[]) {
   printf("tilewidth = %i\n", map.tilewidth);
   printf("tileheight = %i\n", map.tileheight);
 
+  // Game loop
   while (true) {
     Uint32 tick_start = SDL_GetTicks();
 
@@ -89,7 +67,6 @@ int main(int argc, char* args[]) {
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT) {
-        // Break out of the loop on quit
         break;
       }
     }
@@ -100,10 +77,12 @@ int main(int argc, char* args[]) {
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
+    // Compute and regulate fps to FPS_TARGET_FPS
     float fps = fps_regulate_fps(tick_start);
   }
+  // End of game loop
 
-  // Tidy up
+  // Tear down
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
@@ -115,6 +94,7 @@ Map make_map_from_tmx(char* tmx_path) {
   using namespace tinyxml2;
   Map map;
   XMLDocument map_xml;
+
   // Load tmx
   printf("loading tmx: %s\n",
          map_xml.LoadFile(tmx_path) == XML_SUCCESS ? "done" : "fail");
@@ -140,6 +120,7 @@ Map make_map_from_tmx(char* tmx_path) {
 
     layer = layer->NextSiblingElement();
   }
+  map.layers = layers;
   return map;
 }
 
@@ -164,4 +145,29 @@ int_vector_2D vec_2D_from_string_csv(char* csv_string) {
 
   int_vector_2D output;
   return output;
+}
+float fps_regulate_fps(Uint32 tick_start) {
+  Uint32 tick_end = SDL_GetTicks();
+
+  // Edge case where game loop runs in less than a 1ms
+  if (tick_start == tick_end) {
+    SDL_Delay(1);
+    tick_end = SDL_GetTicks();
+  }
+
+  // FPS computation and regulation
+  float ms_per_frame = (float)(tick_end - tick_start);
+  float frame_per_s = 1 / (ms_per_frame / 1000.);
+
+  if (frame_per_s > FPS_TARGET_FPS) {
+    float ms_to_wait = ((1. / FPS_TARGET_FPS) - (1. / frame_per_s)) * 1000;
+    SDL_Delay(ms_to_wait);
+  }
+
+  tick_end = SDL_GetTicks();
+
+  ms_per_frame = (float)(tick_end - tick_start);
+  frame_per_s = 1 / (ms_per_frame / 1000.);
+
+  return frame_per_s;
 }
