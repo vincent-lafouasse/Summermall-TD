@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <iostream>
 #include <string>
 #include <vector>
 #include "tinyxml2.h"
@@ -115,8 +116,7 @@ Map make_map_from_tmx(char* tmx_path) {
   Map map;
   XMLDocument map_xml;
   XMLError loaded = map_xml.LoadFile(tmx_path);
-  printf("loading tmx: %s\n",
-         loaded == XML_SUCCESS ? "done" : "fail");
+  printf("loading tmx: %s\n", loaded == XML_SUCCESS ? "done" : "fail");
 
   XMLElement* root = map_xml.FirstChildElement("map");
   map.width = atoi(root->Attribute("width"));
@@ -129,18 +129,32 @@ Map make_map_from_tmx(char* tmx_path) {
   printf("\n");
 
   XMLElement* data = layer->FirstChildElement("data");
-  printf("encoding: %s\n", data->Attribute("encoding"));
-  printf("\n");
 
   char* csv = (char*)data->GetText();
   int_vector_2D base_layer = csv_string_to_vec(csv);
+
+  layer = layer->NextSiblingElement();
+  printf("layer id: %i\n", atoi(layer->Attribute("id")));
+  printf("\n");
+
+  data = layer->FirstChildElement("data");
+
+  csv = (char*)data->GetText();
+  int_vector_2D top_layer = csv_string_to_vec(csv);
   return map;
+}
+
+void print(std::vector<int> const& input) {
+  for (int i = 0; i < input.size(); i++) {
+    std::cout << input.at(i) << ' ';
+  }
 }
 
 int_vector_2D csv_string_to_vec(char* csv_string) {
   std::vector<std::string> csv_lines;
   char delims[] = "\n";
   char* line = NULL;
+  char* cell_item = NULL;
 
   line = strtok(csv_string, delims);
   while (line != NULL) {
