@@ -1,4 +1,6 @@
 build
+test/assets
+test/src
 # General
 .DS_Store
 .AppleDouble
