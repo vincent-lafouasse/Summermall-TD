@@ -19,22 +19,25 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 # These files will have .d instead of .o as the output.
 CPPFLAGS := $(INC_FLAGS) -MMD -MP -Wall -Wextra -pedantic -std=c++17
 
+GTESTFLAGS = --gtest_color=yes --gtest_print_time=0
+
 .PHONY: test
 test: $(BUILD_DIR)/$(TARGET_EXEC)
-	./$(BUILD_DIR)/$(TARGET_EXEC)
+	./$(BUILD_DIR)/$(TARGET_EXEC) $(GTESTFLAGS) --gtest_brief=1
 
-# The final build step.
+.PHONY: vtest
+vtest: $(BUILD_DIR)/$(TARGET_EXEC)
+	./$(BUILD_DIR)/$(TARGET_EXEC) $(GTESTFLAGS)
+
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	ln -sf ../assets $(BUILD_DIR)
 	ln -sf ../src/* $(BUILD_DIR)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIB)
 
-# Build step for C source
 $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-# Build step for C++ source
 $(BUILD_DIR)/%.cpp.o: %.cpp
 	mkdir -p $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
