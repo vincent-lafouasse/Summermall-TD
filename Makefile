@@ -52,7 +52,8 @@ test: $(TEST_DIR)/$(TEST_FILE)
 	cd $(TEST_DIR) && cmake -Wno-dev -S . -B build
 	cd $(TEST_DIR) && cmake --build build
 	@echo "\n\033[92mBuild completed\033[0m\n"
-	cd $(TEST_DIR)/build && echo "\n\033[92mTest results:\033[0m\n" && ctest $(CTESTFLAGS)
+	@cd $(TEST_DIR)/build && echo "\n\033[92mTest results:\033[0m\n"
+	cd $(TEST_DIR)/build && echo && ctest $(CTESTFLAGS)
 
 
 
