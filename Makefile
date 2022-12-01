@@ -46,6 +46,7 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 TEST_DIR = ./test
 TEST_FILE = test_main.cpp
 CTESTFLAGS = --output-on-failure
+CTESTFLAGS += --extra-verbose
 
 .PHONY: test
 test: $(TEST_DIR)/$(TEST_FILE)
