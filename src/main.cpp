@@ -36,7 +36,7 @@ void print_2D_int_vector(int_vector_2D const input);
 */
 float fps_regulate_fps(Uint32 tick_start);
 
-int main(int argc, char* args[]) {
+int main(void) {
   // Set up
   SDL_Window* window = SDL_CreateWindow(
       "Summermall TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -54,14 +54,21 @@ int main(int argc, char* args[]) {
     return -1;
   }
 
+  // test printing functions
+  int_vector_1D foo{1, 2, 3};
+  print_1D_int_vector(foo);
+  int_vector_1D bar{4, 5, 6};
+  print_1D_int_vector(bar);
+  printf("\n");
+  int_vector_2D baz{foo, bar};
+  print_2D_int_vector(baz);
+
   // Load and parse map
   Map map = make_map_from_tmx((char*)"assets/maps/basic_1P.tmx");
-  printf("width = %i\n", map.width);
-  printf("height = %i\n", map.height);
-  printf("tilewidth = %i\n", map.tilewidth);
-  printf("tileheight = %i\n", map.tileheight);
-
+  printf("\nlayer 0\n");
   print_2D_int_vector(map.layers.at(0));
+  printf("\nlayer 1\n");
+  print_2D_int_vector(map.layers.at(1));
 
   // Game loop
   while (true) {
@@ -83,6 +90,9 @@ int main(int argc, char* args[]) {
 
     // Compute and regulate fps to FPS_TARGET_FPS
     float fps = fps_regulate_fps(tick_start);
+    if (0) {
+      printf("%f", fps);
+    }
   }
   // End of game loop
 
@@ -114,6 +124,7 @@ Map make_map_from_tmx(char* tmx_path) {
   XMLElement* layer = root->FirstChildElement("layer");
   char* layer_csv;
   int_vector_3D layers;
+  layers.clear();
   while (layer) {
     layer_csv = (char*)layer->FirstChildElement("data")->GetText();
 
@@ -129,10 +140,11 @@ int_vector_2D vector_2D_from_string_csv(char* csv_string) {
   int_vector_2D output;
   char line_delim[] = "\n";
   char* line = NULL;
+  output.clear();
 
   line = strtok(csv_string, line_delim);
   while (line != NULL) {
-    printf("%s\n", line);
+    output.push_back(vector_1D_from_string_line(line));
     line = strtok(NULL, line_delim);
   }
 
@@ -143,7 +155,13 @@ int_vector_1D vector_1D_from_string_line(char* line_string) {
   int_vector_1D output;
   char cell_delim[] = ",";
   char* cell = NULL;
+  output.clear();
 
+  cell = strtok(line_string, cell_delim);
+  while (cell != NULL) {
+    output.push_back(atoi(cell));
+    cell = strtok(NULL, cell_delim);
+  }
   return output;
 }
 
