@@ -22,7 +22,9 @@ struct Map {
 };
 
 Map make_map_from_tmx(char* tmx_path);
-int_vector_2D vec_2D_from_string_csv(char* csv_string);
+int_vector_2D vector_2D_from_string_csv(char* csv_string);
+void print_1D_vector(int_vector_1D const input);
+void print_2D_vector(int_vector_2D const input);
 
 /*
   Returns the estimated FPS which is regulated to not exceed `FPS_TARGET_FPS`.
@@ -57,6 +59,19 @@ int main(int argc, char* args[]) {
   printf("height = %i\n", map.height);
   printf("tilewidth = %i\n", map.tilewidth);
   printf("tileheight = %i\n", map.tileheight);
+
+  int_vector_1D foo;
+  int_vector_1D bar;
+  int_vector_2D baz;
+  for (int i = 0; i <= 5; ++i) {
+    foo.push_back(i);
+  }
+  for (int i = 420; i <= 425; ++i) {
+    bar.push_back(i);
+  }
+  baz.push_back(foo);
+  baz.push_back(bar);
+  print_2D_vector(baz);
 
   // Game loop
   while (true) {
@@ -115,7 +130,7 @@ Map make_map_from_tmx(char* tmx_path) {
 
     layer_csv = (char*)layer->FirstChildElement("data")->GetText();
 
-    layers.push_back(vec_2D_from_string_csv(layer_csv));
+    layers.push_back(vector_2D_from_string_csv(layer_csv));
 
     layer = layer->NextSiblingElement();
   }
@@ -123,13 +138,20 @@ Map make_map_from_tmx(char* tmx_path) {
   return map;
 }
 
-void print(std::vector<int> const& input) {
+void print_1D_vector(int_vector_1D const input) {
   for (unsigned long i = 0; i < input.size(); i++) {
-    std::cout << input.at(i) << ' ';
+    printf("%d ", input.at(i));
+  }
+  printf("\n");
+}
+
+void print_2D_vector(int_vector_2D const input) {
+  for (unsigned long i = 0; i < input.size(); i++) {
+    print_1D_vector(input.at(i));
   }
 }
 
-int_vector_2D vec_2D_from_string_csv(char* csv_string) {
+int_vector_2D vector_2D_from_string_csv(char* csv_string) {
   std::vector<std::string> csv_lines;
   char delims[] = "\n";
   char* line = NULL;
@@ -145,6 +167,7 @@ int_vector_2D vec_2D_from_string_csv(char* csv_string) {
   int_vector_2D output;
   return output;
 }
+
 float fps_regulate_fps(Uint32 tick_start) {
   Uint32 tick_end = SDL_GetTicks();
 
