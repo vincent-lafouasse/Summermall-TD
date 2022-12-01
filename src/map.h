@@ -1,9 +1,9 @@
+#pragma once
+
 #include <stdio.h>
 #include <string>
 #include <vector>
 #include "third_party_lib/tinyxml2.h"
-
-#pragma once
 
 typedef std::vector<int> int_vector_1D;
 typedef std::vector<std::vector<int>> int_vector_2D;
