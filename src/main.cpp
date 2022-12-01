@@ -23,8 +23,9 @@ struct Map {
 
 Map make_map_from_tmx(char* tmx_path);
 int_vector_2D vector_2D_from_string_csv(char* csv_string);
-void print_1D_vector(int_vector_1D const input);
-void print_2D_vector(int_vector_2D const input);
+int_vector_1D vector_1D_from_string_line(char* line_string);
+void print_1D_int_vector(int_vector_1D const input);
+void print_2D_int_vector(int_vector_2D const input);
 
 /*
   Returns the estimated FPS which is regulated to not exceed `FPS_TARGET_FPS`.
@@ -60,18 +61,7 @@ int main(int argc, char* args[]) {
   printf("tilewidth = %i\n", map.tilewidth);
   printf("tileheight = %i\n", map.tileheight);
 
-  int_vector_1D foo;
-  int_vector_1D bar;
-  int_vector_2D baz;
-  for (int i = 0; i <= 5; ++i) {
-    foo.push_back(i);
-  }
-  for (int i = 420; i <= 425; ++i) {
-    bar.push_back(i);
-  }
-  baz.push_back(foo);
-  baz.push_back(bar);
-  print_2D_vector(baz);
+  print_2D_int_vector(map.layers.at(0));
 
   // Game loop
   while (true) {
@@ -125,9 +115,6 @@ Map make_map_from_tmx(char* tmx_path) {
   char* layer_csv;
   int_vector_3D layers;
   while (layer) {
-    printf("\n");
-    printf("layer id: %i\n", atoi(layer->Attribute("id")));
-
     layer_csv = (char*)layer->FirstChildElement("data")->GetText();
 
     layers.push_back(vector_2D_from_string_csv(layer_csv));
@@ -138,33 +125,25 @@ Map make_map_from_tmx(char* tmx_path) {
   return map;
 }
 
-void print_1D_vector(int_vector_1D const input) {
-  for (unsigned long i = 0; i < input.size(); i++) {
-    printf("%d ", input.at(i));
-  }
-  printf("\n");
-}
-
-void print_2D_vector(int_vector_2D const input) {
-  for (unsigned long i = 0; i < input.size(); i++) {
-    print_1D_vector(input.at(i));
-  }
-}
-
 int_vector_2D vector_2D_from_string_csv(char* csv_string) {
-  std::vector<std::string> csv_lines;
-  char delims[] = "\n";
+  int_vector_2D output;
+  char line_delim[] = "\n";
   char* line = NULL;
-  char* cell_item = NULL;
 
-  line = strtok(csv_string, delims);
+  line = strtok(csv_string, line_delim);
   while (line != NULL) {
     printf("%s\n", line);
-    csv_lines.push_back(line);
-    line = strtok(NULL, delims);
+    line = strtok(NULL, line_delim);
   }
 
-  int_vector_2D output;
+  return output;
+}
+
+int_vector_1D vector_1D_from_string_line(char* line_string) {
+  int_vector_1D output;
+  char cell_delim[] = ",";
+  char* cell = NULL;
+
   return output;
 }
 
@@ -192,4 +171,17 @@ float fps_regulate_fps(Uint32 tick_start) {
   frame_per_s = 1 / (ms_per_frame / 1000.);
 
   return frame_per_s;
+}
+
+void print_1D_int_vector(int_vector_1D const input) {
+  for (unsigned long i = 0; i < input.size(); i++) {
+    printf("%d ", input.at(i));
+  }
+  printf("\n");
+}
+
+void print_2D_int_vector(int_vector_2D const input) {
+  for (unsigned long i = 0; i < input.size(); i++) {
+    print_1D_int_vector(input.at(i));
+  }
 }
