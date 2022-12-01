@@ -43,6 +43,23 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
 
+TEST_DIR = ./test
+TEST_FILE = test_main.cpp
+CTESTFLAGS = --output-on-failure
+
+.PHONY: test
+test: $(TEST_DIR)/$(TEST_FILE)
+	cd $(TEST_DIR) && cmake -Wno-dev -S . -B build
+	cd $(TEST_DIR) && cmake --build build
+	@echo
+	@echo "\033[92mBuild completed\033[0m"
+	@echo
+	@echo "\033[92mTesting:\033[0m"
+	@echo
+	cd $(TEST_DIR) && cd build && ctest $(CTESTFLAGS)
+
+
+
 .PHONY: clean
 clean:
 	rm -r $(BUILD_DIR)
