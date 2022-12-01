@@ -54,20 +54,35 @@ int main(void) {
     return -1;
   }
 
-  // test printing functions
+  // DEBUGGING
+  printf("Testing print_vector_1D\n");
   int_vector_1D foo{1, 2, 3};
   print_1D_int_vector(foo);
   int_vector_1D bar{4, 5, 6};
   print_1D_int_vector(bar);
   printf("\n");
+
+  printf("Testing print_vector_2D\n");
   int_vector_2D baz{foo, bar};
   print_2D_int_vector(baz);
+  printf("\n");
+
+  printf("Testing access to vector using vector.at(n)\n");
+  print_1D_int_vector(baz.at(0));
+  print_1D_int_vector(baz.at(1));
+  printf("\n");
 
   // Load and parse map
   Map map = make_map_from_tmx((char*)"assets/maps/basic_1P.tmx");
+
   printf("\nlayer 0\n");
+  printf("length of layers[0] = %lu, should be %i\n", map.layers.at(0).size(),
+         map.height);
   print_2D_int_vector(map.layers.at(0));
+
   printf("\nlayer 1\n");
+  printf("length of layers[1] = %lu, should be %i\n", map.layers.at(1).size(),
+         map.height);
   print_2D_int_vector(map.layers.at(1));
 
   // Game loop
