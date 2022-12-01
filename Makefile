@@ -51,7 +51,8 @@ CTESTFLAGS += --extra-verbose
 .PHONY: test
 test: $(TEST_DIR)/$(TEST_FILE)
 	ln -sf $(shell pwd)/assets $(TEST_DIR)
-	ln -sf $(shell pwd)/src $(TEST_DIR)
+	ln -sf $(shell pwd)/src/* $(TEST_DIR)
+	rm $(TEST_DIR)/main.cpp
 	cd $(TEST_DIR) && cmake -Wno-dev -S . -B build
 	cd $(TEST_DIR) && cmake --build build
 	@echo "\n\033[92mBuild completed\033[0m\n"
