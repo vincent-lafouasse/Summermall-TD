@@ -51,12 +51,8 @@ CTESTFLAGS = --output-on-failure
 test: $(TEST_DIR)/$(TEST_FILE)
 	cd $(TEST_DIR) && cmake -Wno-dev -S . -B build
 	cd $(TEST_DIR) && cmake --build build
-	@echo
-	@echo "\033[92mBuild completed\033[0m"
-	@echo
-	@echo "\033[92mTesting:\033[0m"
-	@echo
-	cd $(TEST_DIR) && cd build && ctest $(CTESTFLAGS)
+	@echo "\n\033[92mBuild completed\033[0m\n"
+	cd $(TEST_DIR)/build && echo "\n\033[92mTest results:\033[0m\n" && ctest $(CTESTFLAGS)
 
 
 
