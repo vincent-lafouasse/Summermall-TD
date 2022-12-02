@@ -8,7 +8,7 @@ SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
-LIB = -lpthread -lgtest -lgtest_main -L/usr/lib
+LIB = -lgtest -lgtest_main -lpthread -L/usr/lib
 
 # Every folder in ./src will need to be passed to GCC so that it can find header files
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
