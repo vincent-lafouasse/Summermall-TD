@@ -46,6 +46,7 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 .PHONY: clean
 clean:
 	 $(RM) $(BUILD_DIR)
+	 cd $(SRC_DIRS) && $(RM) `ls | grep -v 'test'`
 
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those
