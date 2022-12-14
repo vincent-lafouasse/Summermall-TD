@@ -21,12 +21,18 @@ CPPFLAGS := $(INC_FLAGS) -MMD -MP -Wall -Wextra -pedantic -std=c++17
 
 GTESTFLAGS = --gtest_color=yes --gtest_print_time=0
 
+all: vtest
+
 .PHONY: test
-test: $(BUILD_DIR)/$(TARGET_EXEC)
+test:
+	make copy_files_to_test
+	make $(BUILD_DIR)/$(TARGET_EXEC)
 	./$(BUILD_DIR)/$(TARGET_EXEC) $(GTESTFLAGS) --gtest_brief=1
 
 .PHONY: vtest
-vtest: $(BUILD_DIR)/$(TARGET_EXEC)
+vtest:
+	make copy_files_to_test
+	make $(BUILD_DIR)/$(TARGET_EXEC)
 	./$(BUILD_DIR)/$(TARGET_EXEC) $(GTESTFLAGS)
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
@@ -41,8 +47,8 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
 
-.PHONY: copy
-copy:
+.PHONY: copy_files_to_test
+copy_files_to_test:
 	cd ../src && cp -r `ls | grep -v 'main'` ../test/src
 
 
