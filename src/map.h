@@ -17,7 +17,7 @@ struct Map {
   int_vector_3D layers;
 };
 
-Map make_map_from_tmx(char* tmx_path);
+Map make_map_from_tmx(const char* tmx_path);
 int_vector_2D vector_2D_from_string_csv(char* csv_string);
 int_vector_1D vector_1D_from_string_line(char* line_string);
 void print_1D_int_vector(int_vector_1D const input);

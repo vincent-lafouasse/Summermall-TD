@@ -1,6 +1,6 @@
 #include "map.h"
 
-Map make_map_from_tmx(char* tmx_path) {
+Map make_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;
   Map map;
   XMLDocument map_xml;
