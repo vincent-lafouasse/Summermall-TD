@@ -25,13 +25,13 @@ all: vtest
 
 .PHONY: test
 test:
-	make copy_files_to_test
+	make setup
 	make $(BUILD_DIR)/$(TARGET_EXEC)
 	./$(BUILD_DIR)/$(TARGET_EXEC) $(GTESTFLAGS) --gtest_brief=1
 
 .PHONY: vtest
 vtest:
-	make copy_files_to_test
+	make setup
 	make $(BUILD_DIR)/$(TARGET_EXEC)
 	./$(BUILD_DIR)/$(TARGET_EXEC) $(GTESTFLAGS)
 
@@ -47,8 +47,8 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
 
-.PHONY: copy_files_to_test
-copy_files_to_test:
+.PHONY: setup
+setup:
 	cd ../src && cp -r `ls | grep -v 'main'` ../test/src
 
 
