@@ -1,8 +1,8 @@
 build
-test/assets
-test/map.cpp
-test/map.h
-test/third_party_lib
+test/src/*
+!test/src
+!test/src/*test*
+
 # General
 .DS_Store
 .AppleDouble

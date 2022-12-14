@@ -30,8 +30,6 @@ vtest: $(BUILD_DIR)/$(TARGET_EXEC)
 	./$(BUILD_DIR)/$(TARGET_EXEC) $(GTESTFLAGS)
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	ln -sf ../assets $(BUILD_DIR)
-	ln -sf ../src/* $(BUILD_DIR)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIB)
 
 $(BUILD_DIR)/%.c.o: %.c
@@ -41,6 +39,11 @@ $(BUILD_DIR)/%.c.o: %.c
 $(BUILD_DIR)/%.cpp.o: %.cpp
 	mkdir -p $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
+
+
+.PHONY: copy
+copy:
+	cd ../src && cp -r `ls | grep -v 'main'` ../test/src
 
 
 .PHONY: clean
