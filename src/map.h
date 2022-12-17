@@ -20,5 +20,5 @@ struct Map {
 Map make_map_from_tmx(const char* tmx_path);
 int_vector_2D vector_2D_from_string_csv(char* csv_string);
 int_vector_1D vector_1D_from_string_line(char* line_string);
-void print_1D_int_vector(int_vector_1D const input);
-void print_2D_int_vector(int_vector_2D const input);
+void print_1D_int_vector(const int_vector_1D input);
+void print_2D_int_vector(const int_vector_2D input);
