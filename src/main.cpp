@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "map.h"
@@ -37,6 +38,11 @@ int main(void) {
   // Load and parse map
   const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
   Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path );
+
+  // Load tiles
+  const char* grass_tile_path = "assets/tower-defense-top-down/PNG/Default\\ size/towerDefense_tile024.png";
+  SDL_Surface* grass_tile = IMG_Load(grass_tile_path);
+
 
   // Game loop
   while (true) {
