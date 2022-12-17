@@ -1,5 +1,4 @@
 #include "map.h"
-#include <string.h>
 
 Map make_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;

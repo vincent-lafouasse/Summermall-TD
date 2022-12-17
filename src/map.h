@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdio.h>
-#include <string>
+#include <string.h>
 #include <vector>
 #include "third_party_lib/tinyxml2.h"
 
