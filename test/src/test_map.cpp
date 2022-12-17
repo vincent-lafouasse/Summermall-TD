@@ -20,15 +20,14 @@ TEST(Basic1PMap, LayersSize) {
   size_t expected_n_layers = 2;
   ASSERT_EQ(expected_n_layers, map.layers.size());
 
-  size_t expected_height = 45;
-  size_t expected_width = 25;
+  int_vector_3D layers = map.layers;
 
-  for (size_t i = 0; i < map.layers.size(); i++) {
-    int_vector_2D layer = map.layers.at(i);
-    ASSERT_EQ(layer.size(), expected_height);
+  for (unsigned int i = 0; i < layers.size(); i++) {
+    int_vector_2D layer = layers.at(i);
+    ASSERT_EQ(layer.size(), (size_t)map.height);
 
-    for (size_t j = 0; j < layer.size(); j++) {
-      ASSERT_EQ(layer.at(j).size(), expected_width);
+    for (unsigned int j = 0; j < map.height; j++) {
+      ASSERT_EQ(layer.at(j).size(), (size_t)map.width);
     }
   }
 }
