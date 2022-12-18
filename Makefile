@@ -47,7 +47,8 @@ TEST_DIR = ./test
 
 .PHONY: test
 test: $(TEST_DIR)/$(TEST_FILE)
-	cd $(TEST_DIR) && make
+	-cd $(TEST_DIR) && make
+	test/build/tests.out
 
 
 
