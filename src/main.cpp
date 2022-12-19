@@ -39,9 +39,10 @@ int main(void) {
   const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
   Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path );
 
-  // Load tiles
-  const char* grass_tile_path = "assets/tower-defense-top-down/PNG/Default\\ size/towerDefense_tile024.png";
-  SDL_Surface* grass_tile = IMG_Load(grass_tile_path);
+  // Load tilesheet
+  const char* tilesheet_path = "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
+  SDL_Surface* tilesheet_surface = IMG_Load(tilesheet_path);
+  SDL_Texture * tilesheet = SDL_CreateTextureFromSurface(renderer, tilesheet_surface);
 
 
   // Game loop
@@ -59,6 +60,9 @@ int main(void) {
     // Set the color to cornflower blue and clear
     SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
     SDL_RenderClear(renderer);
+
+    SDL_RenderCopy(renderer, tilesheet, NULL, NULL);
+
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
@@ -71,6 +75,8 @@ int main(void) {
   // End of game loop
 
   // Tear down
+  SDL_DestroyTexture(tilesheet);
+  SDL_FreeSurface(tilesheet_surface);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
