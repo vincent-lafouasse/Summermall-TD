@@ -22,9 +22,10 @@ int fps_regulate_fps(Uint32 tick_start);
 
 int main(void) {
   // Set up
-  SDL_Window* window = SDL_CreateWindow(
-      "Summermall TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      SCREEN_WIDTH / ZOOM_DIVIDOR, SCREEN_HEIGHT / ZOOM_DIVIDOR, SDL_WINDOW_OPENGL);
+  SDL_Window* window =
+      SDL_CreateWindow("Summermall TD", SDL_WINDOWPOS_UNDEFINED,
+                       SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH / ZOOM_DIVIDOR,
+                       SCREEN_HEIGHT / ZOOM_DIVIDOR, SDL_WINDOW_OPENGL);
 
   if (window == nullptr) {
     SDL_Log("Could not create a window: %s", SDL_GetError());
