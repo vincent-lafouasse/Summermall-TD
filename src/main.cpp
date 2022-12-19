@@ -47,9 +47,10 @@ int main(void) {
   // Load tilesheet
   const char* tilesheet_path =
       "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
-  SDL_Texture* tilesheet =
+  Tilesheet tilesheet;
+  tilesheet.texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
-  int tilesheet_width = 1472 / basic_1P_map.tilewidth;
+  tilesheet.pixel_width = 1472 / basic_1P_map.tilewidth;
 
   // Game loop
   while (true) {
@@ -68,8 +69,8 @@ int main(void) {
     SDL_RenderClear(renderer);
 
     // Render map
-    render_map(basic_1P_map, tilesheet, tilesheet_width, render_tilewidth,
-               render_tileheight, renderer);
+    render_map(basic_1P_map, tilesheet, render_tilewidth, render_tileheight,
+               renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
@@ -83,7 +84,7 @@ int main(void) {
   // End of game loop
 
   // Tear down
-  SDL_DestroyTexture(tilesheet);
+  SDL_DestroyTexture(tilesheet.texture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();

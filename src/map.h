@@ -19,13 +19,17 @@ struct Map {
   int_vector_3D layers;
 };
 
+struct Tilesheet {
+  SDL_Texture* texture;
+  int pixel_width;
+};
+
 SDL_Rect get_tile_from_id(int id,
                           int tilesheet_width,
                           int tilewidth,
                           int tileheight);
 void render_map(Map map,
-                SDL_Texture* tilesheet,
-                int tilesheet_width,
+                Tilesheet tilesheet,
                 int render_tilewidth,
                 int render_tileheight,
                 SDL_Renderer* renderer);
