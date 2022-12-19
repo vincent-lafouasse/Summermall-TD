@@ -11,22 +11,20 @@ typedef std::vector<int> int_vector_1D;
 typedef std::vector<std::vector<int>> int_vector_2D;
 typedef std::vector<std::vector<std::vector<int>>> int_vector_3D;
 
+struct Rectangle {
+  int w;
+  int h;
+};
+
 struct Map {
-  int width;
-  int height;
-  int tilewidth;
-  int tileheight;
+  Rectangle shape;
+  Rectangle tileshape;
   int_vector_3D layers;
 };
 
 struct Tilesheet {
   SDL_Texture* texture;
-  int pixel_width;
-};
-
-struct Rectangle {
-  int w;
-  int h;
+  int width;
 };
 
 SDL_Rect get_tile_from_id(int id,

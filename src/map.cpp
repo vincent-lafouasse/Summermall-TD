@@ -22,8 +22,8 @@ void render_map(Map map,
       int_vector_1D line = layer.at(y_pos);
 
       for (int x_pos = 0; x_pos < (int)line.size(); x_pos++) {
-        SDL_Rect tile = get_tile_from_id(line.at(x_pos), tilesheet.pixel_width,
-                                         map.tilewidth, map.tileheight);
+        SDL_Rect tile = get_tile_from_id(line.at(x_pos), tilesheet.width,
+                                         map.tileshape.w, map.tileshape.h);
         SDL_Rect tile_pos = {x_pos * shape_rendered_tile.w,
                              y_pos * shape_rendered_tile.h,
                              shape_rendered_tile.w, shape_rendered_tile.h};
@@ -44,10 +44,10 @@ Map make_map_from_tmx(const char* tmx_path) {
 
   // Extract metadata
   XMLElement* root = map_xml.FirstChildElement("map");
-  map.width = atoi(root->Attribute("width"));
-  map.height = atoi(root->Attribute("height"));
-  map.tilewidth = atoi(root->Attribute("tilewidth"));
-  map.tileheight = atoi(root->Attribute("tileheight"));
+  map.shape.w = atoi(root->Attribute("width"));
+  map.shape.h = atoi(root->Attribute("height"));
+  map.tileshape.w = atoi(root->Attribute("tilewidth"));
+  map.tileshape.h = atoi(root->Attribute("tileheight"));
 
   // Extract map layers into 3D vector from csv
   XMLElement* layer = root->FirstChildElement("layer");
