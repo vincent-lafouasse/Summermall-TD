@@ -13,14 +13,14 @@ void render_map(Map map,
                 Rectangle shape_rendered_tile,
                 SDL_Renderer* renderer) {
   for (size_t layer_index = 0; layer_index < map.layers.size(); layer_index++) {
-    int_vector_2D layer = map.layers.at(layer_index);
+    int_vector_2D layer = map.layers[layer_index];
 
     for (int y_pos = 0; y_pos < (int)layer.size(); y_pos++) {
-      int_vector_1D line = layer.at(y_pos);
+      int_vector_1D line = layer[y_pos];
 
       for (int x_pos = 0; x_pos < (int)line.size(); x_pos++) {
         SDL_Rect tile =
-            get_tile_from_id(line.at(x_pos), tilesheet.width, map.tileshape);
+            get_tile_from_id(line[x_pos], tilesheet.width, map.tileshape);
         SDL_Rect tile_pos = {x_pos * shape_rendered_tile.w,
                              y_pos * shape_rendered_tile.h,
                              shape_rendered_tile.w, shape_rendered_tile.h};
@@ -96,13 +96,13 @@ int_vector_1D vector_1D_from_string_line(char* line_string) {
 
 void print_1D_int_vector(int_vector_1D const input) {
   for (unsigned long i = 0; i < input.size(); i++) {
-    printf("%d ", input.at(i));
+    printf("%d ", input[i]);
   }
   printf("\n");
 }
 
 void print_2D_int_vector(int_vector_2D const input) {
   for (unsigned long i = 0; i < input.size(); i++) {
-    print_1D_int_vector(input.at(i));
+    print_1D_int_vector(input[i]);
   }
 }
