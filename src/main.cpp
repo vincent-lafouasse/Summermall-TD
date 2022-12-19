@@ -6,8 +6,7 @@
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 1440
-#define SCREEN_WIDTH_DEV 400
-#define SCREEN_HEIGHT_DEV 720
+#define ZOOM_DIVIDOR 2
 #define TILESHEET_PIXEL_WIDTH 1472
 #define FPS_TARGET_FPS 60.
 
@@ -25,7 +24,7 @@ int main(void) {
   // Set up
   SDL_Window* window = SDL_CreateWindow(
       "Summermall TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      SCREEN_WIDTH_DEV, SCREEN_HEIGHT_DEV, SDL_WINDOW_OPENGL);
+      SCREEN_WIDTH / ZOOM_DIVIDOR, SCREEN_HEIGHT / ZOOM_DIVIDOR, SDL_WINDOW_OPENGL);
 
   if (window == nullptr) {
     SDL_Log("Could not create a window: %s", SDL_GetError());
@@ -52,8 +51,8 @@ int main(void) {
   tilesheet.width = TILESHEET_PIXEL_WIDTH / basic_1P_map.tileshape.h;
 
   // Set width and height of rendered tiles
-  Rectangle shape_rendered_tile = {basic_1P_map.tileshape.w / 2,
-                                   basic_1P_map.tileshape.h / 2};
+  Rectangle shape_rendered_tile = {basic_1P_map.tileshape.w / ZOOM_DIVIDOR,
+                                   basic_1P_map.tileshape.h / ZOOM_DIVIDOR};
 
   // Game loop
   while (true) {
