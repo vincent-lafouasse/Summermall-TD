@@ -13,8 +13,7 @@ SDL_Rect get_tile_from_id(int id,
 
 void render_map(Map map,
                 Tilesheet tilesheet,
-                int render_tilewidth,
-                int render_tileheight,
+                Rectangle shape_rendered_tile,
                 SDL_Renderer* renderer) {
   for (size_t layer_index = 0; layer_index < map.layers.size(); layer_index++) {
     int_vector_2D layer = map.layers.at(layer_index);
@@ -25,9 +24,9 @@ void render_map(Map map,
       for (int x_pos = 0; x_pos < (int)line.size(); x_pos++) {
         SDL_Rect tile = get_tile_from_id(line.at(x_pos), tilesheet.pixel_width,
                                          map.tilewidth, map.tileheight);
-        SDL_Rect tile_pos = {x_pos * render_tilewidth,
-                             y_pos * render_tileheight, render_tilewidth,
-                             render_tileheight};
+        SDL_Rect tile_pos = {x_pos * shape_rendered_tile.w,
+                             y_pos * shape_rendered_tile.h,
+                             shape_rendered_tile.w, shape_rendered_tile.h};
         SDL_RenderCopy(renderer, tilesheet.texture, &tile, &tile_pos);
       }
     }

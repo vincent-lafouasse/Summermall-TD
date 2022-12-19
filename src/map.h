@@ -24,14 +24,18 @@ struct Tilesheet {
   int pixel_width;
 };
 
+struct Rectangle {
+  int w;
+  int h;
+};
+
 SDL_Rect get_tile_from_id(int id,
                           int tilesheet_width,
                           int tilewidth,
                           int tileheight);
 void render_map(Map map,
                 Tilesheet tilesheet,
-                int render_tilewidth,
-                int render_tileheight,
+                Rectangle shape_rendered_tile,
                 SDL_Renderer* renderer);
 Map make_map_from_tmx(const char* tmx_path);
 int_vector_2D vector_2D_from_string_csv(char* csv_string);
