@@ -20,17 +20,6 @@
 */
 int fps_regulate_fps(Uint32 tick_start);
 
-SDL_Rect get_tile_from_id(int id,
-                          int tilesheet_width,
-                          unsigned int tilewidth,
-                          unsigned int tileheight) {
-  int actual_id = id - 1;
-  int X = (actual_id % tilesheet_width) * tilewidth;
-  int Y = (actual_id / tilesheet_width) * tileheight;
-  SDL_Rect tile = {X, Y, (int)tilewidth, (int)tileheight};
-  return tile;
-}
-
 int main(void) {
   // Set up
   SDL_Window* window = SDL_CreateWindow(
@@ -52,8 +41,8 @@ int main(void) {
   // Load and parse map
   const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
   Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path);
-  int tilewidth = basic_1P_map.tilewidth / 2;
-  int tileheight = basic_1P_map.tileheight / 2;
+  int render_tilewidth = basic_1P_map.tilewidth / 2;
+  int render_tileheight = basic_1P_map.tileheight / 2;
 
   // Load tilesheet
   const char* tilesheet_path =
@@ -79,21 +68,8 @@ int main(void) {
     SDL_RenderClear(renderer);
 
     // Render map
-    int current_layer_index = 0;
-    int_vector_2D layer = basic_1P_map.layers.at(current_layer_index);
-
-    for (int y_pos = 0; y_pos < (int)layer.size(); y_pos++) {
-      int_vector_1D current_line = layer.at(y_pos);
-      for (int x_pos = 0; x_pos < (int)current_line.size(); x_pos++) {
-        SDL_Rect tile =
-            get_tile_from_id(current_line.at(x_pos), tilesheet_width,
-                             basic_1P_map.tilewidth, basic_1P_map.tileheight);
-        SDL_Rect tile_position = {x_pos * tilewidth, y_pos * tileheight,
-                                  tilewidth, tileheight};
-
-        SDL_RenderCopy(renderer, tilesheet, &tile, &tile_position);
-      }
-    }
+    render_map(basic_1P_map, tilesheet, tilesheet_width, render_tilewidth,
+               render_tileheight, renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);

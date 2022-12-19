@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <string.h>
 #include <vector>
@@ -17,6 +19,16 @@ struct Map {
   int_vector_3D layers;
 };
 
+SDL_Rect get_tile_from_id(int id,
+                          int tilesheet_width,
+                          unsigned int tilewidth,
+                          unsigned int tileheight);
+void render_map(Map map,
+                SDL_Texture* tilesheet,
+                int tilesheet_width,
+                int render_tilewidth,
+                int render_tileheight,
+                SDL_Renderer* renderer);
 Map make_map_from_tmx(const char* tmx_path);
 int_vector_2D vector_2D_from_string_csv(char* csv_string);
 int_vector_1D vector_1D_from_string_line(char* line_string);

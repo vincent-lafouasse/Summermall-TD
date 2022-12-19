@@ -1,5 +1,40 @@
 #include "map.h"
 
+SDL_Rect get_tile_from_id(int id,
+                          int tilesheet_width,
+                          unsigned int tilewidth,
+                          unsigned int tileheight) {
+  int actual_id = id - 1;
+  int X = (actual_id % tilesheet_width) * tilewidth;
+  int Y = (actual_id / tilesheet_width) * tileheight;
+  SDL_Rect tile = {X, Y, (int)tilewidth, (int)tileheight};
+  return tile;
+}
+
+void render_map(Map map,
+                SDL_Texture* tilesheet,
+                int tilesheet_width,
+                int render_tilewidth,
+                int render_tileheight,
+                SDL_Renderer* renderer) {
+  for (size_t layer_index = 0; layer_index < map.layers.size(); layer_index++) {
+    int_vector_2D layer = map.layers.at(layer_index);
+
+    for (int y_pos = 0; y_pos < (int)layer.size(); y_pos++) {
+      int_vector_1D line = layer.at(y_pos);
+
+      for (int x_pos = 0; x_pos < (int)line.size(); x_pos++) {
+        SDL_Rect tile = get_tile_from_id(line.at(x_pos), tilesheet_width,
+                                         map.tilewidth, map.tileheight);
+        SDL_Rect tile_pos = {x_pos * render_tilewidth,
+                             y_pos * render_tileheight, render_tilewidth,
+                             render_tileheight};
+        SDL_RenderCopy(renderer, tilesheet, &tile, &tile_pos);
+      }
+    }
+  }
+}
+
 Map make_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;
   Map map;
