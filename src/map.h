@@ -27,10 +27,7 @@ struct Tilesheet {
   int width;
 };
 
-SDL_Rect get_tile_from_id(int id,
-                          int tilesheet_width,
-                          int tilewidth,
-                          int tileheight);
+SDL_Rect get_tile_from_id(int id, int tilesheet_width, Rectangle tileshape);
 void render_map(Map map,
                 Tilesheet tilesheet,
                 Rectangle shape_rendered_tile,
