@@ -17,6 +17,17 @@
 */
 float fps_regulate_fps(Uint32 tick_start);
 
+SDL_Rect get_tile_from_id(int id,
+                          int tilesheet_width,
+                          unsigned int tilewidth,
+                          unsigned int tileheight) {
+  int actual_id = id - 1;
+  int X = (actual_id % tilesheet_width) * tilewidth;
+  int Y = (actual_id / tilesheet_width) * tileheight;
+  SDL_Rect tile = {X, Y, (int)tilewidth, (int)tileheight};
+  return tile;
+}
+
 int main(void) {
   // Set up
   SDL_Window* window = SDL_CreateWindow(
@@ -37,23 +48,21 @@ int main(void) {
 
   // Load and parse map
   const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
-  Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path );
+  Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path);
 
   // Load tilesheet
-  const char* tilesheet_path = "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
-  SDL_Texture * tilesheet = SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
-  SDL_Rect rendered_tile_shape = {100, 100, 2 * (int)basic_1P_map.tilewidth, 2 * (int)basic_1P_map.tileheight};
+  const char* tilesheet_path =
+      "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
+  SDL_Texture* tilesheet =
+      SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
+  SDL_Rect rendered_tile_pos = {100, 100, 2 * (int)basic_1P_map.tilewidth,
+                                  2 * (int)basic_1P_map.tileheight};
 
-  unsigned int grass_tile_id = 96;
-  unsigned int tilesheet_width_pixels = 1472;
-  unsigned int tilesheet_width = tilesheet_width_pixels / basic_1P_map.tilewidth;
+  unsigned int tilesheet_width = 1472 / basic_1P_map.tilewidth;
 
-  int grass_tile_X = (grass_tile_id - 1) % tilesheet_width;
-  int grass_tile_Y = (grass_tile_id - 1) / tilesheet_width;
-
-  SDL_Rect grass_tile = {grass_tile_X * 32, grass_tile_Y * 32, (int)basic_1P_map.tilewidth, (int)basic_1P_map.tileheight};
-
-
+  SDL_Rect tile =
+      get_tile_from_id(1055, tilesheet_width, basic_1P_map.tilewidth,
+                       basic_1P_map.tileheight);
 
   // Game loop
   while (true) {
@@ -71,7 +80,7 @@ int main(void) {
     SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
     SDL_RenderClear(renderer);
 
-    SDL_RenderCopy(renderer, tilesheet, &grass_tile, &rendered_tile_shape);
+    SDL_RenderCopy(renderer, tilesheet, &tile, &rendered_tile_pos);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
