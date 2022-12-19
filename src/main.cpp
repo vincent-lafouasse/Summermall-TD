@@ -49,7 +49,7 @@ int main(void) {
       "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
   SDL_Texture* tilesheet =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
-  unsigned int tilesheet_width = 1472 / basic_1P_map.tilewidth;
+  int tilesheet_width = 1472 / basic_1P_map.tilewidth;
 
   // Game loop
   while (true) {

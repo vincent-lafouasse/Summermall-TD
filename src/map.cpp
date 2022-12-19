@@ -2,8 +2,8 @@
 
 SDL_Rect get_tile_from_id(int id,
                           int tilesheet_width,
-                          unsigned int tilewidth,
-                          unsigned int tileheight) {
+                          int tilewidth,
+                          int tileheight) {
   int actual_id = id - 1;
   int X = (actual_id % tilesheet_width) * tilewidth;
   int Y = (actual_id / tilesheet_width) * tileheight;
@@ -69,7 +69,7 @@ Map make_map_from_tmx(const char* tmx_path) {
 
 int_vector_2D vector_2D_from_string_csv(char* csv_string) {
   int_vector_2D output;
-  char line_delim[] = "\n";
+  const char* line_delim = "\n";
   char* line = NULL;
   char* mem;
   output.clear();
@@ -86,7 +86,7 @@ int_vector_2D vector_2D_from_string_csv(char* csv_string) {
 
 int_vector_1D vector_1D_from_string_line(char* line_string) {
   int_vector_1D output;
-  char cell_delim[] = ",";
+  const char* cell_delim = ",";
   char* cell = NULL;
   char* mem;
   output.clear();

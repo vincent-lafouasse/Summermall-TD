@@ -12,17 +12,17 @@ typedef std::vector<std::vector<int>> int_vector_2D;
 typedef std::vector<std::vector<std::vector<int>>> int_vector_3D;
 
 struct Map {
-  unsigned int width;
-  unsigned int height;
-  unsigned int tilewidth;
-  unsigned int tileheight;
+  int width;
+  int height;
+  int tilewidth;
+  int tileheight;
   int_vector_3D layers;
 };
 
 SDL_Rect get_tile_from_id(int id,
                           int tilesheet_width,
-                          unsigned int tilewidth,
-                          unsigned int tileheight);
+                          int tilewidth,
+                          int tileheight);
 void render_map(Map map,
                 SDL_Texture* tilesheet,
                 int tilesheet_width,

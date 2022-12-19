@@ -5,10 +5,10 @@ const char* BASIC_1P_MAP_PATH = "assets/maps/basic_1P.tmx";
 Map map = make_map_from_tmx(BASIC_1P_MAP_PATH);
 
 TEST(Basic1PMap, Metadata) {
-  unsigned int expected_tilewidth = 32;
-  unsigned int expected_tileheight = 32;
-  unsigned int expected_width = 25;
-  unsigned int expected_height = 45;
+  int expected_tilewidth = 32;
+  int expected_tileheight = 32;
+  int expected_width = 25;
+  int expected_height = 45;
 
   ASSERT_EQ(expected_tilewidth, map.tilewidth);
   ASSERT_EQ(expected_tileheight, map.tileheight);
@@ -22,11 +22,11 @@ TEST(Basic1PMap, LayersSize) {
 
   int_vector_3D layers = map.layers;
 
-  for (unsigned int i = 0; i < layers.size(); i++) {
+  for (int i = 0; i < (int)layers.size(); i++) {
     int_vector_2D layer = layers.at(i);
     ASSERT_EQ(layer.size(), (size_t)map.height);
 
-    for (unsigned int j = 0; j < map.height; j++) {
+    for (int j = 0; j < map.height; j++) {
       ASSERT_EQ(layer.at(j).size(), (size_t)map.width);
     }
   }
