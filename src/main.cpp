@@ -8,6 +8,7 @@
 #define SCREEN_HEIGHT 1440
 #define SCREEN_WIDTH_DEV 400
 #define SCREEN_HEIGHT_DEV 720
+#define TILESHEET_PIXEL_WIDTH 1472
 #define FPS_TARGET_FPS 60.
 
 /*
@@ -48,7 +49,7 @@ int main(void) {
   Tilesheet tilesheet;
   tilesheet.texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
-  tilesheet.width = 1472 / basic_1P_map.tileshape.h;
+  tilesheet.width = TILESHEET_PIXEL_WIDTH / basic_1P_map.tileshape.h;
 
   // Set width and height of rendered tiles
   Rectangle shape_rendered_tile = {basic_1P_map.tileshape.w / 2,
