@@ -4,8 +4,10 @@
 #include <unistd.h>
 #include "map.h"
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 1440
+#define SCREEN_WIDTH_DEV 400
+#define SCREEN_HEIGHT_DEV 720
 #define FPS_TARGET_FPS 60.
 
 /*
@@ -32,7 +34,7 @@ int main(void) {
   // Set up
   SDL_Window* window = SDL_CreateWindow(
       "Summermall TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-      SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+      SCREEN_WIDTH_DEV, SCREEN_HEIGHT_DEV, SDL_WINDOW_OPENGL);
 
   if (window == nullptr) {
     SDL_Log("Could not create a window: %s", SDL_GetError());
@@ -49,20 +51,20 @@ int main(void) {
   // Load and parse map
   const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
   Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path);
+  int tilewidth_dev = basic_1P_map.tilewidth / 2;
+  int tileheight_dev = basic_1P_map.tileheight / 2;
 
   // Load tilesheet
   const char* tilesheet_path =
       "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
   SDL_Texture* tilesheet =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
-  SDL_Rect rendered_tile_pos = {100, 100, 2 * (int)basic_1P_map.tilewidth,
-                                  2 * (int)basic_1P_map.tileheight};
+  SDL_Rect rendered_tile_pos = {100, 100, tilewidth_dev, tileheight_dev};
 
   unsigned int tilesheet_width = 1472 / basic_1P_map.tilewidth;
 
   SDL_Rect tile =
-      get_tile_from_id(1055, tilesheet_width, basic_1P_map.tilewidth,
-                       basic_1P_map.tileheight);
+      get_tile_from_id(1055, tilesheet_width, tilewidth_dev, tileheight_dev);
 
   // Game loop
   while (true) {
