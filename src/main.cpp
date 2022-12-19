@@ -42,6 +42,17 @@ int main(void) {
   // Load tilesheet
   const char* tilesheet_path = "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
   SDL_Texture * tilesheet = SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
+  SDL_Rect rendered_tile_shape = {100, 100, 2 * (int)basic_1P_map.tilewidth, 2 * (int)basic_1P_map.tileheight};
+
+  unsigned int grass_tile_id = 96;
+  unsigned int tilesheet_width_pixels = 1472;
+  unsigned int tilesheet_width = tilesheet_width_pixels / basic_1P_map.tilewidth;
+
+  int grass_tile_X = (grass_tile_id - 1) % tilesheet_width;
+  int grass_tile_Y = (grass_tile_id - 1) / tilesheet_width;
+
+  SDL_Rect grass_tile = {grass_tile_X * 32, grass_tile_Y * 32, (int)basic_1P_map.tilewidth, (int)basic_1P_map.tileheight};
+
 
 
   // Game loop
@@ -60,7 +71,7 @@ int main(void) {
     SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
     SDL_RenderClear(renderer);
 
-    SDL_RenderCopy(renderer, tilesheet, NULL, NULL);
+    SDL_RenderCopy(renderer, tilesheet, &grass_tile, &rendered_tile_shape);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
