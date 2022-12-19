@@ -11,13 +11,14 @@
 #define FPS_TARGET_FPS 60.
 
 /*
-  Returns the estimated FPS which is regulated to not exceed `FPS_TARGET_FPS`.
+  Regulate the fps to not exceed `FPS_TARGET_FPS` and return its estimated
+  value.
 
   @param tick_start The tick given by `SDL_GetTicks()` at the start of game
   loop.
   @return The current regulated FPS estimate.
 */
-float fps_regulate_fps(Uint32 tick_start);
+int fps_regulate_fps(Uint32 tick_start);
 
 SDL_Rect get_tile_from_id(int id,
                           int tilesheet_width,
@@ -114,7 +115,7 @@ int main(void) {
   return 0;
 }
 
-float fps_regulate_fps(Uint32 tick_start) {
+int fps_regulate_fps(Uint32 tick_start) {
   Uint32 tick_end = SDL_GetTicks();
 
   // Edge case where game loop runs in less than a 1ms
@@ -137,5 +138,5 @@ float fps_regulate_fps(Uint32 tick_start) {
   ms_per_frame = (float)(tick_end - tick_start);
   frame_per_s = 1 / (ms_per_frame / 1000.);
 
-  return frame_per_s;
+  return (int)frame_per_s;
 }
