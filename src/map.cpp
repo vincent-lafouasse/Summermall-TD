@@ -1,6 +1,6 @@
 #include "map.h"
 
-SDL_Rect get_tile_from_id(int id, int tilesheet_width, Rectangle tileshape) {
+SDL_Rect get_tile_from_id(int id, Rectangle tileshape, int tilesheet_width) {
   int actual_id = id - 1;
   int X = (actual_id % tilesheet_width) * tileshape.w;
   int Y = (actual_id / tilesheet_width) * tileshape.h;
@@ -20,7 +20,7 @@ void render_map(Map map,
 
       for (int x_pos = 0; x_pos < (int)line.size(); x_pos++) {
         SDL_Rect tile =
-            get_tile_from_id(line[x_pos], tilesheet.width, map.tileshape);
+            get_tile_from_id(line[x_pos], map.tileshape, tilesheet.width);
         SDL_Rect tile_pos = {x_pos * shape_rendered_tile.w,
                              y_pos * shape_rendered_tile.h,
                              shape_rendered_tile.w, shape_rendered_tile.h};
