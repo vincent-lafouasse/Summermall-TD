@@ -32,7 +32,7 @@ SDL_Rect get_tile_from_id(const int id,
                           const int tilesheet_width_pixel);
 void render_map(const Map map,
                 Tilesheet tilesheet,
-                Rectangle dst_tileshape,
+                const Rectangle dst_tileshape,
                 SDL_Renderer* renderer);
 const Map make_map_from_tmx(const char* tmx_path);
 int_vector_2D vector_2D_from_string_csv(char* csv_string);
