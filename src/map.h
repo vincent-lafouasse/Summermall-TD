@@ -22,16 +22,11 @@ struct Map {
   int_vector_3D layers;
 };
 
-struct Tilesheet {
-  SDL_Texture* texture;
-  const int pixel_width;
-};
-
 SDL_Rect get_tile_from_id(const int id,
                           const Rectangle src_tileshape,
-                          const int tilesheet_width_pixel);
+                          SDL_Texture* tilesheet);
 void render_map(const Map map,
-                Tilesheet tilesheet,
+                SDL_Texture* tilesheet,
                 const Rectangle dst_tileshape,
                 SDL_Renderer* renderer);
 const Map make_map_from_tmx(const char* tmx_path);

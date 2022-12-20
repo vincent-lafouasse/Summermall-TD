@@ -2,8 +2,10 @@
 
 SDL_Rect get_tile_from_id(const int id,
                           const Rectangle src_tileshape,
-                          const int tilesheet_width_pixel) {
+                          SDL_Texture* tilesheet) {
   const int actual_id = id - 1;
+  int tilesheet_width_pixel;
+  SDL_QueryTexture(tilesheet, NULL, NULL, &tilesheet_width_pixel, NULL);
   const int tilesheet_width = tilesheet_width_pixel / src_tileshape.w;
   const int X = (actual_id % tilesheet_width) * src_tileshape.w;
   const int Y = (actual_id / tilesheet_width) * src_tileshape.h;
@@ -12,7 +14,7 @@ SDL_Rect get_tile_from_id(const int id,
 }
 
 void render_map(const Map map,
-                Tilesheet tilesheet,
+                SDL_Texture* tilesheet,
                 const Rectangle dst_tileshape,
                 SDL_Renderer* renderer) {
   for (size_t layer_index = 0; layer_index < map.layers.size(); layer_index++) {
@@ -20,11 +22,11 @@ void render_map(const Map map,
 
     for (int y_pos = 0; y_pos < (int)layer.size(); y_pos++) {
       for (int x_pos = 0; x_pos < (int)layer[y_pos].size(); x_pos++) {
-        SDL_Rect src_tile = get_tile_from_id(
-            layer[y_pos][x_pos], map.src_tileshape, tilesheet.pixel_width);
+        SDL_Rect src_tile =
+            get_tile_from_id(layer[y_pos][x_pos], map.src_tileshape, tilesheet);
         SDL_Rect dst_tile = {x_pos * dst_tileshape.w, y_pos * dst_tileshape.h,
                              dst_tileshape.w, dst_tileshape.h};
-        SDL_RenderCopy(renderer, tilesheet.texture, &src_tile, &dst_tile);
+        SDL_RenderCopy(renderer, tilesheet, &src_tile, &dst_tile);
       }
     }
   }

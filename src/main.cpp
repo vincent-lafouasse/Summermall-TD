@@ -7,7 +7,6 @@
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 1440
 #define ZOOM_DIVIDOR 2
-#define TILESHEET_PIXEL_WIDTH 1472
 #define FPS_TARGET_FPS 60.
 
 /*
@@ -46,9 +45,8 @@ int main(void) {
   // Load tilesheet
   const char* tilesheet_path =
       "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
-  Tilesheet tilesheet = {
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path)),
-      TILESHEET_PIXEL_WIDTH};
+  SDL_Texture* tilesheet =
+      SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
 
   // Set width and height of rendered tiles
   const Rectangle shape_rendered_tile = {
@@ -86,7 +84,7 @@ int main(void) {
   // End of game loop
 
   // Tear down
-  SDL_DestroyTexture(tilesheet.texture);
+  SDL_DestroyTexture(tilesheet);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
