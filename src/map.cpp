@@ -19,7 +19,7 @@ void render_map(const Map map,
     int_vector_2D layer = map.layers[layer_index];
 
     for (int y_pos = 0; y_pos < (int)layer.size(); y_pos++) {
-      for (int x_pos = 0; x_pos < (int)line.size(); x_pos++) {
+      for (int x_pos = 0; x_pos < (int)layer[y_pos].size(); x_pos++) {
         SDL_Rect src_tile = get_tile_from_id(
             layer[y_pos][x_pos], map.src_tileshape, tilesheet.pixel_width);
         SDL_Rect dst_tile = {x_pos * dst_tileshape.w, y_pos * dst_tileshape.h,
