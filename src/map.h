@@ -18,7 +18,7 @@ struct Rectangle {
 
 struct Map {
   Rectangle shape;
-  Rectangle tileshape;
+  Rectangle src_tileshape;
   int_vector_3D layers;
 };
 
@@ -27,10 +27,10 @@ struct Tilesheet {
   int width;
 };
 
-SDL_Rect get_tile_from_id(int id, Rectangle tileshape, int tilesheet_width);
+SDL_Rect get_tile_from_id(int id, Rectangle src_tileshape, int tilesheet_width);
 void render_map(Map map,
                 Tilesheet tilesheet,
-                Rectangle shape_rendered_tile,
+                Rectangle dst_tileshape,
                 SDL_Renderer* renderer);
 Map make_map_from_tmx(const char* tmx_path);
 int_vector_2D vector_2D_from_string_csv(char* csv_string);

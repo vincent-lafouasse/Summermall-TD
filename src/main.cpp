@@ -49,11 +49,11 @@ int main(void) {
   Tilesheet tilesheet;
   tilesheet.texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
-  tilesheet.width = TILESHEET_PIXEL_WIDTH / basic_1P_map.tileshape.h;
+  tilesheet.width = TILESHEET_PIXEL_WIDTH / basic_1P_map.src_tileshape.h;
 
   // Set width and height of rendered tiles
-  Rectangle shape_rendered_tile = {basic_1P_map.tileshape.w / ZOOM_DIVIDOR,
-                                   basic_1P_map.tileshape.h / ZOOM_DIVIDOR};
+  Rectangle shape_rendered_tile = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
+                                   basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
 
   // Game loop
   while (true) {
