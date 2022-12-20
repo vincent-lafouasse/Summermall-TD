@@ -1,11 +1,13 @@
 #include "map.h"
 
-SDL_Rect get_tile_from_id(int id, Rectangle src_tileshape, int tilesheet_width_pixel) {
-  int actual_id = id - 1;
-  int tilesheet_width = tilesheet_width_pixel / src_tileshape.w;
-  int X = (actual_id % tilesheet_width) * src_tileshape.w;
-  int Y = (actual_id / tilesheet_width) * src_tileshape.h;
-  SDL_Rect tile = {X, Y, src_tileshape.w, src_tileshape.h};
+SDL_Rect get_tile_from_id(const int id,
+                          const Rectangle src_tileshape,
+                          const int tilesheet_width_pixel) {
+  const int actual_id = id - 1;
+  const int tilesheet_width = tilesheet_width_pixel / src_tileshape.w;
+  const int X = (actual_id % tilesheet_width) * src_tileshape.w;
+  const int Y = (actual_id / tilesheet_width) * src_tileshape.h;
+  const SDL_Rect tile = {X, Y, src_tileshape.w, src_tileshape.h};
   return tile;
 }
 
@@ -20,10 +22,9 @@ void render_map(Map map,
       int_vector_1D line = layer[y_pos];
 
       for (int x_pos = 0; x_pos < (int)line.size(); x_pos++) {
-        SDL_Rect src_tile =
-            get_tile_from_id(line[x_pos], map.src_tileshape, tilesheet.pixel_width);
-        SDL_Rect dst_tile = {x_pos * dst_tileshape.w,
-                             y_pos * dst_tileshape.h,
+        SDL_Rect src_tile = get_tile_from_id(line[x_pos], map.src_tileshape,
+                                             tilesheet.pixel_width);
+        SDL_Rect dst_tile = {x_pos * dst_tileshape.w, y_pos * dst_tileshape.h,
                              dst_tileshape.w, dst_tileshape.h};
         SDL_RenderCopy(renderer, tilesheet.texture, &src_tile, &dst_tile);
       }
@@ -33,7 +34,6 @@ void render_map(Map map,
 
 Map make_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;
-  Map map;
   XMLDocument map_xml;
 
   // Load tmx
@@ -42,10 +42,10 @@ Map make_map_from_tmx(const char* tmx_path) {
 
   // Extract metadata
   XMLElement* root = map_xml.FirstChildElement("map");
-  map.shape.w = atoi(root->Attribute("width"));
-  map.shape.h = atoi(root->Attribute("height"));
-  map.src_tileshape.w = atoi(root->Attribute("tilewidth"));
-  map.src_tileshape.h = atoi(root->Attribute("tileheight"));
+  const Rectangle map_shape = {atoi(root->Attribute("width")),
+                               atoi(root->Attribute("height"))};
+  const Rectangle map_src_tileshape = {atoi(root->Attribute("tilewidth")),
+                                       atoi(root->Attribute("tileheight"))};
 
   // Extract map layers into 3D vector from csv
   XMLElement* layer = root->FirstChildElement("layer");
@@ -59,7 +59,7 @@ Map make_map_from_tmx(const char* tmx_path) {
 
     layer = layer->NextSiblingElement();
   }
-  map.layers = layers;
+  Map map = {map_shape, map_src_tileshape, layers};
   return map;
 }
 

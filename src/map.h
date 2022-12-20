@@ -17,17 +17,19 @@ struct Rectangle {
 };
 
 struct Map {
-  Rectangle shape;
-  Rectangle src_tileshape;
+  const Rectangle shape;
+  const Rectangle src_tileshape;
   int_vector_3D layers;
 };
 
 struct Tilesheet {
   SDL_Texture* texture;
-  int pixel_width;
+  const int pixel_width;
 };
 
-SDL_Rect get_tile_from_id(int id, Rectangle src_tileshape, int tilesheet_width);
+SDL_Rect get_tile_from_id(const int id,
+                          const Rectangle src_tileshape,
+                          const int tilesheet_width_pixel);
 void render_map(Map map,
                 Tilesheet tilesheet,
                 Rectangle dst_tileshape,

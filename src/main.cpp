@@ -46,10 +46,9 @@ int main(void) {
   // Load tilesheet
   const char* tilesheet_path =
       "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
-  Tilesheet tilesheet;
-  tilesheet.texture =
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
-  tilesheet.pixel_width= TILESHEET_PIXEL_WIDTH;
+  Tilesheet tilesheet = {
+      SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path)),
+      TILESHEET_PIXEL_WIDTH};
 
   // Set width and height of rendered tiles
   Rectangle shape_rendered_tile = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
