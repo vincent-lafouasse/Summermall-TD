@@ -1,8 +1,8 @@
 #include "map.h"
 
-SDL_Rect get_tile_from_id(const int id,
-                          const Rectangle src_tileshape,
-                          SDL_Texture* tilesheet) {
+SDL_Rect make_tile_from_id(const int id,
+                           const Rectangle src_tileshape,
+                           SDL_Texture* tilesheet) {
   const int actual_id = id - 1;
   int tilesheet_width_pixel;
   SDL_QueryTexture(tilesheet, NULL, NULL, &tilesheet_width_pixel, NULL);
@@ -22,8 +22,8 @@ void render_map(const Map map,
 
     for (int y_pos = 0; y_pos < (int)layer.size(); y_pos++) {
       for (int x_pos = 0; x_pos < (int)layer[y_pos].size(); x_pos++) {
-        SDL_Rect src_tile =
-            get_tile_from_id(layer[y_pos][x_pos], map.src_tileshape, tilesheet);
+        SDL_Rect src_tile = make_tile_from_id(layer[y_pos][x_pos],
+                                              map.src_tileshape, tilesheet);
         SDL_Rect dst_tile = {x_pos * dst_tileshape.w, y_pos * dst_tileshape.h,
                              dst_tileshape.w, dst_tileshape.h};
         SDL_RenderCopy(renderer, tilesheet, &src_tile, &dst_tile);
