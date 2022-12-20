@@ -11,7 +11,7 @@ SDL_Rect get_tile_from_id(const int id,
   return tile;
 }
 
-void render_map(Map map,
+void render_map(const Map map,
                 Tilesheet tilesheet,
                 Rectangle dst_tileshape,
                 SDL_Renderer* renderer) {
@@ -32,7 +32,7 @@ void render_map(Map map,
   }
 }
 
-Map make_map_from_tmx(const char* tmx_path) {
+const Map make_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;
   XMLDocument map_xml;
 

@@ -41,7 +41,7 @@ int main(void) {
 
   // Load and parse map
   const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
-  Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path);
+  const Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path);
 
   // Load tilesheet
   const char* tilesheet_path =
@@ -51,8 +51,9 @@ int main(void) {
       TILESHEET_PIXEL_WIDTH};
 
   // Set width and height of rendered tiles
-  Rectangle shape_rendered_tile = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
-                                   basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
+  const Rectangle shape_rendered_tile = {
+      basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
+      basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
 
   // Game loop
   while (true) {
