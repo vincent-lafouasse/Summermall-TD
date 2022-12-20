@@ -24,7 +24,7 @@ struct Map {
 
 struct Tilesheet {
   SDL_Texture* texture;
-  int width;
+  int pixel_width;
 };
 
 SDL_Rect get_tile_from_id(int id, Rectangle src_tileshape, int tilesheet_width);

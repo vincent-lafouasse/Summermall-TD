@@ -49,7 +49,7 @@ int main(void) {
   Tilesheet tilesheet;
   tilesheet.texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
-  tilesheet.width = TILESHEET_PIXEL_WIDTH / basic_1P_map.src_tileshape.h;
+  tilesheet.pixel_width= TILESHEET_PIXEL_WIDTH;
 
   // Set width and height of rendered tiles
   Rectangle shape_rendered_tile = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
