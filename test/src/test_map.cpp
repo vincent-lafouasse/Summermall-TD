@@ -10,10 +10,10 @@ TEST(Basic1PMap, Metadata) {
   int expected_width = 25;
   int expected_height = 45;
 
-  ASSERT_EQ(expected_tilewidth, map.tilewidth);
-  ASSERT_EQ(expected_tileheight, map.tileheight);
-  ASSERT_EQ(expected_width, map.width);
-  ASSERT_EQ(expected_height, map.height);
+  ASSERT_EQ(expected_tilewidth, map.src_tileshape.w);
+  ASSERT_EQ(expected_tileheight, map.src_tileshape.h);
+  ASSERT_EQ(expected_width, map.shape.w);
+  ASSERT_EQ(expected_height, map.shape.h);
 }
 
 TEST(Basic1PMap, LayersSize) {
@@ -24,10 +24,10 @@ TEST(Basic1PMap, LayersSize) {
 
   for (int i = 0; i < (int)layers.size(); i++) {
     int_vector_2D layer = layers.at(i);
-    ASSERT_EQ(layer.size(), (size_t)map.height);
+    ASSERT_EQ(layer.size(), (size_t)map.shape.h);
 
-    for (int j = 0; j < map.height; j++) {
-      ASSERT_EQ(layer.at(j).size(), (size_t)map.width);
+    for (int j = 0; j < map.shape.h; j++) {
+      ASSERT_EQ(layer.at(j).size(), (size_t)map.shape.w);
     }
   }
 }
