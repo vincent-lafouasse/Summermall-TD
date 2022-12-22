@@ -49,7 +49,7 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
 
   // Set width and height of rendered tiles
-  const Rectangle shape_rendered_tile = {
+  const Rectangle dst_tileshape = {
       basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
       basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
 
@@ -70,7 +70,7 @@ int main(void) {
     SDL_RenderClear(renderer);
 
     // Render map
-    render_map(basic_1P_map, tilesheet, shape_rendered_tile, renderer);
+    render_map(basic_1P_map, tilesheet, dst_tileshape, renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
