@@ -40,7 +40,7 @@ int main(void) {
 
   // Load and parse map
   const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
-  const Map basic_1P_map = make_map_from_tmx(basic_1P_tmx_path);
+  const Map basic_1P_map = parse_map_from_tmx(basic_1P_tmx_path);
 
   // Load tilesheet
   const char* tilesheet_path =

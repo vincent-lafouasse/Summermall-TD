@@ -32,7 +32,7 @@ void render_map(const Map map,
   }
 }
 
-const Map make_map_from_tmx(const char* tmx_path) {
+const Map parse_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;
   XMLDocument map_xml;
 
