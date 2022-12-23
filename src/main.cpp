@@ -8,6 +8,8 @@
 #define SCREEN_HEIGHT 1440
 #define ZOOM_DIVIDOR 2
 #define FPS_TARGET_FPS 60.
+#define SCREEN_X_POS 0
+#define SCREEN_Y_POS 0
 
 /*
   Regulate the fps to not exceed `FPS_TARGET_FPS` and return its estimated
@@ -21,10 +23,9 @@ int fps_regulate_fps(Uint32 tick_start);
 
 int main(void) {
   // Set up
-  SDL_Window* window =
-      SDL_CreateWindow("Summermall TD", SDL_WINDOWPOS_UNDEFINED,
-                       SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH / ZOOM_DIVIDOR,
-                       SCREEN_HEIGHT / ZOOM_DIVIDOR, SDL_WINDOW_OPENGL);
+  SDL_Window* window = SDL_CreateWindow(
+      "Summermall TD", SCREEN_X_POS, SCREEN_Y_POS, SCREEN_WIDTH / ZOOM_DIVIDOR,
+      SCREEN_HEIGHT / ZOOM_DIVIDOR, SDL_WINDOW_OPENGL);
 
   if (window == nullptr) {
     SDL_Log("Could not create a window: %s", SDL_GetError());
@@ -49,9 +50,8 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
 
   // Set width and height of rendered tiles
-  const Rectangle dst_tileshape = {
-      basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
-      basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
+  const Rectangle dst_tileshape = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
+                                   basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
 
   // Game loop
   while (true) {
