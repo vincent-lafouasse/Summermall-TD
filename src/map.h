@@ -22,7 +22,7 @@ struct Map {
   int_vector_3D layers;
 };
 
-SDL_Rect make_tile_from_id(const int id,
+SDL_Rect make_tile_from_id(const int tile_id,
                            const Rectangle src_tileshape,
                            SDL_Texture* tilesheet);
 void render_map(const Map map,
