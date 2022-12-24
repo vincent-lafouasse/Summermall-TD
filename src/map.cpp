@@ -1,9 +1,9 @@
 #include "map.h"
 
-SDL_Rect make_tile_from_id(const int id,
+SDL_Rect make_tile_from_id(const int tile_id,
                            const Rectangle src_tileshape,
                            SDL_Texture* tilesheet) {
-  const int actual_id = id - 1;
+  const int actual_id = tile_id - 1;
   int tilesheet_width_pixel;
   SDL_QueryTexture(tilesheet, NULL, NULL, &tilesheet_width_pixel, NULL);
   const int tilesheet_width = tilesheet_width_pixel / src_tileshape.w;

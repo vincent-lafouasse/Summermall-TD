@@ -39,7 +39,7 @@ int main(void) {
     return -1;
   }
 
-  // Load and parse map
+  // Load map
   const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
   const Map basic_1P_map = parse_map_from_tmx(basic_1P_tmx_path);
 
@@ -49,9 +49,9 @@ int main(void) {
   SDL_Texture* tilesheet =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
 
-  // Set width and height of rendered tiles
-  const Rectangle dst_tileshape = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
-                                   basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
+  // Set size of tiles on screen
+  const Rectangle tileshape = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
+                               basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
 
   // Game loop
   while (true) {
@@ -70,7 +70,7 @@ int main(void) {
     SDL_RenderClear(renderer);
 
     // Render map
-    render_map(basic_1P_map, tilesheet, dst_tileshape, renderer);
+    render_map(basic_1P_map, tilesheet, tileshape, renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
