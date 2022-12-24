@@ -30,3 +30,4 @@ void render_map(const Map map,
                 const Rectangle dst_tileshape,
                 SDL_Renderer* renderer);
 const Map parse_map_from_tmx(const char* tmx_path);
+Rectangle get_texture_shape(SDL_Texture* texture);
