@@ -4,10 +4,11 @@ SDL_Rect make_tile_from_id(const int tile_id,
                            const Rectangle src_tileshape,
                            SDL_Texture* tilesheet) {
   const int actual_id = tile_id - 1;
-  int tilesheet_width_pixel = get_texture_shape(tilesheet).w;
-  const int tilesheet_width = tilesheet_width_pixel / src_tileshape.w;
-  const int X = (actual_id % tilesheet_width) * src_tileshape.w;
-  const int Y = (actual_id / tilesheet_width) * src_tileshape.h;
+  const int n_of_tiles_per_row =
+      get_texture_shape(tilesheet).w / src_tileshape.w;
+
+  const int X = (actual_id % n_of_tiles_per_row) * src_tileshape.w;
+  const int Y = (actual_id / n_of_tiles_per_row) * src_tileshape.h;
   const SDL_Rect tile = {X, Y, src_tileshape.w, src_tileshape.h};
   return tile;
 }
