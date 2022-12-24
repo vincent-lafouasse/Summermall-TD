@@ -32,6 +32,38 @@ void render_map(const Map map,
   }
 }
 
+int_vector_1D vector_1D_from_string_line(char* line_string) {
+  int_vector_1D output;
+  const char* cell_delim = ",";
+  char* cell = NULL;
+  char* mem;
+  output.clear();
+
+  cell = strtok_r(line_string, cell_delim, &mem);
+  while (cell != NULL) {
+    output.push_back(atoi(cell));
+    cell = strtok_r(NULL, cell_delim, &mem);
+  }
+  return output;
+}
+
+int_vector_2D vector_2D_from_string_csv(char* csv_string) {
+  int_vector_2D output;
+  const char* line_delim = "\n";
+  char* line = NULL;
+  char* mem;
+  output.clear();
+
+  line = strtok_r(csv_string, line_delim, &mem);
+  while (line != NULL) {
+    int_vector_1D res = vector_1D_from_string_line(line);
+    output.push_back(res);
+    line = strtok_r(NULL, line_delim, &mem);
+  }
+
+  return output;
+}
+
 const Map parse_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;
   XMLDocument map_xml;
@@ -61,38 +93,6 @@ const Map parse_map_from_tmx(const char* tmx_path) {
   }
   Map map = {map_shape, map_src_tileshape, layers};
   return map;
-}
-
-int_vector_2D vector_2D_from_string_csv(char* csv_string) {
-  int_vector_2D output;
-  const char* line_delim = "\n";
-  char* line = NULL;
-  char* mem;
-  output.clear();
-
-  line = strtok_r(csv_string, line_delim, &mem);
-  while (line != NULL) {
-    int_vector_1D res = vector_1D_from_string_line(line);
-    output.push_back(res);
-    line = strtok_r(NULL, line_delim, &mem);
-  }
-
-  return output;
-}
-
-int_vector_1D vector_1D_from_string_line(char* line_string) {
-  int_vector_1D output;
-  const char* cell_delim = ",";
-  char* cell = NULL;
-  char* mem;
-  output.clear();
-
-  cell = strtok_r(line_string, cell_delim, &mem);
-  while (cell != NULL) {
-    output.push_back(atoi(cell));
-    cell = strtok_r(NULL, cell_delim, &mem);
-  }
-  return output;
 }
 
 void print_1D_int_vector(int_vector_1D const input) {
