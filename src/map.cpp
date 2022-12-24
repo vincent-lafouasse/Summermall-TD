@@ -94,16 +94,3 @@ const Map parse_map_from_tmx(const char* tmx_path) {
   Map map = {map_shape, map_src_tileshape, layers};
   return map;
 }
-
-void print_1D_int_vector(int_vector_1D const input) {
-  for (unsigned long i = 0; i < input.size(); i++) {
-    printf("%d ", input[i]);
-  }
-  printf("\n");
-}
-
-void print_2D_int_vector(int_vector_2D const input) {
-  for (unsigned long i = 0; i < input.size(); i++) {
-    print_1D_int_vector(input[i]);
-  }
-}
