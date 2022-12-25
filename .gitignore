@@ -3,6 +3,8 @@ test/src/*
 !test/src
 !test/src/*test*
 
+test/assets
+
 # General
 .DS_Store
 .AppleDouble
