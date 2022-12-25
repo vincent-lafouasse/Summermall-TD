@@ -18,8 +18,8 @@ struct Rectangle {
 
 // A representation of a map made of tiles.
 //
-// @field shape         The width and height of the map in tile unit
-// @field src_tileshape The width and height of the tiles in the tilesheet
+// @field shape         The width and height of the map in tile units.
+// @field src_tileshape The width and height of the tiles in the tilesheet.
 // @field layers        A vector containing 2D vector representations of each
 // layer of the map.
 struct Map {
@@ -42,8 +42,7 @@ SDL_Rect make_tile_from_id(const int tile_id,
 
 // Show map on screen.
 //
-// @param map           A representation of the tiled map to be rendered on
-//                      screen.
+// @param map           A representation of the map to be rendered on screen.
 // @param tilesheet     The tilesheet from which to extract the tiles.
 // @param dst_tileshape The onscreen width and height of the tiles.
 // @param rendere       The object in charge of rendering textures.
