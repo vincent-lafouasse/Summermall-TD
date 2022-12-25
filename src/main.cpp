@@ -53,14 +53,29 @@ int main(void) {
                                basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
 
   // Game loop
-  while (true) {
+  bool is_running = true;
+  float fps = 0;
+  while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
 
     // Get the next event
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
-      if (event.type == SDL_QUIT) {
-        break;
+      switch (event.type) {
+        case SDL_QUIT:
+          is_running = false;
+          break;
+
+        case SDL_KEYDOWN:
+          switch (event.key.keysym.sym) {
+            case SDLK_p:
+              printf("FPS: %f\n", fps);
+              break;
+          }
+          break;
+
+        default:
+          break;
       }
     }
 
@@ -75,10 +90,7 @@ int main(void) {
     SDL_RenderPresent(renderer);
 
     // Regulate fps to FPS_TARGET_FPS and estimate its actual value
-    float fps = fps_regulate_fps(tick_start);
-    if (0) {
-      printf("%f", fps);
-    }
+    fps = fps_regulate_fps(tick_start);
   }
   // End of game loop
 
