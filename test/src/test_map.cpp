@@ -2,7 +2,7 @@
 #include "map.h"
 
 const char* BASIC_1P_MAP_PATH = "assets/maps/basic_1P.tmx";
-Map map = make_map_from_tmx(BASIC_1P_MAP_PATH);
+Map map = parse_map_from_tmx(BASIC_1P_MAP_PATH);
 
 TEST(Basic1PMap, Metadata) {
   int expected_tilewidth = 32;
