@@ -47,7 +47,7 @@ void render_map(const Map map,
   }
 }
 
-int_vector_1D vector_1D_from_string_line(char* line_string) {
+static int_vector_1D vector_1D_from_string_line(char* line_string) {
   int_vector_1D output;
   const char* cell_delim = ",";
   char* cell = NULL;
@@ -62,7 +62,7 @@ int_vector_1D vector_1D_from_string_line(char* line_string) {
   return output;
 }
 
-int_vector_2D vector_2D_from_string_csv(char* csv_string) {
+static int_vector_2D vector_2D_from_string_csv(char* csv_string) {
   int_vector_2D output;
   const char* line_delim = "\n";
   char* line = NULL;
