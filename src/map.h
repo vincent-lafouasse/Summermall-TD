@@ -16,7 +16,7 @@ struct Rectangle {
   int h;
 };
 
-// A representation of a layered map made of tiles.
+// A representation of a map made of tiles.
 //
 // @field shape         The width and height of the map in tile unit
 // @field src_tileshape The width and height of the tiles in the tilesheet
