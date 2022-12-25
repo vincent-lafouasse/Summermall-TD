@@ -69,7 +69,7 @@ int main(void) {
     SDL_RenderClear(renderer);
 
     // Render map
-    render_map(basic_1P_map, tilesheet, tileshape, renderer);
+    render_map(&basic_1P_map, tilesheet, tileshape, renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
