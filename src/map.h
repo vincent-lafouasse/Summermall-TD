@@ -21,7 +21,7 @@ struct Rectangle {
 // @field shape         The width and height of the map in tile units.
 // @field src_tileshape The width and height of the tiles in the tilesheet.
 // @field layers        A vector containing 2D vector representations of each
-// layer of the map.
+//                      layer of the map.
 struct Map {
   const Rectangle shape;
   const Rectangle src_tileshape;
@@ -35,7 +35,7 @@ struct Map {
 //                      i.e. how the tilesheet is to be subdivided.
 // @param tilesheet     The `SDL_Texture` containing the tilesheet.
 //
-// @return A `SDL_Rect` containing the position and shape of the tile
+// @return A `SDL_Rect` containing the position and shape of the tile.
 SDL_Rect make_tile_from_id(const int tile_id,
                            const Rectangle src_tileshape,
                            SDL_Texture* tilesheet);
