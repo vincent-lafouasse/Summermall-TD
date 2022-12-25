@@ -54,7 +54,7 @@ int main(void) {
 
   // Game loop
   bool is_running = true;
-  float fps = 0;
+  int fps = 0;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
 
@@ -69,7 +69,7 @@ int main(void) {
         case SDL_KEYDOWN:
           switch (event.key.keysym.sym) {
             case SDLK_p:
-              printf("FPS: %f\n", fps);
+              printf("FPS: %i\n", fps);
               break;
           }
           break;
