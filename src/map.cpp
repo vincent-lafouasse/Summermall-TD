@@ -10,7 +10,7 @@ SDL_Rect make_tile_from_id(const int tile_id,
   //
   // The tile representated by tile_id=7 is thus at position :
   // x = 2 = (7 - 1) % 4 and y = 1 = (7 - 1) // 4.
-  // A tile_id of zero means the tile is empty.
+  // A tile_id of zero means the tile is empty/transparent.
   const int actual_id = tile_id - 1;
   const int n_of_tiles_per_row =
       get_texture_shape(tilesheet).w / src_tileshape.w;
