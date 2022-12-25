@@ -11,14 +11,13 @@
 #define SCREEN_X_POS 0
 #define SCREEN_Y_POS 0
 
-/*
-  Regulate the fps to not exceed `FPS_TARGET_FPS` and return its estimated
-  value.
+// Regulate the fps to not exceed `FPS_TARGET_FPS` and return its estimated
+// value.
+//
+// @param tick_start The tick given by `SDL_GetTicks()` at the start of game
+// loop.
+// @return The current regulated FPS estimate.
 
-  @param tick_start The tick given by `SDL_GetTicks()` at the start of game
-  loop.
-  @return The current regulated FPS estimate.
-*/
 int fps_regulate_fps(Uint32 tick_start);
 
 int main(void) {
