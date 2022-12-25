@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "map.h"
+#include "render_map.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 1440

@@ -1,52 +1,5 @@
 #include "map.h"
 
-SDL_Rect make_tile_from_id(const int tile_id,
-                           const Rectangle src_tileshape,
-                           SDL_Texture* tilesheet) {
-  // The tilesheet is indexed in the following manner :
-  // (with example n_of_tiles_per_row=4)
-  // 1 2 3 4
-  // 5 6 7 8 etc
-  //
-  // The tile representated by tile_id=7 is thus at position :
-  // x = 2 = (7 - 1) % 4 and y = 1 = (7 - 1) // 4.
-  // A tile_id of zero means the tile is empty/transparent.
-  const int actual_id = tile_id - 1;
-  const int n_of_tiles_per_row =
-      get_texture_shape(tilesheet).w / src_tileshape.w;
-
-  const int X = (actual_id % n_of_tiles_per_row) * src_tileshape.w;
-  const int Y = (actual_id / n_of_tiles_per_row) * src_tileshape.h;
-  const SDL_Rect tile = {X, Y, src_tileshape.w, src_tileshape.h};
-  return tile;
-}
-
-Rectangle get_texture_shape(SDL_Texture* texture) {
-  int width, height;
-  SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-  Rectangle shape = {width, height};
-  return shape;
-}
-
-void render_map(const Map map,
-                SDL_Texture* tilesheet,
-                const Rectangle dst_tileshape,
-                SDL_Renderer* renderer) {
-  for (size_t layer_index = 0; layer_index < map.layers.size(); layer_index++) {
-    int_vector_2D layer = map.layers[layer_index];
-
-    for (int y_pos = 0; y_pos < (int)layer.size(); y_pos++) {
-      for (int x_pos = 0; x_pos < (int)layer[y_pos].size(); x_pos++) {
-        SDL_Rect src_tile = make_tile_from_id(layer[y_pos][x_pos],
-                                              map.src_tileshape, tilesheet);
-        SDL_Rect dst_tile = {x_pos * dst_tileshape.w, y_pos * dst_tileshape.h,
-                             dst_tileshape.w, dst_tileshape.h};
-        SDL_RenderCopy(renderer, tilesheet, &src_tile, &dst_tile);
-      }
-    }
-  }
-}
-
 static int_vector_1D vector_1D_from_string_line(char* line_string) {
   int_vector_1D output;
   const char* cell_delim = ",";
