@@ -17,7 +17,6 @@
 // @param tick_start The tick given by `SDL_GetTicks()` at the start of game
 // loop.
 // @return The current regulated FPS estimate.
-
 int fps_regulate_fps(Uint32 tick_start);
 
 int main(void) {
