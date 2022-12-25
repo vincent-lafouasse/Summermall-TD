@@ -1,7 +1,7 @@
 #include "render_map.h"
 #include "render.h"
 
-void render_map(const Map map,
+void render_map(const Map& map,
                 SDL_Texture* tilesheet,
                 const Rectangle dst_tileshape,
                 SDL_Renderer* renderer) {
