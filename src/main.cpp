@@ -74,7 +74,7 @@ int main(void) {
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
-    // Compute and regulate fps to FPS_TARGET_FPS
+    // Regulate fps to FPS_TARGET_FPS and estimate its actual value
     float fps = fps_regulate_fps(tick_start);
     if (0) {
       printf("%f", fps);
