@@ -20,3 +20,19 @@ void render_map(const Map* map,
     }
   }
 }
+
+SDL_Texture* make_static_map_texture(const Map* map,
+                                     SDL_Texture* tilesheet,
+                                     const Rectangle dst_tileshape,
+                                     SDL_Renderer* renderer) {
+  // Set shape of rendered map
+  int width = map->shape.w * dst_tileshape.w;
+  int height = map->shape.h * dst_tileshape.h;
+
+  // Create  writable texture
+  SDL_Texture* target_texture =
+      SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+                        SDL_TEXTUREACCESS_TARGET, width, height);
+
+  return target_texture;
+}

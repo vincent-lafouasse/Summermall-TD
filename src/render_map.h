@@ -14,3 +14,8 @@ void render_map(const Map* map,
                 SDL_Texture* tilesheet,
                 const Rectangle dst_tileshape,
                 SDL_Renderer* renderer);
+
+SDL_Texture* make_static_map_texture(const Map* map,
+                                     SDL_Texture* tilesheet,
+                                     const Rectangle dst_tileshape,
+                                     SDL_Renderer* renderer);
