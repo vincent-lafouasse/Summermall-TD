@@ -30,9 +30,24 @@ SDL_Texture* make_static_map_texture(const Map* map,
   int height = map->shape.h * dst_tileshape.h;
 
   // Create  writable texture
-  SDL_Texture* target_texture =
+  SDL_Texture* static_map_texture =
       SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
                         SDL_TEXTUREACCESS_TARGET, width, height);
+  assert(static_map_texture != NULL && "static_map_texture cant be NULL");
 
-  return target_texture;
+  // Set target texture as render target
+  if (SDL_SetRenderTarget(renderer, static_map_texture) != 0) {
+    printf("unable to set static_map_texture as render target, %s\n",
+           SDL_GetError());
+  }
+
+  // Set render target back to renderer
+  if (SDL_SetRenderTarget(renderer, NULL) != 0) {
+    printf(
+        "unable to stop rendering to a texture and render to the window again, "
+        "%s\n",
+        SDL_GetError());
+  }
+
+  return static_map_texture;
 }
