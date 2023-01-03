@@ -37,6 +37,7 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 
 .PHONY: run
 run: $(BUILD_DIR)/$(TARGET_EXEC)
+	@echo "\nrunning $(TARGET_EXEC) !\n"
 	$(BUILD_DIR)/$(TARGET_EXEC)
 
 ###############################################################################
