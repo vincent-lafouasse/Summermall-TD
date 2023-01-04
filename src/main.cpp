@@ -52,7 +52,7 @@ int main(void) {
   const Rectangle tileshape = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
                                basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
 
-  // Creature map texture
+  // Create map texture
   SDL_Texture* static_map_texture =
       make_static_map_texture(&basic_1P_map, tilesheet, tileshape, renderer);
 
@@ -88,7 +88,7 @@ int main(void) {
     SDL_RenderClear(renderer);
 
     // Render map
-    render_map(&basic_1P_map, tilesheet, tileshape, renderer);
+    SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
