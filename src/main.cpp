@@ -56,6 +56,22 @@ int main(void) {
   SDL_Texture* static_map_texture =
       make_static_map_texture(&basic_1P_map, tilesheet, tileshape, renderer);
 
+  // a mob
+  // with src_tileshape = {64, 64}, mob is at position X = 15 Y = 10
+  Rectangle mob_src_shape = {64, 64};
+  Position mob_src_position = {15, 10};
+  SDL_Rect mob_in_tilesheet = {mob_src_position.x * mob_src_shape.w,
+                               mob_src_position.y * mob_src_shape.h,
+                               mob_src_shape.w, mob_src_shape.h};
+
+	// set mob position to first checkpoint
+  Rectangle mob_dst_shape = {mob_src_shape.w / ZOOM_DIVIDOR,
+                             mob_src_shape.h / ZOOM_DIVIDOR};
+  Position mob_dst_position = {6, 0};
+  SDL_Rect mob_onscreen = {mob_dst_position.x * mob_dst_shape.w,
+                           mob_dst_position.y * mob_dst_shape.h,
+                           mob_dst_shape.w, mob_dst_shape.h};
+
   // Game loop
   bool is_running = true;
   int fps = 0;
@@ -89,6 +105,9 @@ int main(void) {
 
     // Render map
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
+
+		// render mob
+    SDL_RenderCopy(renderer, tilesheet, &mob_in_tilesheet, &mob_onscreen);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
