@@ -39,8 +39,10 @@ int main(void) {
   }
 
   // Load map
-  const char* basic_1P_tmx_path = "assets/maps/basic_1P.tmx";
-  const Map basic_1P_map = parse_map_from_tmx(basic_1P_tmx_path);
+  const char* basic_1P_obstacles_tmx_path =
+      "assets/maps/basic_1P_obstacles.tmx";
+  const Map basic_1P_obstacles_map =
+      parse_map_from_tmx(basic_1P_obstacles_tmx_path);
 
   // Load tilesheet
   const char* tilesheet_path =
@@ -49,12 +51,13 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
 
   // Set size of tiles on screen
-  const Rectangle tileshape = {basic_1P_map.src_tileshape.w / ZOOM_DIVIDOR,
-                               basic_1P_map.src_tileshape.h / ZOOM_DIVIDOR};
+  const Rectangle tileshape = {
+      basic_1P_obstacles_map.src_tileshape.w / ZOOM_DIVIDOR,
+      basic_1P_obstacles_map.src_tileshape.h / ZOOM_DIVIDOR};
 
   // Create map texture
-  SDL_Texture* static_map_texture =
-      make_static_map_texture(&basic_1P_map, tilesheet, tileshape, renderer);
+  SDL_Texture* static_map_texture = make_static_map_texture(
+      &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
   // a mob
   // with src_tileshape = {64, 64}, mob is at position X = 15 Y = 10
@@ -64,7 +67,7 @@ int main(void) {
                                mob_src_position.y * mob_src_shape.h,
                                mob_src_shape.w, mob_src_shape.h};
 
-	// set mob position to first checkpoint
+  // set mob position to first checkpoint
   Rectangle mob_dst_shape = {mob_src_shape.w / ZOOM_DIVIDOR,
                              mob_src_shape.h / ZOOM_DIVIDOR};
   Position mob_dst_position = {6, 0};
@@ -106,7 +109,7 @@ int main(void) {
     // Render map
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
-		// render mob
+    // render mob
     SDL_RenderCopy(renderer, tilesheet, &mob_in_tilesheet, &mob_onscreen);
 
     // Show the renderer contents
