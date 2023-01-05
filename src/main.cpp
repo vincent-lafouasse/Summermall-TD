@@ -11,6 +11,7 @@
 #define FPS_TARGET_FPS 60.
 #define SCREEN_X_POS 0
 #define SCREEN_Y_POS 0
+#define MONSTER_GRID_SIZE 5  // pixels
 
 // Regulate the fps to not exceed `FPS_TARGET_FPS` and return its estimated
 // value.
@@ -19,6 +20,24 @@
 // loop.
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
+
+class Monster {
+ public:
+  Position position;
+  float orientation;
+  Monster(Position pos, float angle) {
+    position = pos;
+    orientation = angle;
+    set_texture();
+    render();
+  }
+
+  void set_texture(void) { texture = NULL; };
+  void render(void) { printf("a monster has spawned\n"); };
+
+ private:
+  SDL_Texture* texture;
+};
 
 int main(void) {
   // Set up
@@ -56,11 +75,17 @@ int main(void) {
       basic_1P_obstacles_map.src_tileshape.h / ZOOM_DIVIDOR};
 
   // Create map texture
+
   SDL_Texture* static_map_texture = make_static_map_texture(
       &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
   // a mob
   // with src_tileshape = {64, 64}, mob is at position X = 15 Y = 10
+  Monster monster({4, 2}, 0);
+  printf("%i\n", monster.position.x);
+  printf("%i\n", monster.position.y);
+  printf("%f\n", monster.orientation);
+
   Rectangle mob_src_shape = {64, 64};
   Position mob_src_position = {15, 10};
   SDL_Rect mob_in_tilesheet = {mob_src_position.x * mob_src_shape.w,
