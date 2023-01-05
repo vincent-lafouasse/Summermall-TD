@@ -31,31 +31,37 @@ class Monster {
   Rectangle m_shape;
 
  public:
-  Monster(Position position, float orientation) {
-    m_position = position;
-    m_orientation = orientation;
-  }
-
+  Monster(Position position, float orientation);
   void set_texture(const Rectangle dst_shape,
                    const SDL_Rect src_tile_loc,
                    SDL_Texture* tilesheet,
-                   SDL_Renderer* renderer) {
-    m_shape = dst_shape;
-    m_texture =
-        SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
-                          SDL_TEXTUREACCESS_TARGET, m_shape.w, m_shape.h);
-    assert(m_texture != NULL && "texture cant be NULL");
-
-    SDL_SetRenderTarget(renderer, m_texture);
-    SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
-    SDL_RenderCopy(renderer, tilesheet, &src_tile_loc, NULL);
-    SDL_SetRenderTarget(renderer, NULL);
-  }
-  void render(SDL_Renderer* renderer) {
-    SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
-    SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
-  }
+                   SDL_Renderer* renderer);
+  void render(SDL_Renderer* renderer);
 };
+
+Monster::Monster(Position position, float orientation) {
+  m_position = position;
+  m_orientation = orientation;
+}
+
+void Monster::set_texture(const Rectangle dst_shape,
+                          const SDL_Rect src_tile_loc,
+                          SDL_Texture* tilesheet,
+                          SDL_Renderer* renderer) {
+  m_shape = dst_shape;
+  m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+                                SDL_TEXTUREACCESS_TARGET, m_shape.w, m_shape.h);
+  assert(m_texture != NULL && "texture cant be NULL");
+
+  SDL_SetRenderTarget(renderer, m_texture);
+  SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
+  SDL_RenderCopy(renderer, tilesheet, &src_tile_loc, NULL);
+  SDL_SetRenderTarget(renderer, NULL);
+}
+void Monster::render(SDL_Renderer* renderer) {
+  SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
+  SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
+}
 
 int main(void) {
   // Set up
