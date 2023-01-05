@@ -25,6 +25,12 @@ class Monster {
  public:
   Position m_position;
   float m_orientation;
+
+ private:
+  SDL_Texture* m_texture;
+  Rectangle m_shape;
+
+ public:
   Monster(Position position, float orientation) {
     m_position = position;
     m_orientation = orientation;
@@ -41,6 +47,7 @@ class Monster {
     assert(m_texture != NULL && "texture cant be NULL");
 
     SDL_SetRenderTarget(renderer, m_texture);
+    SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
     SDL_RenderCopy(renderer, tilesheet, &src_tile_loc, NULL);
     SDL_SetRenderTarget(renderer, NULL);
   }
@@ -48,10 +55,6 @@ class Monster {
     SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
     SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
   }
-
- private:
-  SDL_Texture* m_texture;
-  Rectangle m_shape;
 };
 
 int main(void) {
@@ -95,28 +98,24 @@ int main(void) {
       &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
   // a mob
-  // with src_tileshape = {64, 64}, mob is at position X = 15 Y = 10
+  Position mob_position = {6 * 32, 0};
+  float mob_orientation = 420.69;
+  Monster monster(mob_position, mob_orientation);
 
+  printf("%i\n", monster.m_position.x);
+  printf("%i\n", monster.m_position.y);
+  printf("%f\n", monster.m_orientation);
+
+  // hardcoded location of mob in tilesheet
   Rectangle mob_src_shape = {64, 64};
   Position mob_src_position = {15, 10};
   SDL_Rect mob_in_tilesheet = {mob_src_position.x * mob_src_shape.w,
                                mob_src_position.y * mob_src_shape.h,
                                mob_src_shape.w, mob_src_shape.h};
 
-  Monster monster({420, 69}, 420.69);
-  monster.set_texture({32, 32}, mob_in_tilesheet, tilesheet, renderer);
-
-  printf("%i\n", monster.m_position.x);
-  printf("%i\n", monster.m_position.y);
-  printf("%f\n", monster.m_orientation);
-
-  // set mob position to first checkpoint
   Rectangle mob_dst_shape = {mob_src_shape.w / ZOOM_DIVIDOR,
                              mob_src_shape.h / ZOOM_DIVIDOR};
-  Position mob_dst_position = {6, 0};
-  SDL_Rect mob_onscreen = {mob_dst_position.x * mob_dst_shape.w,
-                           mob_dst_position.y * mob_dst_shape.h,
-                           mob_dst_shape.w, mob_dst_shape.h};
+  monster.set_texture(mob_dst_shape, mob_in_tilesheet, tilesheet, renderer);
 
   // Game loop
   bool is_running = true;
@@ -145,8 +144,8 @@ int main(void) {
       }
     }
 
-    // Set the color to cornflower blue and clear
-    SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
+    // Set the color to transparent
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
     // Render map
