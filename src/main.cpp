@@ -28,15 +28,30 @@ class Monster {
   Monster(Position position, float orientation) {
     m_position = position;
     m_orientation = orientation;
-    set_texture();
-    render();
   }
 
-  void set_texture(void) { m_texture = NULL; };
-  void render(void) { printf("a monster has spawned\n"); };
+  void set_texture(const Rectangle dst_shape,
+                   const SDL_Rect src_tile_loc,
+                   SDL_Texture* tilesheet,
+                   SDL_Renderer* renderer) {
+    m_shape = dst_shape;
+    m_texture =
+        SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+                          SDL_TEXTUREACCESS_TARGET, m_shape.w, m_shape.h);
+    assert(m_texture != NULL && "texture cant be NULL");
+
+    SDL_SetRenderTarget(renderer, m_texture);
+    SDL_RenderCopy(renderer, tilesheet, &src_tile_loc, NULL);
+    SDL_SetRenderTarget(renderer, NULL);
+  }
+  void render(SDL_Renderer* renderer) {
+    SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
+    SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
+  }
 
  private:
   SDL_Texture* m_texture;
+  Rectangle m_shape;
 };
 
 int main(void) {
@@ -81,16 +96,19 @@ int main(void) {
 
   // a mob
   // with src_tileshape = {64, 64}, mob is at position X = 15 Y = 10
-  Monster monster({4, 2}, 0);
-  printf("%i\n", monster.m_position.x);
-  printf("%i\n", monster.m_position.y);
-  printf("%f\n", monster.m_orientation);
 
   Rectangle mob_src_shape = {64, 64};
   Position mob_src_position = {15, 10};
   SDL_Rect mob_in_tilesheet = {mob_src_position.x * mob_src_shape.w,
                                mob_src_position.y * mob_src_shape.h,
                                mob_src_shape.w, mob_src_shape.h};
+
+  Monster monster({420, 69}, 420.69);
+  monster.set_texture({32, 32}, mob_in_tilesheet, tilesheet, renderer);
+
+  printf("%i\n", monster.m_position.x);
+  printf("%i\n", monster.m_position.y);
+  printf("%f\n", monster.m_orientation);
 
   // set mob position to first checkpoint
   Rectangle mob_dst_shape = {mob_src_shape.w / ZOOM_DIVIDOR,
@@ -135,7 +153,7 @@ int main(void) {
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
     // render mob
-    SDL_RenderCopy(renderer, tilesheet, &mob_in_tilesheet, &mob_onscreen);
+    monster.render(renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
