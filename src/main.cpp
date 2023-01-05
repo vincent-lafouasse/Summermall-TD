@@ -23,20 +23,20 @@ int fps_regulate_fps(Uint32 tick_start);
 
 class Monster {
  public:
-  Position position;
-  float orientation;
-  Monster(Position pos, float angle) {
-    position = pos;
-    orientation = angle;
+  Position m_position;
+  float m_orientation;
+  Monster(Position position, float orientation) {
+    m_position = position;
+    m_orientation = orientation;
     set_texture();
     render();
   }
 
-  void set_texture(void) { texture = NULL; };
+  void set_texture(void) { m_texture = NULL; };
   void render(void) { printf("a monster has spawned\n"); };
 
  private:
-  SDL_Texture* texture;
+  SDL_Texture* m_texture;
 };
 
 int main(void) {
@@ -82,9 +82,9 @@ int main(void) {
   // a mob
   // with src_tileshape = {64, 64}, mob is at position X = 15 Y = 10
   Monster monster({4, 2}, 0);
-  printf("%i\n", monster.position.x);
-  printf("%i\n", monster.position.y);
-  printf("%f\n", monster.orientation);
+  printf("%i\n", monster.m_position.x);
+  printf("%i\n", monster.m_position.y);
+  printf("%f\n", monster.m_orientation);
 
   Rectangle mob_src_shape = {64, 64};
   Position mob_src_position = {15, 10};
