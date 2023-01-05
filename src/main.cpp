@@ -108,11 +108,11 @@ int main(void) {
   float mob_orientation = 420.69;
   Monster monster(mob_position, mob_orientation);
 
-  printf("%i\n", monster.m_position.x);
-  printf("%i\n", monster.m_position.y);
-  printf("%f\n", monster.m_orientation);
+  assert(monster.m_position.x == 6 * 32);
+  assert(monster.m_position.y == 0);
+  assert(monster.m_orientation == 420.69F);
 
-  // hardcoded location of mob in tilesheet
+  // hardcoded location of mob sprite in tilesheet
   Rectangle mob_src_shape = {64, 64};
   Position mob_src_position = {15, 10};
   SDL_Rect mob_in_tilesheet = {mob_src_position.x * mob_src_shape.w,
