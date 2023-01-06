@@ -164,6 +164,7 @@ int main(void) {
   // Tear down
   SDL_DestroyTexture(tilesheet);
   SDL_DestroyTexture(static_map_texture);
+  SDL_DestroyTexture(basic_mob_texture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
