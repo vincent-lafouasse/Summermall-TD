@@ -7,7 +7,7 @@
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 1440
-#define ZOOM_DIVIDOR 1
+#define ZOOM_DIVIDOR 2
 #define FPS_TARGET_FPS 60.
 #define SCREEN_X_POS 0
 #define SCREEN_Y_POS 0
@@ -36,7 +36,7 @@ class Monster {
           const Rectangle dst_shape,
           SDL_Texture* texture);
   void render(SDL_Renderer* renderer);
-  void move_by(Rectangle delta);
+  void move_by(int delta_x, int delta_y);
 };
 
 Monster::Monster(Position position,
@@ -47,6 +47,11 @@ Monster::Monster(Position position,
   m_orientation = orientation;
   m_shape = dst_shape;
   m_texture = texture;
+}
+
+void Monster::move_by(int delta_x, int delta_y) {
+  m_position.x += delta_x;
+  m_position.y += delta_y;
 }
 
 void Monster::render(SDL_Renderer* renderer) {
@@ -146,6 +151,7 @@ int main(void) {
 
     // render mob
     monster.render(renderer);
+    monster.move_by(0, 1);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
