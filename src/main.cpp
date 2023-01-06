@@ -31,25 +31,27 @@ class Monster {
   Rectangle m_shape;
 
  public:
-  Monster(Position position, float orientation);
-  void set_texture(const Rectangle dst_shape, SDL_Texture* texture);
+  Monster(Position position,
+          float orientation,
+          const Rectangle dst_shape,
+          SDL_Texture* texture);
   void render(SDL_Renderer* renderer);
   void move_by(Rectangle delta);
 };
 
-Monster::Monster(Position position, float orientation) {
+Monster::Monster(Position position,
+                 float orientation,
+                 const Rectangle dst_shape,
+                 SDL_Texture* texture) {
   m_position = position;
   m_orientation = orientation;
+  m_shape = dst_shape;
+  m_texture = texture;
 }
 
 void Monster::render(SDL_Renderer* renderer) {
   SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
   SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
-}
-
-void Monster::set_texture(const Rectangle dst_shape, SDL_Texture* texture) {
-  m_shape = dst_shape;
-  m_texture = texture;
 }
 
 int main(void) {
@@ -95,19 +97,18 @@ int main(void) {
   // a mob
   Position mob_position = {6 * 32, 0};
   float mob_orientation = 420.69;
-  Monster monster(mob_position, mob_orientation);
 
-  assert(monster.m_position.x == 6 * 32);
-  assert(monster.m_position.y == 0);
-  assert(monster.m_orientation == 420.69F);
-
-  // hardcoded location of mob sprite in tilesheet
   const char* basic_mob_path =
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
   SDL_Texture* basic_mob_texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
   const Rectangle mob_shape = basic_1P_obstacles_map.src_tileshape;
-  monster.set_texture(mob_shape, basic_mob_texture);
+
+  Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
+
+  assert(monster.m_position.x == 6 * 32);
+  assert(monster.m_position.y == 0);
+  assert(monster.m_orientation == 420.69F);
 
   // Game loop
   bool is_running = true;
