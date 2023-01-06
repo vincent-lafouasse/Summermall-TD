@@ -7,7 +7,7 @@
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 1440
-#define ZOOM_DIVIDOR 2
+#define ZOOM_DIVIDOR 1
 #define FPS_TARGET_FPS 60.
 #define SCREEN_X_POS 0
 #define SCREEN_Y_POS 0
@@ -32,11 +32,9 @@ class Monster {
 
  public:
   Monster(Position position, float orientation);
-  void set_texture(const Rectangle dst_shape,
-                   const SDL_Rect src_tile_loc,
-                   SDL_Texture* tilesheet,
-                   SDL_Renderer* renderer);
+  void set_texture(const Rectangle dst_shape, SDL_Texture* texture);
   void render(SDL_Renderer* renderer);
+  void move_by(Rectangle delta);
 };
 
 Monster::Monster(Position position, float orientation) {
@@ -44,23 +42,14 @@ Monster::Monster(Position position, float orientation) {
   m_orientation = orientation;
 }
 
-void Monster::set_texture(const Rectangle dst_shape,
-                          const SDL_Rect src_tile_loc,
-                          SDL_Texture* tilesheet,
-                          SDL_Renderer* renderer) {
-  m_shape = dst_shape;
-  m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
-                                SDL_TEXTUREACCESS_TARGET, m_shape.w, m_shape.h);
-  assert(m_texture != NULL && "texture cant be NULL");
-
-  SDL_SetRenderTarget(renderer, m_texture);
-  SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
-  SDL_RenderCopy(renderer, tilesheet, &src_tile_loc, NULL);
-  SDL_SetRenderTarget(renderer, NULL);
-}
 void Monster::render(SDL_Renderer* renderer) {
   SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
   SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
+}
+
+void Monster::set_texture(const Rectangle dst_shape, SDL_Texture* texture) {
+  m_shape = dst_shape;
+  m_texture = texture;
 }
 
 int main(void) {
@@ -113,15 +102,12 @@ int main(void) {
   assert(monster.m_orientation == 420.69F);
 
   // hardcoded location of mob sprite in tilesheet
-  Rectangle mob_src_shape = {64, 64};
-  Position mob_src_position = {15, 10};
-  SDL_Rect mob_in_tilesheet = {mob_src_position.x * mob_src_shape.w,
-                               mob_src_position.y * mob_src_shape.h,
-                               mob_src_shape.w, mob_src_shape.h};
-
-  Rectangle mob_dst_shape = {mob_src_shape.w / ZOOM_DIVIDOR,
-                             mob_src_shape.h / ZOOM_DIVIDOR};
-  monster.set_texture(mob_dst_shape, mob_in_tilesheet, tilesheet, renderer);
+  const char* basic_mob_path =
+      "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
+  SDL_Texture* basic_mob_texture =
+      SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
+  const Rectangle mob_shape = basic_1P_obstacles_map.src_tileshape;
+  monster.set_texture(mob_shape, basic_mob_texture);
 
   // Game loop
   bool is_running = true;
