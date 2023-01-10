@@ -1,7 +1,7 @@
 #include "render.h"
 
 SDL_Rect make_tile_from_id(const int tile_id,
-                           const Rectangle src_tileshape,
+                           const Dimension src_tileshape,
                            SDL_Texture* tilesheet) {
   // The tilesheet is indexed in the following manner :
   // (with example n_of_tiles_per_row=4)
@@ -23,9 +23,9 @@ SDL_Rect make_tile_from_id(const int tile_id,
   return tile;
 }
 
-Rectangle get_texture_shape(SDL_Texture* texture) {
+Dimension get_texture_shape(SDL_Texture* texture) {
   int width, height;
   SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-  Rectangle shape = {width, height};
+  Dimension shape = {width, height};
   return shape;
 }

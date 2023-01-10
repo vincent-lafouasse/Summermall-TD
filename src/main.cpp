@@ -51,7 +51,7 @@ int main(void) {
       "assets/maps/basic_1P_obstacles.tmx";
   const Map basic_1P_obstacles_map =
       parse_map_from_tmx(basic_1P_obstacles_tmx_path);
-  const Rectangle tileshape = {
+  const Dimension tileshape = {
       basic_1P_obstacles_map.src_tileshape.w / ZOOM_DIVIDOR,
       basic_1P_obstacles_map.src_tileshape.h / ZOOM_DIVIDOR};
   SDL_Texture* static_map_texture = make_static_map_texture(
@@ -65,7 +65,7 @@ int main(void) {
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
   SDL_Texture* basic_mob_texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
-  const Rectangle mob_shape = basic_1P_obstacles_map.src_tileshape;
+  const Dimension mob_shape = basic_1P_obstacles_map.src_tileshape;
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
 

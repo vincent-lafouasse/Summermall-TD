@@ -2,7 +2,7 @@
 #include "render.h"
 SDL_Texture* make_static_map_texture(const Map* map,
                                      SDL_Texture* tilesheet,
-                                     const Rectangle dst_tileshape,
+                                     const Dimension dst_tileshape,
                                      SDL_Renderer* renderer) {
   // Set shape of rendered map
   int width = map->shape.w * dst_tileshape.w;
@@ -36,7 +36,7 @@ SDL_Texture* make_static_map_texture(const Map* map,
 
 void render_map(const Map* map,
                 SDL_Texture* tilesheet,
-                const Rectangle dst_tileshape,
+                const Dimension dst_tileshape,
                 SDL_Renderer* renderer) {
   for (size_t layer_index = 0; layer_index < map->layers.size();
        layer_index++) {

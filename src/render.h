@@ -12,12 +12,12 @@
 //
 // @return A `SDL_Rect` containing the position and shape of the tile.
 SDL_Rect make_tile_from_id(const int tile_id,
-                           const Rectangle src_tileshape,
+                           const Dimension src_tileshape,
                            SDL_Texture* tilesheet);
 
 // Return the width and height in pixels of parameter `texture`.
 //
 // @param texture The `SDL_Texture` to characterise.
 //
-// @return A Rectangle object containing the width and height of `texture`.
-Rectangle get_texture_shape(SDL_Texture* texture);
+// @return A Dimension object containing the width and height of `texture`.
+Dimension get_texture_shape(SDL_Texture* texture);

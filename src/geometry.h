@@ -1,6 +1,6 @@
 #pragma once
 
-struct Rectangle {
+struct Dimension {
   int w;
   int h;
 };

@@ -12,7 +12,7 @@
 // @param rendere       The object in charge of rendering textures.
 SDL_Texture* make_static_map_texture(const Map* map,
                                      SDL_Texture* tilesheet,
-                                     const Rectangle dst_tileshape,
+                                     const Dimension dst_tileshape,
                                      SDL_Renderer* renderer);
 
 // Renders map to render target
@@ -23,5 +23,5 @@ SDL_Texture* make_static_map_texture(const Map* map,
 // @param rendere       The object in charge of rendering textures.
 void render_map(const Map* map,
                 SDL_Texture* tilesheet,
-                const Rectangle dst_tileshape,
+                const Dimension dst_tileshape,
                 SDL_Renderer* renderer);

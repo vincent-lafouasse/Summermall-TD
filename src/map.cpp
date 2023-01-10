@@ -13,9 +13,9 @@ const Map parse_map_from_tmx(const char* tmx_path) {
 
   // Extract metadata
   XMLElement* root = map_xml.FirstChildElement("map");
-  const Rectangle map_shape = {atoi(root->Attribute("width")),
+  const Dimension map_shape = {atoi(root->Attribute("width")),
                                atoi(root->Attribute("height"))};
-  const Rectangle map_src_tileshape = {atoi(root->Attribute("tilewidth")),
+  const Dimension map_src_tileshape = {atoi(root->Attribute("tilewidth")),
                                        atoi(root->Attribute("tileheight"))};
 
   // Extract map layers into 3D vector from csv

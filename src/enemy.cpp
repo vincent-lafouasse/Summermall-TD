@@ -2,7 +2,7 @@
 
 Monster::Monster(Position position,
                  float orientation,
-                 const Rectangle dst_shape,
+                 const Dimension dst_shape,
                  SDL_Texture* texture) {
   m_position = position;
   m_orientation = orientation;
