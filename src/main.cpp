@@ -2,9 +2,9 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "enemy.h"
 #include "map.h"
 #include "render_map.h"
-#include "enemy.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 1440
@@ -45,6 +45,8 @@ int main(void) {
       "assets/maps/basic_1P_obstacles.tmx";
   const Map basic_1P_obstacles_map =
       parse_map_from_tmx(basic_1P_obstacles_tmx_path);
+  SDL_Texture* static_map_texture = make_static_map_texture(
+      &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
   // Load tilesheet
   const char* tilesheet_path =
@@ -56,11 +58,6 @@ int main(void) {
   const Rectangle tileshape = {
       basic_1P_obstacles_map.src_tileshape.w / ZOOM_DIVIDOR,
       basic_1P_obstacles_map.src_tileshape.h / ZOOM_DIVIDOR};
-
-  // Create map texture
-
-  SDL_Texture* static_map_texture = make_static_map_texture(
-      &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
   // a mob
   Position mob_position = {6 * 32, 0};

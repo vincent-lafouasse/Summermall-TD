@@ -19,4 +19,3 @@ void Monster::render(SDL_Renderer* renderer) {
   SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
   SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
 }
-

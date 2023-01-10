@@ -18,5 +18,3 @@ class Monster {
   void render(SDL_Renderer* renderer);
   void move_by(int delta_x, int delta_y);
 };
-
-
