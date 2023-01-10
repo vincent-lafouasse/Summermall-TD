@@ -59,7 +59,7 @@ int main(void) {
 
   // a mob
   Position mob_position = {6 * 32, 0};
-  float mob_orientation = 420.69;
+  float mob_orientation = 90.0;
 
   const char* basic_mob_path =
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
@@ -68,10 +68,6 @@ int main(void) {
   const Dimension mob_shape = basic_1P_obstacles_map.src_tileshape;
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
-
-  assert(monster.m_position.x == 6 * 32);
-  assert(monster.m_position.y == 0);
-  assert(monster.m_orientation == 420.69F);
 
   // Game loop
   bool is_running = true;
@@ -108,8 +104,8 @@ int main(void) {
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
     // render mob
-    monster.render(renderer);
     monster.move_by(0, 1);
+    monster.render(renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);

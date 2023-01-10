@@ -17,5 +17,6 @@ void Monster::move_by(int delta_x, int delta_y) {
 
 void Monster::render(SDL_Renderer* renderer) {
   SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
-  SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
+  SDL_RenderCopyEx(renderer, m_texture, NULL, &dst_tile_loc, m_orientation,
+                   NULL, SDL_FLIP_NONE);
 }
