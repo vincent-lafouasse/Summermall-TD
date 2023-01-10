@@ -40,24 +40,22 @@ int main(void) {
     return -1;
   }
 
-  // Load map
-  const char* basic_1P_obstacles_tmx_path =
-      "assets/maps/basic_1P_obstacles.tmx";
-  const Map basic_1P_obstacles_map =
-      parse_map_from_tmx(basic_1P_obstacles_tmx_path);
-  SDL_Texture* static_map_texture = make_static_map_texture(
-      &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
-
   // Load tilesheet
   const char* tilesheet_path =
       "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
   SDL_Texture* tilesheet =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
 
-  // Set size of tiles on screen
+  // Load map
+  const char* basic_1P_obstacles_tmx_path =
+      "assets/maps/basic_1P_obstacles.tmx";
+  const Map basic_1P_obstacles_map =
+      parse_map_from_tmx(basic_1P_obstacles_tmx_path);
   const Rectangle tileshape = {
       basic_1P_obstacles_map.src_tileshape.w / ZOOM_DIVIDOR,
       basic_1P_obstacles_map.src_tileshape.h / ZOOM_DIVIDOR};
+  SDL_Texture* static_map_texture = make_static_map_texture(
+      &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
   // a mob
   Position mob_position = {6 * 32, 0};
