@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "map.h"
 #include "render_map.h"
+#include "enemy.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 1440
@@ -20,44 +21,6 @@
 // loop.
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
-
-class Monster {
- public:
-  Position m_position;
-  float m_orientation;
-
- private:
-  SDL_Texture* m_texture;
-  Rectangle m_shape;
-
- public:
-  Monster(Position position,
-          float orientation,
-          const Rectangle dst_shape,
-          SDL_Texture* texture);
-  void render(SDL_Renderer* renderer);
-  void move_by(int delta_x, int delta_y);
-};
-
-Monster::Monster(Position position,
-                 float orientation,
-                 const Rectangle dst_shape,
-                 SDL_Texture* texture) {
-  m_position = position;
-  m_orientation = orientation;
-  m_shape = dst_shape;
-  m_texture = texture;
-}
-
-void Monster::move_by(int delta_x, int delta_y) {
-  m_position.x += delta_x;
-  m_position.y += delta_y;
-}
-
-void Monster::render(SDL_Renderer* renderer) {
-  SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
-  SDL_RenderCopy(renderer, m_texture, NULL, &dst_tile_loc);
-}
 
 int main(void) {
   // Set up
