@@ -5,13 +5,13 @@
 #include "geometry.h"
 #include "map.h"
 
-typedef std::queue<Node> Queue;
-
 struct Node {
   Position position;
   Node* previous;
   Node* next;
 };
+
+typedef std::queue<Node> Queue;
 
 void BFS(Position entrance_pos, Position exit_pos, Map* map);
 void add_neighbours_to_queue(Node node,
