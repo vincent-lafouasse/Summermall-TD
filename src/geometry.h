@@ -18,3 +18,4 @@ struct Position {
 //
 // @return A Rectangle object containing the width and height of `texture`.
 Position pos_1D_to_2D(int pos_1D, int width);
+int pos_2D_to_1D(Position position, int width);
