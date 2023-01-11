@@ -1,10 +1,10 @@
 #include "path_finder.h"
 
-void BFS(Position entrance, Map* map) {
+void BFS(Position root, Map* map) {
   std::queue<Position> queue;
   std::map<Position, Position> reached;
 
-  queue.push(entrance);
+  queue.push(root);
 
   while (!queue.empty()) {
     Position parent = queue.front();
