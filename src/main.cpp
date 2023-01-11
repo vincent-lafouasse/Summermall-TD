@@ -10,7 +10,6 @@
 #define SCREEN_HEIGHT 1440
 #define SCREEN_X_POS 0
 #define SCREEN_Y_POS 0
-#define ZOOM_DIVIDOR 2
 #define FPS_TARGET_FPS 60.
 
 // Regulate the fps to not exceed `FPS_TARGET_FPS` and return its estimated
@@ -23,9 +22,9 @@ int fps_regulate_fps(Uint32 tick_start);
 
 int main(void) {
   // Set up
-  SDL_Window* window = SDL_CreateWindow(
-      "Summermall TD", SCREEN_X_POS, SCREEN_Y_POS, SCREEN_WIDTH / ZOOM_DIVIDOR,
-      SCREEN_HEIGHT / ZOOM_DIVIDOR, SDL_WINDOW_OPENGL);
+  SDL_Window* window =
+      SDL_CreateWindow("Summermall TD", SCREEN_X_POS, SCREEN_Y_POS,
+                       SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
 
   if (window == nullptr) {
     SDL_Log("Could not create a window: %s", SDL_GetError());
@@ -50,9 +49,9 @@ int main(void) {
       "assets/maps/basic_1P_obstacles.tmx";
   const Map basic_1P_obstacles_map =
       parse_map_from_tmx(basic_1P_obstacles_tmx_path);
-  const Dimension tileshape = {
-      basic_1P_obstacles_map.src_tileshape.w / ZOOM_DIVIDOR,
-      basic_1P_obstacles_map.src_tileshape.h / ZOOM_DIVIDOR};
+
+  const Dimension tileshape = basic_1P_obstacles_map.src_tileshape;
+
   SDL_Texture* static_map_texture = make_static_map_texture(
       &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
@@ -64,7 +63,8 @@ int main(void) {
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
   SDL_Texture* basic_mob_texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
-  const Dimension mob_shape = basic_1P_obstacles_map.src_tileshape;
+
+  const Dimension mob_shape = tileshape;
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
 
