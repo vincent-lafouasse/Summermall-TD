@@ -30,6 +30,6 @@ void add_neighbours_to_queue(Position parent,
 
 Position* get_neighbours(Position node, Map* map, int* n_neighbours) {
   Position* neighbours = {};
-  *n_neighbours = 0;
+  *n_neighbours = sizeof(neighbours) / sizeof(Position);
   return neighbours;
 }
