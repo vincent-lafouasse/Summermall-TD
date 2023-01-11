@@ -8,11 +8,10 @@
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 1440
-#define ZOOM_DIVIDOR 2
-#define FPS_TARGET_FPS 60.
 #define SCREEN_X_POS 0
 #define SCREEN_Y_POS 0
-#define MONSTER_GRID_SIZE 5  // pixels
+#define ZOOM_DIVIDOR 2
+#define FPS_TARGET_FPS 60.
 
 // Regulate the fps to not exceed `FPS_TARGET_FPS` and return its estimated
 // value.
