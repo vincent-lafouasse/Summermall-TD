@@ -21,6 +21,7 @@ void add_neighbours_to_queue(Position parent,
   Position* neighbours = get_neighbours(parent, map, &n_neighbours);
 
   for (int i = 0; i < n_neighbours; i++) {
+    // std::map<Position, Position>::iterator
     auto iterator = reached.find(neighbours[i]);
     if (iterator != reached.end()) {
       Position child = iterator->first;
