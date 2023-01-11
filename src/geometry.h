@@ -8,6 +8,10 @@ struct Dimension {
 struct Position {
   int x;
   int y;
+
+  bool operator<(const Position& other) const {
+    return x < other.x || (x == other.x && y < other.y);
+  }
 };
 
 // Return the 2D coordinates corresponding to the 1D coodinate in a rectangle of
