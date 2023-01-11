@@ -68,7 +68,7 @@ int main(void) {
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
 
-  // Game loop
+  // Game loop -----------------------------------------------------------------
   bool is_running = true;
   int fps = 0;
   while (is_running) {
@@ -112,7 +112,7 @@ int main(void) {
     // Regulate fps to FPS_TARGET_FPS and estimate its actual value
     fps = fps_regulate_fps(tick_start);
   }
-  // End of game loop
+  // End of game loop ----------------------------------------------------------
 
   // Tear down
   SDL_DestroyTexture(tilesheet);
