@@ -27,6 +27,7 @@ void Monster::render(SDL_Renderer* renderer) {
 }
 
 void Monster::move_to(Position destination) {
+  // TODO implement Bresenham line algorithm
   int x_movement =
       (m_position.x != destination.x) * (m_position.x < destination.x ? 1 : -1);
   int y_movement =
