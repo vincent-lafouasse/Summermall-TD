@@ -68,6 +68,11 @@ int main(void) {
   Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
   Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
 
+  Position path[] = {
+      checkpoint1, corner1, corner2, corner3,
+      corner4,     corner5, corner6, checkpoint2,
+  };
+
   SDL_Rect corners[] = {
       rect_around_point(corner1, 2), rect_around_point(corner2, 2),
       rect_around_point(corner3, 2), rect_around_point(corner4, 2),
