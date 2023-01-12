@@ -20,6 +20,10 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
+SDL_Rect rect_around_point(Position point, int width) {
+  return {point.x - width, point.y - width, 2 * width, 2 * width};
+}
+
 int main(void) {
   // Set up
   SDL_Window* window =
@@ -65,17 +69,14 @@ int main(void) {
   Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
 
   SDL_Rect corners[] = {
-      {corner1.x - 2, corner1.y - 2, 4, 4},
-      {corner2.x - 2, corner2.y - 2, 4, 4},
-      {corner3.x - 2, corner3.y - 2, 4, 4},
-      {corner4.x - 2, corner4.y - 2, 4, 4},
-      {corner5.x - 2, corner5.y - 2, 4, 4},
-      {corner6.x - 2, corner6.y - 2, 4, 4},
+      rect_around_point(corner1, 2), rect_around_point(corner2, 2),
+      rect_around_point(corner3, 2), rect_around_point(corner4, 2),
+      rect_around_point(corner5, 2), rect_around_point(corner6, 2),
   };
 
   SDL_Rect checkpoints[] = {
-      {checkpoint1.x - 2, checkpoint1.y - 2, 4, 4},
-      {checkpoint2.x - 2, checkpoint2.y - 2, 4, 4},
+      rect_around_point(checkpoint1, 2),
+      rect_around_point(checkpoint2, 2),
   };
 
   // a mob
