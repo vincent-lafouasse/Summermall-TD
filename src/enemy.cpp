@@ -7,10 +7,7 @@ Monster::Monster(Position position,
   m_orientation = orientation;
   m_shape = dst_shape;
   m_texture = texture;
-  m_position = {
-      position.x - (dst_shape.w / 2),
-      position.y - (dst_shape.h / 2),
-  };
+  m_position = position;
 }
 
 void Monster::move_by(int delta_x, int delta_y) {
@@ -19,7 +16,12 @@ void Monster::move_by(int delta_x, int delta_y) {
 }
 
 void Monster::render(SDL_Renderer* renderer) {
-  SDL_Rect dst_tile_loc = {m_position.x, m_position.y, m_shape.w, m_shape.h};
+  Position centered_position = {
+      m_position.x - (m_shape.w / 2),
+      m_position.y - (m_shape.h / 2),
+  };
+  SDL_Rect dst_tile_loc = {centered_position.x, centered_position.y, m_shape.w,
+                           m_shape.h};
   SDL_RenderCopyEx(renderer, m_texture, NULL, &dst_tile_loc, m_orientation,
                    NULL, SDL_FLIP_NONE);
 }
