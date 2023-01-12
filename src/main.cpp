@@ -64,22 +64,18 @@ int main(void) {
   Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
   Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
 
-  SDL_Rect checkpoint1_rect = {checkpoint1.x - 2, checkpoint1.y - 2, 4, 4};
-  SDL_Rect checkpoint2_rect = {checkpoint2.x - 2, checkpoint2.y - 2, 4, 4};
-  SDL_Rect corner1_rect = {corner1.x - 2, corner1.y - 2, 4, 4};
-  SDL_Rect corner2_rect = {corner2.x - 2, corner2.y - 2, 4, 4};
-  SDL_Rect corner3_rect = {corner3.x - 2, corner3.y - 2, 4, 4};
-  SDL_Rect corner4_rect = {corner4.x - 2, corner4.y - 2, 4, 4};
-  SDL_Rect corner5_rect = {corner5.x - 2, corner5.y - 2, 4, 4};
-  SDL_Rect corner6_rect = {corner6.x - 2, corner6.y - 2, 4, 4};
-
   SDL_Rect corners[] = {
-      corner1_rect, corner2_rect, corner3_rect,
-      corner4_rect, corner5_rect, corner6_rect,
+      {corner1.x - 2, corner1.y - 2, 4, 4},
+      {corner2.x - 2, corner2.y - 2, 4, 4},
+      {corner3.x - 2, corner3.y - 2, 4, 4},
+      {corner4.x - 2, corner4.y - 2, 4, 4},
+      {corner5.x - 2, corner5.y - 2, 4, 4},
+      {corner6.x - 2, corner6.y - 2, 4, 4},
   };
+
   SDL_Rect checkpoints[] = {
-      checkpoint1_rect,
-      checkpoint2_rect,
+      {checkpoint1.x - 2, checkpoint1.y - 2, 4, 4},
+      {checkpoint2.x - 2, checkpoint2.y - 2, 4, 4},
   };
 
   // a mob
