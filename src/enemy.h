@@ -19,4 +19,5 @@ class Monster {
           SDL_Texture* texture);
   void render(SDL_Renderer* renderer);
   void move_by(int delta_x, int delta_y);
+  void move_to(Position destination);
 };

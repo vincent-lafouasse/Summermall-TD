@@ -25,3 +25,11 @@ void Monster::render(SDL_Renderer* renderer) {
   SDL_RenderCopyEx(renderer, m_texture, NULL, &dst_tile_loc, m_orientation,
                    NULL, SDL_FLIP_NONE);
 }
+
+void Monster::move_to(Position destination) {
+  int x_movement =
+      (m_position.x != destination.x) * (m_position.x > destination.x ? -1 : 1);
+  int y_movement =
+      (m_position.y != destination.y) * (m_position.y > destination.y ? -1 : 1);
+  move_by(x_movement, y_movement);
+}
