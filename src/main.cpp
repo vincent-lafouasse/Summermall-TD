@@ -55,16 +55,18 @@ int main(void) {
   SDL_Texture* static_map_texture = make_static_map_texture(
       &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
-  // a mob
-  Position mob_position = {6 * 32, 0};
-  float mob_orientation = 90.0;
+  Position first_checkpoint = {13 * tileshape.w, 1 * tileshape.h};
+  Position second_checkpoint = {13 * tileshape.w, 23 * tileshape.h};
 
+  // a mob
   const char* basic_mob_path =
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
   SDL_Texture* basic_mob_texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
 
   const Dimension mob_shape = tileshape;
+  Position mob_position = first_checkpoint;
+  float mob_orientation = 90.0;
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
 
@@ -103,7 +105,6 @@ int main(void) {
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
     // render mob
-    monster.move_by(0, 1);
     monster.render(renderer);
 
     // Show the renderer contents
