@@ -59,6 +59,7 @@ int main(void) {
   SDL_Texture* static_map_texture = make_static_map_texture(
       &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
+  // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
   Position checkpoint2 = pixel_pos_from_grid({13, 23}, tileshape);
   Position corner1 = pixel_pos_from_grid({20, 3}, tileshape);
@@ -84,7 +85,7 @@ int main(void) {
       rect_around_point(checkpoint2, 2),
   };
 
-  // a mob
+  // Load mob texture
   const char* basic_mob_path =
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
   SDL_Texture* basic_mob_texture =
