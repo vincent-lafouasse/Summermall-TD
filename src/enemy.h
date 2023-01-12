@@ -20,4 +20,5 @@ class Monster {
   void render(SDL_Renderer* renderer);
   void move_by(int delta_x, int delta_y);
   void move_to(Position destination);
+  void follow_path(Position* path, int n_nodes);
 };

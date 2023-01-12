@@ -33,3 +33,5 @@ void Monster::move_to(Position destination) {
       (m_position.y != destination.y) * (m_position.y > destination.y ? -1 : 1);
   move_by(x_movement, y_movement);
 }
+
+void Monster::follow_path(Position* path, int n_nodes) {}

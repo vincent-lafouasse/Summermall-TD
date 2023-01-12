@@ -135,6 +135,7 @@ int main(void) {
     SDL_RenderDrawRects(renderer, checkpoints, 2);
 
     // render mob
+    monster.follow_path(path, sizeof(path) / sizeof(Position));
     monster.move_to(checkpoint2);
     monster.render(renderer);
 
