@@ -46,8 +46,10 @@ void render_map(const Map* map,
       for (int x_pos = 0; x_pos < (int)layer[y_pos].size(); x_pos++) {
         SDL_Rect src_tile = make_tile_from_id(layer[y_pos][x_pos],
                                               map->src_tileshape, tilesheet);
-        SDL_Rect dst_tile = {x_pos * dst_tileshape.w, y_pos * dst_tileshape.h,
-                             dst_tileshape.w, dst_tileshape.h};
+        Position dst_position =
+            pixel_pos_from_grid({x_pos, y_pos}, dst_tileshape);
+        SDL_Rect dst_tile = {dst_position.x, dst_position.y, dst_tileshape.w,
+                             dst_tileshape.h};
         SDL_RenderCopy(renderer, tilesheet, &src_tile, &dst_tile);
       }
     }
