@@ -105,6 +105,13 @@ int main(void) {
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
     // render mob
+    Position destination = second_checkpoint;
+
+    int x_movement = (monster.m_position.x != destination.x) *
+                     (monster.m_position.x > destination.x ? -1 : 1);
+    int y_movement = (monster.m_position.y != destination.y) *
+                     (monster.m_position.y > destination.y ? -1 : 1);
+    monster.move_by(x_movement, y_movement);
     monster.render(renderer);
 
     // Show the renderer contents
