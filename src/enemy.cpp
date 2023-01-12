@@ -34,4 +34,11 @@ void Monster::move_to(Position destination) {
   move_by(x_movement, y_movement);
 }
 
-void Monster::follow_path(Position* path, int n_nodes) {}
+void Monster::follow_path(Position* path, int n_nodes, bool* done) {
+  static int current_edge = 0;
+  if (m_position == path[current_edge])
+    current_edge++;
+  move_to(path[current_edge]);
+
+  *done = (m_position == path[n_nodes - 1]);
+}
