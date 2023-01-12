@@ -64,6 +64,11 @@ int main(void) {
   Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
   Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
 
+  SDL_Point corners[] = {
+      {corner1.x, corner1.y}, {corner2.x, corner2.y}, {corner3.x, corner3.y},
+      {corner4.x, corner4.y}, {corner5.x, corner5.y}, {corner6.x, corner6.y},
+  };
+
   // a mob
   const char* basic_mob_path =
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
@@ -103,12 +108,15 @@ int main(void) {
       }
     }
 
-    // Set the color to transparent
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    // Set the color to red
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
     // Render map
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
+
+    // Show corners
+    SDL_RenderDrawPoints(renderer, corners, 6);
 
     // render mob
     monster.move_to(second_checkpoint);
