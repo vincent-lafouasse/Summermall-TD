@@ -55,8 +55,8 @@ int main(void) {
   SDL_Texture* static_map_texture = make_static_map_texture(
       &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
-  Position first_checkpoint = pixel_pos_from_grid({13, 1}, tileshape);
-  Position second_checkpoint = pixel_pos_from_grid({13, 23}, tileshape);
+  Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
+  Position checkpoint2 = pixel_pos_from_grid({13, 23}, tileshape);
   Position corner1 = pixel_pos_from_grid({20, 3}, tileshape);
   Position corner2 = pixel_pos_from_grid({20, 5}, tileshape);
   Position corner3 = pixel_pos_from_grid({5, 6}, tileshape);
@@ -67,6 +67,10 @@ int main(void) {
   SDL_Point corners[] = {
       {corner1.x, corner1.y}, {corner2.x, corner2.y}, {corner3.x, corner3.y},
       {corner4.x, corner4.y}, {corner5.x, corner5.y}, {corner6.x, corner6.y},
+  };
+  SDL_Point checkpoints[] = {
+      {checkpoint1.x, checkpoint1.y},
+      {checkpoint2.x, checkpoint2.y},
   };
 
   // a mob
@@ -115,11 +119,12 @@ int main(void) {
     // Render map
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
-    // Show corners
+    // Show corners and checkpoints
     SDL_RenderDrawPoints(renderer, corners, 6);
+    SDL_RenderDrawPoints(renderer, checkpoints, 2);
 
     // render mob
-    monster.move_to(second_checkpoint);
+    monster.move_to(checkpoint2);
     monster.render(renderer);
 
     // Show the renderer contents
