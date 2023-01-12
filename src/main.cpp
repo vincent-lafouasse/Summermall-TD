@@ -57,6 +57,12 @@ int main(void) {
 
   Position first_checkpoint = pixel_pos_from_grid({13, 1}, tileshape);
   Position second_checkpoint = pixel_pos_from_grid({13, 23}, tileshape);
+  Position corner1 = pixel_pos_from_grid({20, 3}, tileshape);
+  Position corner2 = pixel_pos_from_grid({20, 5}, tileshape);
+  Position corner3 = pixel_pos_from_grid({5, 6}, tileshape);
+  Position corner4 = pixel_pos_from_grid({5, 8}, tileshape);
+  Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
+  Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
 
   // a mob
   const char* basic_mob_path =
@@ -65,7 +71,7 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
 
   const Dimension mob_shape = tileshape;
-  Position mob_position = {69, 420 - 69};
+  Position mob_position = corner6;
   float mob_orientation = 90.0;
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
