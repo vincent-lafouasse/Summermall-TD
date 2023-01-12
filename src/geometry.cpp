@@ -11,3 +11,9 @@ int pos_2D_to_1D(Position position, int width) {
 Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape) {
   return {grid_pos.x * tileshape.w, grid_pos.y * tileshape.h};
 }
+
+float distance(Position a, Position b) {
+  int delta_x = a.x - b.x;
+  int delta_y = a.y - b.y;
+  return sqrt(delta_x * delta_x + delta_y * delta_y);
+}

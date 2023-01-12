@@ -1,4 +1,5 @@
 #pragma once
+#include <math.h>
 
 struct Dimension {
   int w;
@@ -27,3 +28,4 @@ struct Position {
 Position pos_1D_to_2D(int pos_1D, int width);
 int pos_2D_to_1D(Position position, int width);
 Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape);
+float distance(Position a, Position b);
