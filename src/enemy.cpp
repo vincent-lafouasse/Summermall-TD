@@ -4,10 +4,13 @@ Monster::Monster(Position position,
                  float orientation,
                  const Dimension dst_shape,
                  SDL_Texture* texture) {
-  m_position = position;
   m_orientation = orientation;
   m_shape = dst_shape;
   m_texture = texture;
+  m_position = {
+      position.x - (dst_shape.w / 2),
+      position.y - (dst_shape.h / 2),
+  };
 }
 
 void Monster::move_by(int delta_x, int delta_y) {
