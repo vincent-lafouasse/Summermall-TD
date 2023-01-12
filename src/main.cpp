@@ -65,7 +65,7 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
 
   const Dimension mob_shape = tileshape;
-  Position mob_position = first_checkpoint;
+  Position mob_position = {69, 420 - 69};
   float mob_orientation = 90.0;
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
