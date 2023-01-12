@@ -55,8 +55,8 @@ int main(void) {
   SDL_Texture* static_map_texture = make_static_map_texture(
       &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
 
-  Position first_checkpoint = {13 * tileshape.w, 1 * tileshape.h};
-  Position second_checkpoint = {13 * tileshape.w, 23 * tileshape.h};
+  Position first_checkpoint = pixel_pos_from_grid({13, 1}, tileshape);
+  Position second_checkpoint = pixel_pos_from_grid({13, 23}, tileshape);
 
   // a mob
   const char* basic_mob_path =
