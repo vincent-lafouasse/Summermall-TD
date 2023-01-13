@@ -1,7 +1,5 @@
 #include "path_finder.h"
 
-Position* get_path(void) {
-  static std::map<Position, std::vector<Position>> graph;
+std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
+
 }
-void add_edge(void) {}
-void add_vertex(void) {}
