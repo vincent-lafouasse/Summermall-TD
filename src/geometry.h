@@ -20,7 +20,11 @@ struct Position {
 
 // A line can be defined by the linear equation Ax + By + C = 0
 struct LinearEquation {
-  int A, B, C
+  int A, B, C;
+
+  int apply(int x, int y) { return A * x + B * y + C; }
+
+  float apply(float x, float y) { return A * x + B * y + C; }
 };
 
 // Return the 2D coordinates corresponding to the 1D coodinate in a rectangle of
