@@ -69,7 +69,7 @@ std::vector<Position> get_Bresenham_line_between(Position start,
     } else {
       line = Bresenham_small_delta_x(end, start);
       std::reverse(line.begin(), line.end());
-		}
+    }
   }
 
   *return_orientation = atan((float)delta_y / (float)delta_x);

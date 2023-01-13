@@ -12,6 +12,7 @@ Monster::Monster(Position position,
   m_position = position;
   m_reached_end = false;
   m_step_id = 0;
+  m_edge_id = 0;
 }
 
 void Monster::move_by(int delta_x, int delta_y) {
@@ -45,9 +46,8 @@ void Monster::step_toward_simple(Position destination) {
 }
 
 void Monster::follow_path(std::vector<Position> path) {
-  static int current_line = 0;
-  auto line = get_Bresenham_line_between(
-      path[current_line], path[current_line + 1], &m_orientation);
+  static auto line = get_Bresenham_line_between(
+      path[m_edge_id], path[m_edge_id + 1], &m_orientation);
   follow_line(line);
 
   m_reached_end = m_position == path[path.size() - 1];
