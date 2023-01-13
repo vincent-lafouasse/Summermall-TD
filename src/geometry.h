@@ -18,6 +18,11 @@ struct Position {
   }
 };
 
+// A line can be defined by the linear equation Ax + By + C = 0
+struct LinearEquation {
+  int A, B, C
+};
+
 // Return the 2D coordinates corresponding to the 1D coodinate in a rectangle of
 // given width.
 //
