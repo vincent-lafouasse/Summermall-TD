@@ -8,6 +8,7 @@ class Monster {
  public:
   Position m_position;
   float m_orientation;
+  bool m_reached_end;
 
  private:
   SDL_Texture* m_texture;
@@ -19,7 +20,7 @@ class Monster {
           const Dimension dst_shape,
           SDL_Texture* texture);
   void render(SDL_Renderer* renderer);
-  void follow_path(Position* path, int n_nodes, bool* done);
+  void follow_path(std::vector<Position> path);
   void follow_line(std::vector<Position> line);
   void move_to_simple(Position destination);
   void move_by(int delta_x, int delta_y);

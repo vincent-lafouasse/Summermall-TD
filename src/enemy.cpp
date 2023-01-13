@@ -10,6 +10,7 @@ Monster::Monster(Position position,
   m_shape = dst_shape;
   m_texture = texture;
   m_position = position;
+  m_reached_end = false;
 }
 
 void Monster::move_by(int delta_x, int delta_y) {
@@ -35,3 +36,11 @@ int sign_of(float number) {
 int sign_of(int number) {
   return (number != 0) * (number > 0 ? 1 : -1);
 }
+
+void Monster::move_to_simple(Position destination) {
+  int delta_x = destination.x - m_position.x;
+  int delta_y = destination.y - m_position.y;
+  move_by(delta_x, delta_y);
+}
+
+void Monster::follow_path(std::vector<Position> path) {}

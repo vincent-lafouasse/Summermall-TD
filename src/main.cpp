@@ -138,6 +138,9 @@ int main(void) {
     SDL_RenderDrawRects(renderer, checkpoints, 2);
 
     // render mob
+    if (!monster.m_reached_end) {
+      monster.follow_path(short_path);
+    }
     monster.render(renderer);
 
     // Show the renderer contents
