@@ -37,9 +37,17 @@ int sign_of(int number) {
 
 void Monster::move_to(Position destination) {
   // TODO implement Bresenham line algorithm
+  //
+  // Define the equation of the line between m_position and destination by the
+  // equation Ax + By + C = 0
+  LinearEquation linear_eq;
+  linear_eq.A = destination.y - m_position.y;
+  linear_eq.B = -(destination.x - m_position.x);
+  linear_eq.C = destination.x * m_position.y - m_position.x * destination.y;
+
   float x_movement, y_movement;
-  float delta_x = destination.x - m_position.x;
-  float delta_y = destination.y - m_position.y;
+  float delta_x = -linear_eq.B;
+  float delta_y = linear_eq.A;
   float slope = delta_y / delta_x;
   float intercept = destination.y - destination.x * slope;
   if (delta_x > delta_y && delta_y > 0) {
