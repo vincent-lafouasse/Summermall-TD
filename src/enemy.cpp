@@ -35,7 +35,7 @@ int sign_of(int number) {
   return (number != 0) * (number > 0 ? 1 : -1);
 }
 
-void Monster::move_to(Position destination) {
+void Monster::move_linearly_to(Position destination) {
   // TODO implement Bresenham line algorithm
   //
   // Define the equation of the line between m_position and destination by the
@@ -67,7 +67,7 @@ void Monster::follow_path(Position* path, int n_nodes, bool* done) {
   static int current_edge = 0;
   if (m_position == path[current_edge])
     current_edge++;
-  move_to(path[current_edge]);
+  move_linearly_to(path[current_edge]);
 
   *done = (m_position == path[n_nodes - 1]);
 }
