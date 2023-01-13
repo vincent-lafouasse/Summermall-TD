@@ -1,4 +1,5 @@
 #include "path_finder.h"
+#include <algorithm>
 
 static std::vector<Position> Bresenham_small_delta_y(Position start,
                                                      Position end) {
@@ -31,6 +32,16 @@ std::vector<Position> get_Bresenham_line_between(Position start,
   int delta_y = end.y - start.y;
   std::vector<Position> line;
 
+  if (abs(delta_y) < abs(delta_x)) {
+    if (delta_x > 0) {
+      line = Bresenham_small_delta_y(start, end);
+    } else {
+      line = Bresenham_small_delta_y(end, start);
+      std::reverse(line.begin(), line.end());
+    }
+  } else {
+  }
+
   *return_orientation = atan((float)delta_y / (float)delta_x);
-  return Bresenham_small_delta_y(start, end);
+  return line;
 }
