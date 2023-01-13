@@ -1,7 +1,7 @@
 #include <cassert>
 
-#include "render_map.h"
 #include "render.h"
+#include "render_map.h"
 
 SDL_Texture* make_static_map_texture(const Map* map,
                                      SDL_Texture* tilesheet,
