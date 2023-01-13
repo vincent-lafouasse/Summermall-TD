@@ -1,4 +1,5 @@
 #include "enemy.h"
+#include <math.h>
 
 Monster::Monster(Position position,
                  float orientation,
@@ -26,12 +27,20 @@ void Monster::render(SDL_Renderer* renderer) {
                    NULL, SDL_FLIP_NONE);
 }
 
+int sign_of(float number) {
+  return (number != 0) * (number > 0 ? 1 : -1);
+}
+
+int sign_of(int number) {
+  return (number != 0) * (number > 0 ? 1 : -1);
+}
+
 void Monster::move_to(Position destination) {
   // TODO implement Bresenham line algorithm
-  int x_movement =
-      (m_position.x != destination.x) * (m_position.x < destination.x ? 1 : -1);
-  int y_movement =
-      (m_position.y != destination.y) * (m_position.y < destination.y ? 1 : -1);
+  int delta_x = destination.x - m_position.x;
+  int delta_y = destination.y - m_position.y;
+  int x_movement = sign_of(delta_x);
+  int y_movement = sign_of(delta_y);
   move_by(x_movement, y_movement);
 }
 
