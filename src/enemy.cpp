@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include <math.h>
+#include <vector>
 
 Monster::Monster(Position position,
                  float orientation,
@@ -35,32 +36,34 @@ int sign_of(int number) {
   return (number != 0) * (number > 0 ? 1 : -1);
 }
 
+std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
+  int delta_x = end.x - start.x;
+  int delta_y = end.y - start.y;
+  int difference = 2 * delta_y - delta_x;
+  int y = start.y;
+  std::vector<Position> path;
+
+  for (int x = start.x; x <= end.x; x++) {
+    path.push_back({x, y});
+    if (difference > 0) {
+      y++;
+      difference -= 2 * delta_x;
+    }
+    difference += delta_y;
+  }
+  return path;
+}
+
 void Monster::move_linearly_to(Position destination) {
   // TODO implement Bresenham line algorithm
-  //
-  // Define the equation of the line between m_position and destination by the
-  // equation Ax + By + C = 0
-  LinearEquation linear_eq;
-  linear_eq.A = destination.y - m_position.y;
-  linear_eq.B = -(destination.x - m_position.x);
-  linear_eq.C = destination.x * m_position.y - m_position.x * destination.y;
+  int x_movement, y_movement;
+  int delta_x = destination.x - m_position.x;
+  int delta_y = destination.y - m_position.y;
 
-  float x_movement, y_movement;
-  float delta_x = -linear_eq.B;
-  float delta_y = linear_eq.A;
-  float slope = delta_y / delta_x;
-  float intercept = destination.y - destination.x * slope;
-  if (delta_x > delta_y && delta_y > 0) {
-    y_movement = 1;
-    x_movement = y_movement / slope;  // (y - y0) = slope * (x - x0)
-    m_orientation += 3;               // monitor that we're in this branch
-  } else {
-    // simple but un-natural looking movement
-    x_movement = sign_of(delta_x);
-    y_movement = sign_of(delta_y);
-  }
+  x_movement = sign_of(delta_x);
+  y_movement = sign_of(delta_y);
 
-  move_by((int)x_movement, (int)y_movement);
+  move_by(x_movement, y_movement);
 }
 
 void Monster::follow_path(Position* path, int n_nodes, bool* done) {
