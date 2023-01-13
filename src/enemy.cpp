@@ -42,7 +42,10 @@ void Monster::move_to(Position destination) {
   float delta_y = destination.y - m_position.y;
   float slope = delta_y / delta_x;
   float intercept = destination.y - destination.x * slope;
-  if (false) {
+  if (delta_x > delta_y && delta_y > 0) {
+    y_movement = 1;
+    x_movement = y_movement / slope;
+    m_orientation += 3;  // monitor that we're in this branch
   } else {
     x_movement = sign_of(delta_x);
     y_movement = sign_of(delta_y);
