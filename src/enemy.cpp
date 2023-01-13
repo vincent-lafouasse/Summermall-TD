@@ -45,10 +45,12 @@ void Monster::step_toward_simple(Position destination) {
 }
 
 void Monster::follow_path(std::vector<Position> path) {
-  auto line = get_Bresenham_line_between(path[0], path[1], &m_orientation);
+  static int current_line = 0;
+  auto line = get_Bresenham_line_between(
+      path[current_line], path[current_line + 1], &m_orientation);
   follow_line(line);
 
-  m_reached_end = m_position == path[1];
+  m_reached_end = m_position == path[path.size() - 1];
 }
 
 void Monster::follow_line(std::vector<Position> line) {
