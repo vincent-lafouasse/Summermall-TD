@@ -47,6 +47,7 @@ void Monster::move_to(Position destination) {
     x_movement = y_movement / slope;  // (y - y0) = slope * (x - x0)
     m_orientation += 3;               // monitor that we're in this branch
   } else {
+    // simple but un-natural looking movement
     x_movement = sign_of(delta_x);
     y_movement = sign_of(delta_y);
   }
