@@ -1,5 +1,8 @@
+#include <cassert>
+
 #include "render_map.h"
 #include "render.h"
+
 SDL_Texture* make_static_map_texture(const Map* map,
                                      SDL_Texture* tilesheet,
                                      const Dimension dst_tileshape,
