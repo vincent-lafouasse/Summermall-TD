@@ -11,6 +11,7 @@ Monster::Monster(Position position,
   m_texture = texture;
   m_position = position;
   m_reached_end = false;
+	m_step_id = 0;
 }
 
 void Monster::move_by(int delta_x, int delta_y) {
@@ -37,10 +38,21 @@ int sign_of(int number) {
   return (number != 0) * (number > 0 ? 1 : -1);
 }
 
-void Monster::move_to_simple(Position destination) {
+void Monster::step_toward_simple(Position destination) {
   int delta_x = destination.x - m_position.x;
   int delta_y = destination.y - m_position.y;
-  move_by(delta_x, delta_y);
+  move_by(sign_of(delta_x), sign_of(delta_y));
 }
 
-void Monster::follow_path(std::vector<Position> path) {}
+void Monster::follow_path(std::vector<Position> path) {
+  auto line = get_Bresenham_line_between(path[0], path[1]);
+  follow_line(line);
+
+  m_reached_end = m_position == path[1];
+}
+
+void Monster::follow_line(std::vector<Position> line) {
+	step_toward_simple(line[m_step_id]);
+	if (m_position == line[m_step_id])
+		m_step_id++;
+}
