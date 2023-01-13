@@ -37,11 +37,18 @@ int sign_of(int number) {
 
 void Monster::move_to(Position destination) {
   // TODO implement Bresenham line algorithm
-  int delta_x = destination.x - m_position.x;
-  int delta_y = destination.y - m_position.y;
-  int x_movement = sign_of(delta_x);
-  int y_movement = sign_of(delta_y);
-  move_by(x_movement, y_movement);
+  float x_movement, y_movement;
+  float delta_x = destination.x - m_position.x;
+  float delta_y = destination.y - m_position.y;
+  float slope = delta_y / delta_x;
+  float intercept = destination.y - destination.x * slope;
+  if (false) {
+  } else {
+    x_movement = sign_of(delta_x);
+    y_movement = sign_of(delta_y);
+  }
+
+  move_by((int)x_movement, (int)y_movement);
 }
 
 void Monster::follow_path(Position* path, int n_nodes, bool* done) {
