@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <vector>
 #include "geometry.h"
 
 class Monster {
@@ -18,7 +19,8 @@ class Monster {
           const Dimension dst_shape,
           SDL_Texture* texture);
   void render(SDL_Renderer* renderer);
-  void move_by(int delta_x, int delta_y);
-  void move_linearly_to(Position destination);
   void follow_path(Position* path, int n_nodes, bool* done);
+  void follow_line(std::vector<Position> line);
+  void move_to_simple(Position destination);
+  void move_by(int delta_x, int delta_y);
 };

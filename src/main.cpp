@@ -69,7 +69,7 @@ int main(void) {
   Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
   Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
 
-  Position path[] = {
+  std::vector<Position> path{
       checkpoint1, corner1, corner2, corner3,
       corner4,     corner5, corner6, checkpoint2,
   };
@@ -96,7 +96,8 @@ int main(void) {
   float mob_orientation = 90.0;
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
-  bool monster_movement_done = false;
+
+  std::vector<Position> short_path{checkpoint1, corner1};
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -137,11 +138,7 @@ int main(void) {
     SDL_RenderDrawRects(renderer, checkpoints, 2);
 
     // render mob
-    if (!monster_movement_done) {
-      monster.follow_path(path, sizeof(path) / sizeof(Position),
-                          &monster_movement_done);
-      monster.render(renderer);
-    }
+    monster.render(renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
