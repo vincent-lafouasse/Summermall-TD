@@ -14,7 +14,7 @@ class Monster {
  private:
   SDL_Texture* m_texture;
   Dimension m_shape;
-	int m_step_id;
+  int m_step_id;
 
  public:
   Monster(Position position,

@@ -1,6 +1,8 @@
 #include "path_finder.h"
 
-std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
+std::vector<Position> get_Bresenham_line_between(Position start,
+                                                 Position end,
+                                                 float* return_orientation) {
   int delta_x = end.x - start.x;
   int delta_y = end.y - start.y;
   int difference = 2 * delta_y - delta_x;
@@ -16,5 +18,6 @@ std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
     }
     difference += 2 * delta_y;
   }
+  *return_orientation = atan((float)delta_y / (float)delta_x);
   return line;
 }
