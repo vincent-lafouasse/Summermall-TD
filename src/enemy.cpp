@@ -24,8 +24,10 @@ int sign_of(int number) {
 }
 
 void Monster::follow_path(std::vector<Position> path) {
-  static auto line = get_Bresenham_line_between(
-      path[m_edge_id], path[m_edge_id + 1], &m_orientation);
+  Position start = path[m_edge_id];
+  Position end = path[m_edge_id + 1];
+  static auto line = get_Bresenham_line_between(start, end);
+  m_orientation = atan((float)(end.y - start.y) / (float)(end.x - start.x));
   follow_line(line);
 
   m_reached_end = m_position == path[path.size() - 1];

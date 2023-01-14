@@ -49,9 +49,7 @@ static std::vector<Position> Bresenham_small_delta_x(Position start,
   return line;
 }
 
-std::vector<Position> get_Bresenham_line_between(Position start,
-                                                 Position end,
-                                                 float* return_orientation) {
+std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
   int delta_x = end.x - start.x;
   int delta_y = end.y - start.y;
   std::vector<Position> line;
@@ -72,6 +70,5 @@ std::vector<Position> get_Bresenham_line_between(Position start,
     }
   }
 
-  *return_orientation = atan((float)delta_y / (float)delta_x);
   return line;
 }
