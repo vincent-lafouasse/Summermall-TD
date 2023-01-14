@@ -59,16 +59,16 @@ std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
       line = Bresenham_small_delta_y(start, end);
     } else {
       line = Bresenham_small_delta_y(end, start);
-      std::reverse(line.begin(), line.end());
     }
   } else {
     if (delta_y >= 0) {
       line = Bresenham_small_delta_x(start, end);
     } else {
       line = Bresenham_small_delta_x(end, start);
-      std::reverse(line.begin(), line.end());
     }
   }
-
+  if (line[0] == end) {
+    std::reverse(line.begin(), line.end());
+  }
   return line;
 }
