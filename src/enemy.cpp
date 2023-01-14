@@ -15,14 +15,6 @@ Monster::Monster(Position position,
   m_edge_id = 0;
 }
 
-int sign_of(float number) {
-  return (number != 0) * (number > 0 ? 1 : -1);
-}
-
-int sign_of(int number) {
-  return (number != 0) * (number > 0 ? 1 : -1);
-}
-
 void Monster::follow_path(std::vector<Position> path) {
   m_reached_end = m_position == path.back();
   static std::vector<Position> line =
@@ -44,10 +36,13 @@ void Monster::follow_line(std::vector<Position> line) {
     m_step_id++;
 }
 
+int sign_of(int number) {
+  return (number != 0) * (number > 0 ? 1 : -1);
+}
+
 void Monster::step_toward_simple(Position destination) {
-  int delta_x = destination.x - m_position.x;
-  int delta_y = destination.y - m_position.y;
-  move_by(sign_of(delta_x), sign_of(delta_y));
+  move_by(sign_of(destination.x - m_position.x),
+          sign_of(destination.y - m_position.y));
 }
 
 void Monster::move_by(int delta_x, int delta_y) {
