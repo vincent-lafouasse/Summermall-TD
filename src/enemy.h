@@ -3,7 +3,6 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include "geometry.h"
-#include "path_finder.h"
 
 class Monster {
  public:

@@ -1,7 +1,5 @@
 #pragma once
-
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include "map.h"
 
 // Create a static image of the map that is easily rendered.

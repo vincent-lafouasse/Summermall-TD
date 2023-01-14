@@ -1,4 +1,6 @@
 #include "map.h"
+#include <string.h>
+#include "third_party_lib/tinyxml2.h"
 
 static int_vector_1D vector_1D_from_string_line(char* line_string);
 static int_vector_2D vector_2D_from_string_csv(char* csv_string);

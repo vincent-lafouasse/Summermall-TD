@@ -1,4 +1,5 @@
 #include "geometry.h"
+#include <math.h>
 #include <algorithm>
 
 Position pos_1D_to_2D(int pos_1D, int width) {

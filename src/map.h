@@ -1,10 +1,6 @@
 #pragma once
 
-#include <stdio.h>
-#include <string.h>
 #include <vector>
-#include "third_party_lib/tinyxml2.h"
-
 #include "geometry.h"
 
 typedef std::vector<int> int_vector_1D;

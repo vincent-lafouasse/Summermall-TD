@@ -1,6 +1,5 @@
 #include "enemy.h"
 #include <math.h>
-#include <vector>
 
 Monster::Monster(Position position,
                  float orientation,
