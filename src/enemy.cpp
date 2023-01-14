@@ -24,18 +24,18 @@ int sign_of(int number) {
 }
 
 void Monster::follow_path(std::vector<Position> path) {
-  static auto line =
+  m_reached_end = m_position == path.back();
+  static std::vector<Position> line =
       get_Bresenham_line_between(path[m_edge_id], path[m_edge_id + 1]);
-  if (m_position == path[m_edge_id + 1]) {
+  if (m_position == line.back()) {
     m_edge_id++;
     m_step_id = 0;
     line = get_Bresenham_line_between(path[m_edge_id], path[m_edge_id + 1]);
   }
-  m_orientation = atan((float)(path[m_edge_id + 1].y - path[m_edge_id].y) /
-                       (float)(path[m_edge_id + 1].x - path[m_edge_id].x));
   follow_line(line);
 
-  m_reached_end = m_position == path[path.size() - 1];
+  m_orientation = atan((float)(line.back().y - line.front().y) /
+                       (float)(line.back().x - line.front().x));
 }
 
 void Monster::follow_line(std::vector<Position> line) {
@@ -56,11 +56,8 @@ void Monster::move_by(int delta_x, int delta_y) {
 }
 
 void Monster::render(SDL_Renderer* renderer) {
-  Position centered_position = {
-      m_position.x - (m_shape.w / 2),
-      m_position.y - (m_shape.h / 2),
-  };
-  SDL_Rect dst_tile_loc = {centered_position.x, centered_position.y, m_shape.w,
+  SDL_Rect dst_tile_loc = {m_position.x - (m_shape.w / 2),
+                           m_position.y - (m_shape.h / 2), m_shape.w,
                            m_shape.h};
   SDL_RenderCopyEx(renderer, m_texture, NULL, &dst_tile_loc, m_orientation,
                    NULL, SDL_FLIP_NONE);
