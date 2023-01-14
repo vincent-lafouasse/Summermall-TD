@@ -19,6 +19,35 @@ float distance(Position a, Position b) {
   return sqrt(delta_x * delta_x + delta_y * delta_y);
 }
 
+static std::vector<Position> Bresenham_small_delta_x(Position start,
+                                                     Position end);
+static std::vector<Position> Bresenham_small_delta_y(Position start,
+                                                     Position end);
+
+std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
+  int delta_x = end.x - start.x;
+  int delta_y = end.y - start.y;
+  std::vector<Position> line;
+
+  if (abs(delta_y) < abs(delta_x)) {
+    if (delta_x >= 0) {
+      line = Bresenham_small_delta_y(start, end);
+    } else {
+      line = Bresenham_small_delta_y(end, start);
+    }
+  } else {
+    if (delta_y >= 0) {
+      line = Bresenham_small_delta_x(start, end);
+    } else {
+      line = Bresenham_small_delta_x(end, start);
+    }
+  }
+  if (line[0] == end) {
+    std::reverse(line.begin(), line.end());
+  }
+  return line;
+}
+
 static std::vector<Position> Bresenham_small_delta_y(Position start,
                                                      Position end) {
   int delta_x = end.x - start.x;
@@ -63,30 +92,6 @@ static std::vector<Position> Bresenham_small_delta_x(Position start,
       difference -= 2 * delta_y;
     }
     difference += 2 * delta_x;
-  }
-  return line;
-}
-
-std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
-  int delta_x = end.x - start.x;
-  int delta_y = end.y - start.y;
-  std::vector<Position> line;
-
-  if (abs(delta_y) < abs(delta_x)) {
-    if (delta_x >= 0) {
-      line = Bresenham_small_delta_y(start, end);
-    } else {
-      line = Bresenham_small_delta_y(end, start);
-    }
-  } else {
-    if (delta_y >= 0) {
-      line = Bresenham_small_delta_x(start, end);
-    } else {
-      line = Bresenham_small_delta_x(end, start);
-    }
-  }
-  if (line[0] == end) {
-    std::reverse(line.begin(), line.end());
   }
   return line;
 }
