@@ -140,8 +140,8 @@ int main(void) {
     // render mob
     if (!monster.m_reached_end) {
       monster.follow_path(path);
+      monster.render(renderer);
     }
-    monster.render(renderer);
 
     // Show the renderer contents
     SDL_RenderPresent(renderer);
