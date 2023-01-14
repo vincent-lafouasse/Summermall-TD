@@ -92,12 +92,12 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
 
   const Dimension mob_shape = tileshape;
-  Position mob_position = corner1;
+  Position mob_position = checkpoint1;
   float mob_orientation = 90.0;
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
 
-  std::vector<Position> short_path{corner1, corner2};
+  std::vector<Position> short_path{checkpoint1, corner1, corner2};
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -139,7 +139,7 @@ int main(void) {
 
     // render mob
     if (!monster.m_reached_end) {
-      monster.follow_path(short_path);
+      monster.follow_path(path);
     }
     monster.render(renderer);
 
