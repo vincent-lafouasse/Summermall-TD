@@ -1,6 +1,5 @@
 #include "render_map.h"
 #include <SDL2/SDL_image.h>
-#include <cassert>
 #include "render.h"
 
 SDL_Texture* make_static_map_texture(const Map* map,
@@ -15,11 +14,13 @@ SDL_Texture* make_static_map_texture(const Map* map,
   SDL_Texture* static_map_texture =
       SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
                         SDL_TEXTUREACCESS_TARGET, width, height);
-  assert(static_map_texture != NULL && "static_map_texture cant be NULL");
+  if (static_map_texture == NULL) {
+    printf("Unable to create static_map_texture, %s\n", SDL_GetError());
+  }
 
   // Set target texture as render target
   if (SDL_SetRenderTarget(renderer, static_map_texture) != 0) {
-    printf("unable to set static_map_texture as render target, %s\n",
+    printf("Unable to set static_map_texture as render target, %s\n",
            SDL_GetError());
   }
 
