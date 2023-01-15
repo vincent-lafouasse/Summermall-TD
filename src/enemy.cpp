@@ -16,7 +16,6 @@ Monster::Monster(Position position,
 }
 
 void Monster::follow_path(std::vector<Position>* path) {
-  m_reached_end = m_position == path->back();
   static std::vector<Position> line =
       get_Bresenham_line_between(path->at(m_edge_id), path->at(m_edge_id + 1));
   if (m_position == line.back()) {
@@ -29,6 +28,7 @@ void Monster::follow_path(std::vector<Position>* path) {
 
   m_orientation = atan((float)(line.back().y - line.front().y) /
                        (float)(line.back().x - line.front().x));
+  m_reached_end = m_position == path->back();
 }
 
 void Monster::follow_line(std::vector<Position> line) {
