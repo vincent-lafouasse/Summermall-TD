@@ -7,7 +7,7 @@
 ///
 // A monster that walks toward the exit
 //
-// @member m_position    The onscreen position of the monster in pixel units.
+// @member m_position    The world coordinates of the monster in pixel units.
 //                       The monster will be rendered centered on that position.
 // @member m_orientation The orientation of the monster in degrees. 0 means to
 //                       left, i.e aligned with the vector (x = 1, y = 0). Goes
@@ -21,17 +21,18 @@
 // @member m_edge_id     The edge of the path the monster is following.
 //                       Indicates which waypoint the monster is headed to.
 //
-// @method Monster Constructor. Assigns the arguments to the right members.
-// @param position
-// @param orientation
-// @param dst_shape
-// @param texture
+// @method Monster    Constructor. Assigns the arguments to the right members.
+// @param position    Assigned to m_position.
+// @param orientation Assigned to m_orientation.
+// @param dst_shape   Assigned to m_shape.
+// @param texture     Assigned to m_texture.
 //
 // @method follow_path Given a vector of waypoints, visit each waypoint in
-//                     order. The waypoints are usually not adjacent.
+//                     order. The waypoints are usually not adjacent. Also
+//                     orients the monster toward the waypoint.
 // @param path         A vector containing all the waypoints to visit.
 //
-// @method follow_line Given a vector a positions, visit each position in
+// @method follow_line Given a vector of positions, visit each position in
 //                     order. Each of these position should be adjacent
 //                     (orthogonally and diagonally).
 // @param line         A vector containing all the positions to visit.
@@ -45,7 +46,7 @@
 // @param delta_x
 // @param delta_y
 //
-// @method render Render the monster onscreen (centered on m_position)
+// @method render  Render the monster onscreen (centered on m_position)
 // @param renderer
 class Monster {
  public:
