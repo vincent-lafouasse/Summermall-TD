@@ -15,14 +15,15 @@ Monster::Monster(Position position,
   m_edge_id = 0;
 }
 
-void Monster::follow_path(std::vector<Position> path) {
-  m_reached_end = m_position == path.back();
+void Monster::follow_path(std::vector<Position>* path) {
+  m_reached_end = m_position == path->back();
   static std::vector<Position> line =
-      get_Bresenham_line_between(path[m_edge_id], path[m_edge_id + 1]);
+      get_Bresenham_line_between(path->at(m_edge_id), path->at(m_edge_id + 1));
   if (m_position == line.back()) {
     m_edge_id++;
     m_step_id = 0;
-    line = get_Bresenham_line_between(path[m_edge_id], path[m_edge_id + 1]);
+    line = get_Bresenham_line_between(path->at(m_edge_id),
+                                      path->at(m_edge_id + 1));
   }
   follow_line(line);
 

@@ -137,7 +137,7 @@ int main(void) {
 
     // render mob
     if (!monster.m_reached_end) {
-      monster.follow_path(path);
+      monster.follow_path(&path);
       monster.render(renderer);
     }
 

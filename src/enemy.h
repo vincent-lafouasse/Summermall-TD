@@ -65,7 +65,7 @@ class Monster {
           float orientation,
           const Dimension dst_shape,
           SDL_Texture* texture);
-  void follow_path(std::vector<Position> path);
+  void follow_path(std::vector<Position>* path);
   void follow_line(std::vector<Position> line);
   void step_toward_simple(Position destination);
   void move_by(int delta_x, int delta_y);
