@@ -19,14 +19,11 @@ Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape) {
 float line_angle(std::vector<Position>* line) {
   int delta_x = (line->back().x - line->front().x);
   int delta_y = (line->back().y - line->front().y);
-  float angle;
   if (delta_x == 0) {
-    angle = copysign(90.0, delta_y);
-  } else {
-    angle = atan((float)delta_y / (float)delta_x) * 180. / PI;
-    angle += (delta_x < 0) * 180.0;
+    return copysign(90.0, delta_y);
   }
-  return angle;
+  float angle = atan((float)delta_y / (float)delta_x) * 180. / PI;
+  return angle += (delta_x < 0) * 180.0;
 }
 
 float distance(Position a, Position b) {
@@ -46,12 +43,15 @@ std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
   std::vector<Position> line;
 
   if (abs(delta_y) < abs(delta_x)) {
+    // small delta_y => driving axis is x
     if (delta_x >= 0) {
       line = Bresenham_x_driving_axis(start, end);
     } else {
       line = Bresenham_x_driving_axis(end, start);
     }
   } else {
+    // small delta_x => driving axis is y
+    // same algorighm with x and y swapped
     if (delta_y >= 0) {
       line = Bresenham_y_driving_axis(start, end);
     } else {
@@ -73,17 +73,17 @@ static std::vector<Position> Bresenham_x_driving_axis(Position start,
     y_increment = -1;
     delta_y = -delta_y;
   }
-  int difference = 2 * delta_y - delta_x;
+  int deviation = 2 * delta_y - delta_x;
   int y = start.y;
   std::vector<Position> line;
 
   for (int x = start.x; x <= end.x; x++) {
     line.push_back({x, y});
-    if (difference > 0) {
+    if (deviation > 0) {
       y += y_increment;
-      difference -= 2 * delta_x;
+      deviation -= 2 * delta_x;
     }
-    difference += 2 * delta_y;
+    deviation += 2 * delta_y;
   }
   return line;
 }
@@ -97,17 +97,17 @@ static std::vector<Position> Bresenham_y_driving_axis(Position start,
     x_increment = -1;
     delta_x = -delta_x;
   }
-  int difference = 2 * delta_x - delta_y;
+  int deviation = 2 * delta_x - delta_y;
   int x = start.x;
   std::vector<Position> line;
 
   for (int y = start.y; y <= end.y; y++) {
     line.push_back({x, y});
-    if (difference > 0) {
+    if (deviation > 0) {
       x += x_increment;
-      difference -= 2 * delta_y;
+      deviation -= 2 * delta_y;
     }
-    difference += 2 * delta_x;
+    deviation += 2 * delta_x;
   }
   return line;
 }
