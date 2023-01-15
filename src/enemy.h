@@ -30,12 +30,14 @@
 // @method follow_path Given a vector of waypoints, visit each waypoint in
 //                     order. The waypoints are usually not adjacent. Also
 //                     orients the monster toward the waypoint.
-// @param path         A vector containing all the waypoints to visit.
+// @param path         A pointer to the vector containing all the waypoints to
+//                     visit.
 //
 // @method follow_line Given a vector of positions, visit each position in
 //                     order. Each of these position should be adjacent
 //                     (orthogonally and diagonally).
-// @param line         A vector containing all the positions to visit.
+// @param line         A pointer to the vector containing all the positions to
+//                     visit.
 //
 // @method step_toward_simple Move toward a given position. Should only be used
 //                            for adjacent positions or else the movement will
@@ -66,7 +68,7 @@ class Monster {
           const Dimension dst_shape,
           SDL_Texture* texture);
   void follow_path(std::vector<Position>* path);
-  void follow_line(std::vector<Position> line);
+  void follow_line(std::vector<Position>* line);
   void step_toward_simple(Position destination);
   void move_by(int delta_x, int delta_y);
   void render(SDL_Renderer* renderer);

@@ -24,16 +24,16 @@ void Monster::follow_path(std::vector<Position>* path) {
     line = get_Bresenham_line_between(path->at(m_edge_id),
                                       path->at(m_edge_id + 1));
   }
-  follow_line(line);
+  follow_line(&line);
 
   m_orientation = atan((float)(line.back().y - line.front().y) /
                        (float)(line.back().x - line.front().x));
   m_reached_end = m_position == path->back();
 }
 
-void Monster::follow_line(std::vector<Position> line) {
-  step_toward_simple(line[m_step_id]);
-  if (m_position == line[m_step_id])
+void Monster::follow_line(std::vector<Position>* line) {
+  step_toward_simple(line->at(m_step_id));
+  if (m_position == line->at(m_step_id))
     m_step_id++;
 }
 
