@@ -5,10 +5,11 @@ Monster::Monster(Position position,
                  float orientation,
                  const Dimension dst_shape,
                  SDL_Texture* texture) {
+  m_position = position;
   m_orientation = orientation;
   m_shape = dst_shape;
   m_texture = texture;
-  m_position = position;
+
   m_reached_end = false;
   m_step_id = 0;
   m_edge_id = 0;
