@@ -93,9 +93,8 @@ int main(void) {
 
   const Dimension mob_shape = tileshape;
   Position mob_position = checkpoint1;
-  float mob_orientation = 0.0;
 
-  Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
+  Monster monster(mob_position, mob_shape, basic_mob_texture);
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;

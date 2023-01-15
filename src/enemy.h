@@ -23,7 +23,6 @@
 //
 // @method Monster    Constructor. Assigns the arguments to the right members.
 // @param position    Assigned to m_position.
-// @param orientation Assigned to m_orientation.
 // @param dst_shape   Assigned to m_shape.
 // @param texture     Assigned to m_texture.
 //
@@ -63,10 +62,7 @@ class Monster {
   int m_edge_id;
 
  public:
-  Monster(Position position,
-          float orientation,
-          const Dimension dst_shape,
-          SDL_Texture* texture);
+  Monster(Position position, const Dimension dst_shape, SDL_Texture* texture);
   void follow_path(std::vector<Position>* path);
   void follow_line(std::vector<Position>* line);
   void step_toward_simple(Position destination);
