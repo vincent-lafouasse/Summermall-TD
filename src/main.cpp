@@ -97,8 +97,6 @@ int main(void) {
 
   Monster monster(mob_position, mob_orientation, mob_shape, basic_mob_texture);
 
-  std::vector<Position> short_path{checkpoint1, corner1, corner2};
-
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
   int fps = 0;
