@@ -5,7 +5,7 @@
 #include "geometry.h"
 
 ///
-// A monster that walks toward the exit
+// A monster that walks toward the exit.
 //
 // @member m_position    The world coordinates of the monster in pixel units.
 //                       The monster will be rendered centered on that position.
@@ -16,7 +16,7 @@
 //                       exit. If true, the monster should despawn and a life
 //                       subtracted from the player's lives.
 // @member m_texture     The static texture of the monster.
-// @member m_shape       The onscreen dimension of the monster onscreen.
+// @member m_shape       The onscreen dimension of the monster.
 // @member m_step_id     The position of the monster on a given Bresenham line.
 // @member m_edge_id     The edge of the path the monster is following.
 //                       Indicates which waypoint the monster is headed to.
@@ -34,14 +34,14 @@
 //
 // @method follow_line Given a vector of positions, visit each position in
 //                     order. Each of these position should be adjacent
-//                     (orthogonally and diagonally).
+//                     (orthogonally or diagonally).
 // @param line         A pointer to the vector containing all the positions to
 //                     visit.
 //
 // @method step_toward_simple Move toward a given position. Should only be used
 //                            for adjacent positions or else the movement will
 //                            look un-natural.
-// @param destination         The position to move to.
+// @param destination         The position to move toward.
 //
 // @method move_by Shift the position of the monster.
 // @param delta_x
