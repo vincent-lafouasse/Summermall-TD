@@ -26,7 +26,6 @@ float line_angle(std::vector<Position>* line) {
     angle = atan((float)delta_y / (float)delta_x) * 180. / PI;
     angle += (delta_x < 0) * 180.0;
   }
-  printf("%f\n", angle);
   return angle;
 }
 
