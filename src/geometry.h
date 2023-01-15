@@ -32,5 +32,7 @@ Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape);
 // Return the Euclidian distance between two Positions.
 float distance(Position a, Position b);
 
+float line_angle(std::vector<Position>* line);
+
 // Return the rasterized line between two Positions.
 std::vector<Position> get_Bresenham_line_between(Position start, Position end);

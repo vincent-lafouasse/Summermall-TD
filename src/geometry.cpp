@@ -2,6 +2,8 @@
 #include <math.h>
 #include <algorithm>
 
+#define PI 3.141592653589793238
+
 Position pos_1D_to_2D(int pos_1D, int width) {
   return {pos_1D % width, pos_1D / width};
 }
@@ -12,6 +14,20 @@ int pos_2D_to_1D(Position position, int width) {
 
 Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape) {
   return {grid_pos.x * tileshape.w, grid_pos.y * tileshape.h};
+}
+
+float line_angle(std::vector<Position>* line) {
+  int delta_x = (line->back().x - line->front().x);
+  int delta_y = (line->back().y - line->front().y);
+  float angle;
+  if (delta_x == 0) {
+    angle = copysign(90.0, delta_y);
+  } else {
+    angle = atan((float)delta_y / (float)delta_x) * 180. / PI;
+    angle += (delta_x < 0) * 180.0;
+  }
+  printf("%f\n", angle);
+  return angle;
 }
 
 float distance(Position a, Position b) {
