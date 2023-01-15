@@ -36,10 +36,10 @@ float distance(Position a, Position b) {
   return sqrt(delta_x * delta_x + delta_y * delta_y);
 }
 
-static std::vector<Position> Bresenham_small_delta_x(Position start,
-                                                     Position end);
-static std::vector<Position> Bresenham_small_delta_y(Position start,
-                                                     Position end);
+static std::vector<Position> Bresenham_y_driving_axis(Position start,
+                                                      Position end);
+static std::vector<Position> Bresenham_x_driving_axis(Position start,
+                                                      Position end);
 
 std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
   int delta_x = end.x - start.x;
@@ -48,15 +48,15 @@ std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
 
   if (abs(delta_y) < abs(delta_x)) {
     if (delta_x >= 0) {
-      line = Bresenham_small_delta_y(start, end);
+      line = Bresenham_x_driving_axis(start, end);
     } else {
-      line = Bresenham_small_delta_y(end, start);
+      line = Bresenham_x_driving_axis(end, start);
     }
   } else {
     if (delta_y >= 0) {
-      line = Bresenham_small_delta_x(start, end);
+      line = Bresenham_y_driving_axis(start, end);
     } else {
-      line = Bresenham_small_delta_x(end, start);
+      line = Bresenham_y_driving_axis(end, start);
     }
   }
   if (line[0] == end) {
@@ -65,8 +65,8 @@ std::vector<Position> get_Bresenham_line_between(Position start, Position end) {
   return line;
 }
 
-static std::vector<Position> Bresenham_small_delta_y(Position start,
-                                                     Position end) {
+static std::vector<Position> Bresenham_x_driving_axis(Position start,
+                                                      Position end) {
   int delta_x = end.x - start.x;
   int delta_y = end.y - start.y;
   int y_increment = 1;
@@ -89,8 +89,8 @@ static std::vector<Position> Bresenham_small_delta_y(Position start,
   return line;
 }
 
-static std::vector<Position> Bresenham_small_delta_x(Position start,
-                                                     Position end) {
+static std::vector<Position> Bresenham_y_driving_axis(Position start,
+                                                      Position end) {
   int delta_y = end.y - start.y;
   int delta_x = end.x - start.x;
   int x_increment = 1;
