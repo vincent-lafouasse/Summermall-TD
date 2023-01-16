@@ -4,17 +4,40 @@
 struct Dimension {
   int w;
   int h;
+
+  Dimension(int a = 0, int b = 0) {
+    w = a;
+    h = b;
+  }
+
+  bool operator<(const Dimension& other) const {
+    return w < other.w || (w == other.w && h < other.h);
+  }
+  bool operator==(const Dimension& other) const {
+    return (w == other.w) && (h == other.h);
+  }
+  Dimension operator+(const Dimension& other) const {
+    return Dimension(w + other.w, h + other.h);
+  }
 };
 
 struct Position {
   int x;
   int y;
 
+  Position(int a = 0, int b = 0) {
+    x = a;
+    y = b;
+  }
+
   bool operator<(const Position& other) const {
     return x < other.x || (x == other.x && y < other.y);
   }
   bool operator==(const Position& other) const {
     return (x == other.x) && (y == other.y);
+  }
+  Position operator+(const Position& other) const {
+    return Position(x + other.x, y + other.y);
   }
 };
 
