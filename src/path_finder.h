@@ -3,4 +3,25 @@
 #include <vector>
 #include "geometry.h"
 
-std::vector<Position> compute_path_between(Position start, Position end);
+#define DISTANCE_PRECISION 1000
+
+struct Edge {
+  Position start;
+  Position end;
+  int distance;
+
+  Edge(Position start_, Position end_) {
+    start = start_;
+    end = end_;
+    distance = (int)(DISTANCE_PRECISION * euclidian_distance(start, end));
+  }
+};
+
+struct Graph {
+  std::vector<Position> vertices;
+  std::vector<Edge> edges;
+};
+
+std::vector<Position> compute_path_between(Graph graph,
+                                           Position start,
+                                           Position end);

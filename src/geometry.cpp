@@ -26,7 +26,7 @@ float line_angle(std::vector<Position>* line) {
   return angle += (delta_x < 0) * 180.0;
 }
 
-float distance(Position a, Position b) {
+float euclidian_distance(Position a, Position b) {
   int delta_x = a.x - b.x;
   int delta_y = a.y - b.y;
   return sqrt(delta_x * delta_x + delta_y * delta_y);
