@@ -5,9 +5,9 @@ struct Dimension {
   int w;
   int h;
 
-  Dimension(int a = 0, int b = 0) {
-    w = a;
-    h = b;
+  Dimension(int w_ = 0, int h_ = 0) {
+    w = w_;
+    h = h_;
   }
 
   bool operator<(const Dimension& other) const {
@@ -25,9 +25,9 @@ struct Position {
   int x;
   int y;
 
-  Position(int a = 0, int b = 0) {
-    x = a;
-    y = b;
+  Position(int x_ = 0, int y_ = 0) {
+    x = x_;
+    y = y_;
   }
 
   bool operator<(const Position& other) const {
