@@ -20,6 +20,9 @@ struct Edge {
 struct Graph {
   std::vector<Position> vertices;
   std::vector<Edge> edges;
+
+  void add_vertex(Position position);
+  void add_edge(Position end, Position start);
 };
 
 std::vector<Position> compute_path_between(Graph graph,

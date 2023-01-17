@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "enemy.h"
 #include "map.h"
+#include "path_finder.h"
 #include "render_map.h"
 
 #define SCREEN_WIDTH 800
@@ -95,6 +96,11 @@ int main(void) {
   Position mob_position = checkpoint1;
 
   Monster monster(mob_position, mob_shape, basic_mob_texture);
+
+  Graph graph;
+  graph.add_vertex(checkpoint1);
+  graph.add_vertex(checkpoint2);
+  graph.add_edge(checkpoint1, checkpoint2);
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
