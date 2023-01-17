@@ -102,6 +102,10 @@ int main(void) {
   graph.add_vertex(checkpoint2);
   graph.add_edge(checkpoint1, checkpoint2);
 
+  for (size_t i = 0; i < graph.vertices.size(); i++) {
+    graph.vertices[i].print();
+  }
+
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
   int fps = 0;

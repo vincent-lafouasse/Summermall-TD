@@ -1,20 +1,9 @@
 #include "geometry.h"
 #include <math.h>
+#include <stdio.h>
 #include <algorithm>
 
 #define PI 3.141592653589793238
-
-Position pos_1D_to_2D(int pos_1D, int width) {
-  return {pos_1D % width, pos_1D / width};
-}
-
-int pos_2D_to_1D(Position position, int width) {
-  return position.y * width + position.x;
-}
-
-Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape) {
-  return {grid_pos.x * tileshape.w, grid_pos.y * tileshape.h};
-}
 
 float line_angle(std::vector<Position>* line) {
   int delta_x = (line->back().x - line->front().x);
@@ -110,4 +99,20 @@ static std::vector<Position> Bresenham_y_driving_axis(Position start,
     deviation += 2 * delta_x;
   }
   return line;
+}
+
+Position pos_1D_to_2D(int pos_1D, int width) {
+  return {pos_1D % width, pos_1D / width};
+}
+
+int pos_2D_to_1D(Position position, int width) {
+  return position.y * width + position.x;
+}
+
+Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape) {
+  return {grid_pos.x * tileshape.w, grid_pos.y * tileshape.h};
+}
+
+void Position::print(void) {
+  printf("Position(x = %d, y = %d)\n", x, y);
 }

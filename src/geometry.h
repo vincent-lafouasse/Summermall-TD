@@ -39,6 +39,8 @@ struct Position {
   Position operator+(const Position& other) const {
     return Position(x + other.x, y + other.y);
   }
+
+  void print(void);
 };
 
 // Return the 2D coordinates corresponding to the 1D coodinate in a rectangle of
