@@ -15,6 +15,7 @@ struct Edge {
     end = end_;
     distance = (int)(DISTANCE_PRECISION * euclidian_distance(start, end));
   }
+  bool contains(Position position);
 };
 
 struct Graph {
@@ -23,6 +24,7 @@ struct Graph {
 
   void add_vertex(Position position);
   void add_edge(Position end, Position start);
+  std::vector<Position> neighbours_of(Position node);
 };
 
 std::vector<Position> compute_path_between(Graph graph,
