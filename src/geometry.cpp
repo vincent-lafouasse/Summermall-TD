@@ -116,3 +116,23 @@ Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape) {
 void Position::print(void) {
   printf("Position(x = %d, y = %d)\n", x, y);
 }
+
+bool Dimension::operator<(const Dimension& other) const {
+  return w < other.w || (w == other.w && h < other.h);
+}
+bool Dimension::operator==(const Dimension& other) const {
+  return (w == other.w) && (h == other.h);
+}
+Dimension Dimension::operator+(const Dimension& other) const {
+  return Dimension(w + other.w, h + other.h);
+}
+
+bool Position::operator<(const Position& other) const {
+  return x < other.x || (x == other.x && y < other.y);
+}
+bool Position::operator==(const Position& other) const {
+  return (x == other.x) && (y == other.y);
+}
+Position Position::operator+(const Position& other) const {
+  return Position(x + other.x, y + other.y);
+}

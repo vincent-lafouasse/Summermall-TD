@@ -10,15 +10,9 @@ struct Dimension {
     h = h_;
   }
 
-  bool operator<(const Dimension& other) const {
-    return w < other.w || (w == other.w && h < other.h);
-  }
-  bool operator==(const Dimension& other) const {
-    return (w == other.w) && (h == other.h);
-  }
-  Dimension operator+(const Dimension& other) const {
-    return Dimension(w + other.w, h + other.h);
-  }
+  bool operator<(const Dimension& other) const;
+  bool operator==(const Dimension& other) const;
+  Dimension operator+(const Dimension& other) const;
 };
 
 struct Position {
@@ -30,17 +24,10 @@ struct Position {
     y = y_;
   }
 
-  bool operator<(const Position& other) const {
-    return x < other.x || (x == other.x && y < other.y);
-  }
-  bool operator==(const Position& other) const {
-    return (x == other.x) && (y == other.y);
-  }
-  Position operator+(const Position& other) const {
-    return Position(x + other.x, y + other.y);
-  }
-
   void print(void);
+  bool operator<(const Position& other) const;
+  bool operator==(const Position& other) const;
+  Position operator+(const Position& other) const;
 };
 
 // Return the 2D coordinates corresponding to the 1D coodinate in a rectangle of
