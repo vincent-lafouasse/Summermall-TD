@@ -95,10 +95,12 @@ int main(void) {
   hardcoded_waypoints.push_back(node3);
   graph.add_edge(node3, node1);
   graph.add_edge(node3, corner1);
+  graph.add_edge(node3, corner2);
   Position node4 = pixel_pos_from_grid({21, 3}, tileshape);
   hardcoded_waypoints.push_back(node4);
   graph.add_edge(node4, checkpoint1);
   graph.add_edge(node4, corner1);
+  graph.add_edge(node4, corner2);
   Position node5 = pixel_pos_from_grid({7, 5}, tileshape);
   hardcoded_waypoints.push_back(node5);
   graph.add_edge(node5, corner2);
