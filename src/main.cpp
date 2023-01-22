@@ -74,6 +74,10 @@ int main(void) {
       checkpoint1, corner1, corner2, corner3,
       corner4,     corner5, corner6, checkpoint2,
   };
+  Graph graph;
+  graph.add_vertices(&path);
+  graph.add_edge(checkpoint1, checkpoint2);
+  graph.add_edges(corner1, &path);
 
   SDL_Rect corners[] = {
       rect_around_point(corner1, 2), rect_around_point(corner2, 2),
@@ -96,15 +100,6 @@ int main(void) {
   Position mob_position = checkpoint1;
 
   Monster monster(mob_position, mob_shape, basic_mob_texture);
-
-  Graph graph;
-  graph.add_vertex(checkpoint1);
-  graph.add_vertex(checkpoint2);
-  graph.add_edge(checkpoint1, checkpoint2);
-
-  for (size_t i = 0; i < graph.vertices.size(); i++) {
-    graph.vertices[i].print();
-  }
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
