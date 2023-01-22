@@ -18,6 +18,7 @@ void WaypointGraph::add_edge(Position key, Position value) {
   if (value != key) {
     adjacency_map[key].insert(value);
     adjacency_map[value].insert(key);
+    edges_repr.push_back(get_Bresenham_line_between(key, value));
   }
 }
 
@@ -26,3 +27,5 @@ void WaypointGraph::add_edges(Position key, std::vector<Position>* values) {
     add_edge(key, values->at(i));
   }
 }
+
+void WaypointGraph::render(void) {}
