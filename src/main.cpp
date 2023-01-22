@@ -74,7 +74,7 @@ int main(void) {
       checkpoint1, corner1, corner2, corner3,
       corner4,     corner5, corner6, checkpoint2,
   };
-  Graph graph;
+  PositionGraph graph;
   graph.add_vertices(&path);
   graph.add_edge(checkpoint1, checkpoint2);
   graph.add_edges(corner1, &path);

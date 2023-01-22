@@ -4,7 +4,7 @@
 #include <vector>
 #include "geometry.h"
 
-struct Graph {
+struct PositionGraph {
   std::map<Position, std::set<Position>> adjacency_map;
 
   void add_vertex(Position position);
