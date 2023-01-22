@@ -10,8 +10,7 @@ const Map parse_map_from_tmx(const char* tmx_path) {
   XMLDocument map_xml;
 
   // Load tmx
-  printf("loading tmx: %s\n",
-         map_xml.LoadFile(tmx_path) == XML_SUCCESS ? "done" : "fail");
+  map_xml.LoadFile(tmx_path);
 
   // Extract metadata
   XMLElement* root = map_xml.FirstChildElement("map");
