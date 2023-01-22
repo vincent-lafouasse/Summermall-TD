@@ -134,7 +134,7 @@ int main(void) {
     // Show corners and checkpoints
     highlight_points(&hardcoded_waypoints, 2, renderer);
 
-    graph.render();
+    graph.render(renderer);
 
     // render mob
     if (!monster.m_reached_end) {

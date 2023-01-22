@@ -39,3 +39,14 @@ void highlight_points(std::vector<Position>* points,
     SDL_RenderDrawRect(renderer, &rect_around_point);
   }
 }
+
+void render_point(Position position, SDL_Renderer* renderer) {
+  SDL_Rect point = {position.x, position.y, 1, 1};
+  SDL_RenderDrawRect(renderer, &point);
+}
+
+void render_vector(std::vector<Position>* vec, SDL_Renderer* renderer) {
+  for (size_t i = 0; i < vec->size(); i++) {
+    render_point(vec->at(i), renderer);
+  }
+}

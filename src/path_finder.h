@@ -2,6 +2,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include "SDL2/SDL.h"
 #include "geometry.h"
 
 struct WaypointGraph {
@@ -12,5 +13,5 @@ struct WaypointGraph {
   void add_vertices(std::vector<Position>* positions);
   void add_edge(Position key, Position value);
   void add_edges(Position key, std::vector<Position>* values);
-  void render(void);
+  void render(SDL_Renderer* renderer);
 };

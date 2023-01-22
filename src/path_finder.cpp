@@ -1,5 +1,6 @@
 #include "path_finder.h"
 #include <SDL2/SDL.h>
+#include "render.h"
 
 void WaypointGraph::add_vertex(Position position) {
   if (adjacency_map.find(position) != adjacency_map.end()) {
@@ -28,4 +29,8 @@ void WaypointGraph::add_edges(Position key, std::vector<Position>* values) {
   }
 }
 
-void WaypointGraph::render(void) {}
+void WaypointGraph::render(SDL_Renderer* renderer) {
+  for (size_t i = 0; i < edges_repr.size(); i++) {
+    render_vector(&(edges_repr[i]), renderer);
+  }
+}

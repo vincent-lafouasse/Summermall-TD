@@ -26,3 +26,5 @@ Dimension get_texture_shape(SDL_Texture* texture);
 void highlight_points(std::vector<Position>* points,
                       int width,
                       SDL_Renderer* renderer);
+
+void render_vector(std::vector<Position>* vec, SDL_Renderer* renderer);
