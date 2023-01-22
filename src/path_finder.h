@@ -5,12 +5,12 @@
 #include "geometry.h"
 
 struct Graph {
-  std::map<Position, std::set<Position>> adjacency_list;
+  std::map<Position, std::set<Position>> adjacency_map;
 
   void add_vertex(Position position) {
-    if (adjacency_list.find(position) != adjacency_list.end()) {
+    if (adjacency_map.find(position) != adjacency_map.end()) {
       std::set<Position> empty;
-      adjacency_list[position] = empty;
+      adjacency_map[position] = empty;
     }
   }
 
@@ -22,7 +22,7 @@ struct Graph {
 
   void add_edge(Position key, Position value) {
     if (value != key) {
-      adjacency_list[key].insert(value);
+      adjacency_map[key].insert(value);
     }
   }
 
