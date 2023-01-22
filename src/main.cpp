@@ -141,6 +141,7 @@ int main(void) {
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
+  bool show_graph = true;
   int fps = 0;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
@@ -174,9 +175,10 @@ int main(void) {
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
     // Show corners and checkpoints
-    highlight_points(&hardcoded_waypoints, 2, renderer);
-
-    graph.render(renderer);
+    if (show_graph) {
+      highlight_points(&hardcoded_waypoints, 2, renderer);
+      graph.render(renderer);
+    }
 
     // render mob
     if (!monster.m_reached_end) {
