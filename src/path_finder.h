@@ -1,14 +1,15 @@
 #pragma once
 #include <map>
+#include <set>
 #include <vector>
 #include "geometry.h"
 
 struct Graph {
-  std::map<Position, std::vector<Position>> adjacency_list;
+  std::map<Position, std::set<Position>> adjacency_list;
 
   void add_vertex(Position position) {
     if (adjacency_list.find(position) != adjacency_list.end()) {
-      std::vector<Position> empty;
+      std::set<Position> empty;
       adjacency_list[position] = empty;
     }
   }
@@ -21,7 +22,7 @@ struct Graph {
 
   void add_edge(Position key, Position value) {
     if (value != key) {
-      adjacency_list[key].push_back(value);
+      adjacency_list[key].insert(value);
     }
   }
 
