@@ -70,14 +70,14 @@ int main(void) {
   Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
   Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
 
-  std::vector<Position> path{
+  std::vector<Position> hard_coded_waypoints{
       checkpoint1, corner1, corner2, corner3,
       corner4,     corner5, corner6, checkpoint2,
   };
   PositionGraph graph;
-  graph.add_vertices(&path);
+  graph.add_vertices(&hard_coded_waypoints);
   graph.add_edge(checkpoint1, checkpoint2);
-  graph.add_edges(corner1, &path);
+  graph.add_edges(corner1, &hard_coded_waypoints);
 
   SDL_Rect corners[] = {
       rect_around_point(corner1, 2), rect_around_point(corner2, 2),
@@ -101,6 +101,10 @@ int main(void) {
 
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
+  std::vector<Position> hard_coded_path{
+      checkpoint1, corner1, corner2, corner3,
+      corner4,     corner5, corner6, checkpoint2,
+  };
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
   int fps = 0;
@@ -141,7 +145,7 @@ int main(void) {
 
     // render mob
     if (!monster.m_reached_end) {
-      monster.follow_path(&path);
+      monster.follow_path(&hard_coded_path);
       monster.render(renderer);
     }
 
