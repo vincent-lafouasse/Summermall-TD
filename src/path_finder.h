@@ -7,8 +7,10 @@ struct Graph {
   std::map<Position, std::vector<Position>> adjacency_list;
 
   void add_vertex(Position position) {
-    std::vector<Position> empty;
-    adjacency_list[position] = empty;
+    if (adjacency_list.find(position) != adjacency_list.end()) {
+      std::vector<Position> empty;
+      adjacency_list[position] = empty;
+    }
   }
 
   void add_vertices(std::vector<Position>* positions) {
@@ -18,15 +20,14 @@ struct Graph {
   }
 
   void add_edge(Position key, Position value) {
-    adjacency_list[key].push_back(value);
+    if (!(value == key)) {
+      adjacency_list[key].push_back(value);
+    }
   }
 
   void add_edges(Position key, std::vector<Position>* values) {
     for (size_t i = 0; i < values->size(); i++) {
-      Position value = values->at(i);
-      if (value == key)
-        break;
-      add_edge(key, value);
+      add_edge(key, values->at(i));
     }
   }
 };
