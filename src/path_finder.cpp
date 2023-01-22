@@ -16,6 +16,7 @@ void PositionGraph::add_vertices(std::vector<Position>* positions) {
 void PositionGraph::add_edge(Position key, Position value) {
   if (value != key) {
     adjacency_map[key].insert(value);
+    adjacency_map[value].insert(key);
   }
 }
 
