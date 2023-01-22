@@ -73,8 +73,13 @@ int main(void) {
   };
   WaypointGraph graph;
   graph.add_vertices(&hardcoded_waypoints);
-  graph.add_edge(checkpoint1, checkpoint2);
-  graph.add_edges(corner1, &hardcoded_waypoints);
+  graph.add_edge(checkpoint1, corner1);
+  graph.add_edge(corner1, corner2);
+  graph.add_edge(corner2, corner3);
+  graph.add_edge(corner3, corner4);
+  graph.add_edge(corner4, corner5);
+  graph.add_edge(corner5, corner6);
+  graph.add_edge(checkpoint2, corner6);
 
   std::vector<Position> hardcoded_path{
       checkpoint1, corner1, corner2, corner3,
