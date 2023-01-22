@@ -15,3 +15,9 @@ struct WaypointGraph {
   void add_edges(Position key, std::vector<Position>* values);
   void render(SDL_Renderer* renderer);
 };
+
+std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
+                                             Position entrance,
+                                             Position exit);
+std::map<Position, uint64_t> setup_distance_map(WaypointGraph* graph,
+                                                Position entrance);

@@ -1,10 +1,35 @@
 #include "path_finder.h"
 #include <SDL2/SDL.h>
 #include <stdint.h>
+#include <queue>
 #include "render.h"
 
 #define INFINITE_DISTANCE UINT64_MAX
 // 1.8e19 (2^64 - 1)
+
+std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
+                                             Position entrance,
+                                             Position exit) {
+  // Create a distance map with infinite distance for all except entrance
+  std::map<Position, uint64_t> distance_map =
+      setup_distance_map(graph, entrance);
+  std::map<Position, Position> came_from;
+  std::priority_queue<Position, std::vector<Position>, std::greater<Position>>
+      queue;
+
+  Position current_node = entrance;
+}
+
+std::map<Position, uint64_t> setup_distance_map(WaypointGraph* graph,
+                                                Position entrance) {
+  auto adjacency_map = graph->adjacency_map;
+  std::map<Position, uint64_t> distance_map;
+  for (auto it = adjacency_map.begin(); it != adjacency_map.end(); ++it) {
+    distance_map[it->first] = INFINITE_DISTANCE;
+  }
+  distance_map[entrance] = 0;
+  return distance_map;
+}
 
 void WaypointGraph::add_vertex(Position position) {
   if (adjacency_map.find(position) != adjacency_map.end()) {
