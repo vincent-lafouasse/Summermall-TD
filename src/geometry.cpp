@@ -15,10 +15,14 @@ float line_angle(std::vector<Position>* line) {
   return angle += (delta_x < 0) * 180.0;
 }
 
-float euclidian_distance(Position a, Position b) {
+int squared_euclidian_distance(Position a, Position b) {
   int delta_x = a.x - b.x;
   int delta_y = a.y - b.y;
-  return sqrt(delta_x * delta_x + delta_y * delta_y);
+  return (delta_x * delta_x + delta_y * delta_y);
+}
+
+float euclidian_distance(Position a, Position b) {
+  return sqrt(squared_euclidian_distance(a, b));
 }
 
 static std::vector<Position> Bresenham_y_driving_axis(Position start,

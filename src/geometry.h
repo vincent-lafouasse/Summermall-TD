@@ -43,6 +43,7 @@ Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape);
 
 // Return the Euclidian distance between two Positions.
 float euclidian_distance(Position a, Position b);
+int squared_euclidian_distance(Position a, Position b);
 
 float line_angle(std::vector<Position>* line);
 
