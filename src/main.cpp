@@ -121,6 +121,7 @@ int main(void) {
   hardcoded_waypoints.push_back(node9);
   graph.add_edge(node9, corner6);
   graph.add_edge(node9, checkpoint2);
+  graph.add_edge(node9, node8);
 
   std::vector<Position> hardcoded_path{
       checkpoint1, corner1, corner2, corner3,
