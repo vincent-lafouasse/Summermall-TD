@@ -29,3 +29,13 @@ Dimension get_texture_shape(SDL_Texture* texture) {
   Dimension shape = {width, height};
   return shape;
 }
+
+void highlight_points(std::vector<Position>* points,
+                      int width,
+                      SDL_Renderer* renderer) {
+  for (size_t i = 0; i < points->size(); i++) {
+    SDL_Rect rect_around_point = {
+        points->at(i).x - width, points->at(i).y - width, 2 * width, 2 * width};
+    SDL_RenderDrawRect(renderer, &rect_around_point);
+  }
+}

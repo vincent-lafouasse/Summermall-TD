@@ -5,6 +5,7 @@
 #include "enemy.h"
 #include "map.h"
 #include "path_finder.h"
+#include "render.h"
 #include "render_map.h"
 
 #define SCREEN_WIDTH 800
@@ -20,10 +21,6 @@
 // loop.
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
-
-SDL_Rect rect_around_point(Position point, int width) {
-  return {point.x - width, point.y - width, 2 * width, 2 * width};
-}
 
 int main(void) {
   // Set up
@@ -70,24 +67,18 @@ int main(void) {
   Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
   Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
 
-  std::vector<Position> hard_coded_waypoints{
+  std::vector<Position> hardcoded_waypoints{
       checkpoint1, corner1, corner2, corner3,
       corner4,     corner5, corner6, checkpoint2,
   };
   PositionGraph graph;
-  graph.add_vertices(&hard_coded_waypoints);
+  graph.add_vertices(&hardcoded_waypoints);
   graph.add_edge(checkpoint1, checkpoint2);
-  graph.add_edges(corner1, &hard_coded_waypoints);
+  graph.add_edges(corner1, &hardcoded_waypoints);
 
-  SDL_Rect corners[] = {
-      rect_around_point(corner1, 2), rect_around_point(corner2, 2),
-      rect_around_point(corner3, 2), rect_around_point(corner4, 2),
-      rect_around_point(corner5, 2), rect_around_point(corner6, 2),
-  };
-
-  SDL_Rect checkpoints[] = {
-      rect_around_point(checkpoint1, 2),
-      rect_around_point(checkpoint2, 2),
+  std::vector<Position> hardcoded_path{
+      checkpoint1, corner1, corner2, corner3,
+      corner4,     corner5, corner6, checkpoint2,
   };
 
   // Load mob texture
@@ -101,10 +92,6 @@ int main(void) {
 
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
-  std::vector<Position> hard_coded_path{
-      checkpoint1, corner1, corner2, corner3,
-      corner4,     corner5, corner6, checkpoint2,
-  };
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
   int fps = 0;
@@ -140,12 +127,11 @@ int main(void) {
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
     // Show corners and checkpoints
-    SDL_RenderDrawRects(renderer, corners, 6);
-    SDL_RenderDrawRects(renderer, checkpoints, 2);
+    highlight_points(&hardcoded_waypoints, 2, renderer);
 
     // render mob
     if (!monster.m_reached_end) {
-      monster.follow_path(&hard_coded_path);
+      monster.follow_path(&hardcoded_path);
       monster.render(renderer);
     }
 

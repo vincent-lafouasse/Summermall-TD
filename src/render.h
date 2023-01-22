@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <vector>
 #include "geometry.h"
 
 // Give the position and shape of the tile numbered `tiled_id` in the tilesheet.
@@ -21,3 +22,7 @@ SDL_Rect make_tile_from_id(const int tile_id,
 //
 // @return A Dimension object containing the width and height of `texture`.
 Dimension get_texture_shape(SDL_Texture* texture);
+
+void highlight_points(std::vector<Position>* points,
+                      int width,
+                      SDL_Renderer* renderer);
