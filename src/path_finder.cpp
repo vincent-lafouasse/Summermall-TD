@@ -26,5 +26,3 @@ void WaypointGraph::add_edges(Position key, std::vector<Position>* values) {
     add_edge(key, values->at(i));
   }
 }
-
-void WaypointGraph::render(void) {}
