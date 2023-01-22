@@ -71,7 +71,7 @@ int main(void) {
       checkpoint1, corner1, corner2, corner3,
       corner4,     corner5, corner6, checkpoint2,
   };
-  PositionGraph graph;
+  WaypointGraph graph;
   graph.add_vertices(&hardcoded_waypoints);
   graph.add_edge(checkpoint1, checkpoint2);
   graph.add_edges(corner1, &hardcoded_waypoints);
@@ -128,6 +128,8 @@ int main(void) {
 
     // Show corners and checkpoints
     highlight_points(&hardcoded_waypoints, 2, renderer);
+
+    graph.render();
 
     // render mob
     if (!monster.m_reached_end) {
