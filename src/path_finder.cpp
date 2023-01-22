@@ -1,6 +1,10 @@
 #include "path_finder.h"
 #include <SDL2/SDL.h>
+#include <stdint.h>
 #include "render.h"
+
+#define INFINITE_DISTANCE UINT64_MAX
+// 1.8e19 (2^64 - 1)
 
 void WaypointGraph::add_vertex(Position position) {
   if (adjacency_map.find(position) != adjacency_map.end()) {
