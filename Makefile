@@ -22,23 +22,26 @@ CPPFLAGS := $(INC_FLAGS) -MMD -MP -Wall -Wextra -pedantic -std=c++17 -g
 
 # Linking
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	ln -sf $(shell pwd)/assets $(BUILD_DIR)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIB_SDL)
+	@echo "Linking"
+	@ln -sf $(shell pwd)/assets $(BUILD_DIR)
+	@$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIB_SDL)
 
 # Compile C 
 $(BUILD_DIR)/%.c.o: %.c
-	mkdir -p $(dir $@)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	@echo "Compiling $<"
+	@mkdir -p $(dir $@)
+	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Compile C++
 $(BUILD_DIR)/%.cpp.o: %.cpp
-	mkdir -p $(dir $@)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+	@echo "Compiling $<"
+	@mkdir -p $(dir $@)
+	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: run
 run: $(BUILD_DIR)/$(TARGET_EXEC)
 	@echo "\nrunning $(TARGET_EXEC) !\n"
-	$(BUILD_DIR)/$(TARGET_EXEC)
+	@$(BUILD_DIR)/$(TARGET_EXEC)
 
 ###############################################################################
 ########## TESTS ##########
@@ -74,7 +77,8 @@ $(T_BUILD_DIR)/%.cpp.o: %.cpp
 
 .PHONY: clean
 clean: 
-	$(RM) -r $(BUILD_DIR) $(T_BUILD_DIR)
+	@echo "Clean up"
+	@$(RM) -r $(BUILD_DIR) $(T_BUILD_DIR)
 
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those
