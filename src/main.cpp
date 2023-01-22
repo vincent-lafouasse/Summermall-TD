@@ -81,6 +81,45 @@ int main(void) {
   graph.add_edge(corner5, corner6);
   graph.add_edge(checkpoint2, corner6);
 
+  // bad waypoints to test path finder
+  Position node1 = pixel_pos_from_grid({4, 1}, tileshape);
+  hardcoded_waypoints.push_back(node1);
+  graph.add_edge(node1, checkpoint1);
+  graph.add_edge(node1, corner1);
+  Position node2 = pixel_pos_from_grid({19, 0}, tileshape);
+  hardcoded_waypoints.push_back(node2);
+  graph.add_edge(node2, checkpoint1);
+  graph.add_edge(node2, corner1);
+  graph.add_edge(node2, node1);
+  Position node3 = pixel_pos_from_grid({4, 3}, tileshape);
+  hardcoded_waypoints.push_back(node3);
+  graph.add_edge(node3, node1);
+  graph.add_edge(node3, corner1);
+  Position node4 = pixel_pos_from_grid({21, 3}, tileshape);
+  hardcoded_waypoints.push_back(node4);
+  graph.add_edge(node4, checkpoint1);
+  graph.add_edge(node4, corner1);
+  Position node5 = pixel_pos_from_grid({7, 5}, tileshape);
+  hardcoded_waypoints.push_back(node5);
+  graph.add_edge(node5, corner2);
+  graph.add_edge(node5, corner3);
+  Position node6 = pixel_pos_from_grid({15, 6}, tileshape);
+  hardcoded_waypoints.push_back(node6);
+  graph.add_edge(node6, corner2);
+  graph.add_edge(node6, corner3);
+  Position node7 = pixel_pos_from_grid({9, 9}, tileshape);
+  hardcoded_waypoints.push_back(node7);
+  graph.add_edge(node7, corner4);
+  graph.add_edge(node7, corner5);
+  Position node8 = pixel_pos_from_grid({5, 14}, tileshape);
+  hardcoded_waypoints.push_back(node8);
+  graph.add_edge(node8, corner6);
+  graph.add_edge(node8, checkpoint2);
+  Position node9 = pixel_pos_from_grid({13, 11}, tileshape);
+  hardcoded_waypoints.push_back(node9);
+  graph.add_edge(node9, corner6);
+  graph.add_edge(node9, checkpoint2);
+
   std::vector<Position> hardcoded_path{
       checkpoint1, corner1, corner2, corner3,
       corner4,     corner5, corner6, checkpoint2,
