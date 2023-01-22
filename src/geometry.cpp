@@ -134,6 +134,9 @@ Dimension Dimension::operator+(const Dimension& other) const {
 bool Position::operator<(const Position& other) const {
   return x < other.x || (x == other.x && y < other.y);
 }
+bool Position::operator>(const Position& other) const {
+  return x > other.x || (x == other.x && y > other.y);
+}
 bool Position::operator==(const Position& other) const {
   return (x == other.x) && (y == other.y);
 }
