@@ -44,11 +44,11 @@ void WaypointGraph::add_vertices(std::vector<Position>* positions) {
   }
 }
 
-void WaypointGraph::add_edge(Position key, Position value) {
-  if (value != key) {
-    adjacency_map[key].insert(value);
-    adjacency_map[value].insert(key);
-    edges_repr.push_back(get_Bresenham_line_between(key, value));
+void WaypointGraph::add_edge(Position node1, Position node2) {
+  if (node1 != node2) {
+    adjacency_map[node1].insert(node2);
+    adjacency_map[node2].insert(node1);
+    edges_repr.push_back(get_Bresenham_line_between(node1, node2));
   }
 }
 

@@ -11,7 +11,7 @@ struct WaypointGraph {
 
   void add_vertex(Position position);
   void add_vertices(std::vector<Position>* positions);
-  void add_edge(Position key, Position value);
+  void add_edge(Position node1, Position node2);
   void add_edges(Position key, std::vector<Position>* values);
   void render(SDL_Renderer* renderer);
 };
