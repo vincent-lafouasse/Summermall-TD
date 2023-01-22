@@ -20,7 +20,7 @@ struct Graph {
   }
 
   void add_edge(Position key, Position value) {
-    if (!(value == key)) {
+    if (value != key) {
       adjacency_list[key].push_back(value);
     }
   }

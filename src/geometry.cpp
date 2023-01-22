@@ -137,6 +137,9 @@ bool Position::operator<(const Position& other) const {
 bool Position::operator==(const Position& other) const {
   return (x == other.x) && (y == other.y);
 }
+bool Position::operator!=(const Position& other) const {
+  return (x != other.x) || (y != other.y);
+}
 Position Position::operator+(const Position& other) const {
   return Position(x + other.x, y + other.y);
 }
