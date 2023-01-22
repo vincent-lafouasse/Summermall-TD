@@ -108,6 +108,7 @@ int main(void) {
   hardcoded_waypoints.push_back(node6);
   graph.add_edge(node6, corner2);
   graph.add_edge(node6, corner3);
+  graph.add_edge(node6, node5);
   Position node7 = pixel_pos_from_grid({9, 9}, tileshape);
   hardcoded_waypoints.push_back(node7);
   graph.add_edge(node7, corner4);
