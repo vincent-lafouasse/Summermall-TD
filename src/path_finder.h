@@ -48,3 +48,4 @@ distance_t cost(Position from, Position to);
 std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
                                        Position entrance,
                                        Position exit);
+std::vector<std::vector<Position>> get_path_repr(std::vector<Position>* path);

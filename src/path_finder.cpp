@@ -97,3 +97,12 @@ void WaypointGraph::render(SDL_Renderer* renderer) {
     render_vector(&(edges_repr[i]), renderer);
   }
 }
+
+std::vector<std::vector<Position>> get_path_repr(std::vector<Position>* path) {
+  std::vector<std::vector<Position>> path_repr;
+  for (size_t i = 0; i < path->size() - 1; i++) {
+    path_repr.push_back(
+        get_Bresenham_line_between(path->at(i), path->at(i + 1)));
+  }
+  return path_repr;
+}

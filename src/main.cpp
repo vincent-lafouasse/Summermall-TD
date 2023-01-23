@@ -127,14 +127,13 @@ int main(void) {
       checkpoint1, corner1, corner2, corner3,
       corner4,     corner5, corner6, checkpoint2,
   };
+  std::vector<std::vector<Position>> hardcoded_path_repr =
+      get_path_repr(&hardcoded_path);
 
   std::vector<Position> dijkstra_path =
       Dijkstra_shortest_path(&graph, checkpoint1, checkpoint2);
-  std::vector<std::vector<Position>> djikstra_path_repr;
-  for (size_t i = 0; i < dijkstra_path.size() - 1; i++) {
-    djikstra_path_repr.push_back(
-        get_Bresenham_line_between(dijkstra_path[i], dijkstra_path[i + 1]));
-  }
+  std::vector<std::vector<Position>> dijkstra_path_repr =
+      get_path_repr(&dijkstra_path);
 
   // Load mob texture
   const char* basic_mob_path =
@@ -188,10 +187,16 @@ int main(void) {
       graph.render(renderer);
     }
 
+    // show hardcoded path
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    for (size_t i = 0; i < hardcoded_path_repr.size(); i++) {
+      render_vector(&(hardcoded_path_repr[i]), renderer);
+    }
+
     // show computed path
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    for (size_t i = 0; i < djikstra_path_repr.size(); i++) {
-      render_vector(&(djikstra_path_repr[i]), renderer);
+    for (size_t i = 0; i < dijkstra_path_repr.size(); i++) {
+      render_vector(&(dijkstra_path_repr[i]), renderer);
     }
 
     // render mob
