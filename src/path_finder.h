@@ -15,6 +15,12 @@ typedef uint64_t distance_t;
 #define INFINITE_DISTANCE UINT64_MAX
 // 1.8e19 (2^64 - 1)
 
+///
+// An unweighted undirected graph of Positions
+//
+// @field adjacency_map A classical adjacency list.
+// @field edges_repr    A vector of lines (vectors of Positions) representing
+//                      the edges. Used to render the graph.
 struct WaypointGraph {
   std::map<Position, std::set<Position>> adjacency_map;
   std::vector<std::vector<Position>> edges_repr;
@@ -65,9 +71,21 @@ struct PriorityQueue {
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit);
+
+// Create a map with each graph node as a key, with a value representing an
+// infinite distance. Infinite distance means that the node is not visited yet.
 std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph);
-distance_t distance(Position from, Position to);
+
+// Return the path from entrance to exit. Return an empty vector if the exit is
+// unattainable.
 std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
                                        Position entrance,
                                        Position exit);
+
+// From a vector of waypoints, return a vector of contiguous lines between the
+// waypoints.
 std::vector<std::vector<Position>> get_path_repr(std::vector<Position>* path);
+
+// Distance used in graph traversal.
+// Squared euclidian distance.
+distance_t distance(Position from, Position to);
