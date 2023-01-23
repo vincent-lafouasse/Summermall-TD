@@ -189,7 +189,7 @@ int main(void) {
     }
 
     // show computed path
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     for (size_t i = 0; i < djikstra_path_repr.size(); i++) {
       render_vector(&(djikstra_path_repr[i]), renderer);
     }
