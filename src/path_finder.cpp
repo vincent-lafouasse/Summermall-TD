@@ -2,9 +2,6 @@
 #include <SDL2/SDL.h>
 #include "render.h"
 
-#define INFINITE_DISTANCE UINT64_MAX
-// 1.8e19 (2^64 - 1)
-
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit) {

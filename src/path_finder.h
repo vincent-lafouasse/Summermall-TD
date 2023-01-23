@@ -8,6 +8,8 @@
 #include "geometry.h"
 
 #define distance_t uint64_t
+#define INFINITE_DISTANCE UINT64_MAX
+// 1.8e19 (2^64 - 1)
 
 struct WaypointGraph {
   std::map<Position, std::set<Position>> adjacency_map;
