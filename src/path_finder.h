@@ -7,6 +7,8 @@
 #include "SDL2/SDL.h"
 #include "geometry.h"
 
+#define distance_t uint64_t
+
 struct WaypointGraph {
   std::map<Position, std::set<Position>> adjacency_map;
   std::vector<std::vector<Position>> edges_repr;
@@ -19,14 +21,14 @@ struct WaypointGraph {
 };
 
 struct PriorityQueue {
-  typedef std::pair<uint64_t, Position> PQElement;
+  typedef std::pair<distance_t, Position> PQElement;
   std::
       priority_queue<PQElement, std::vector<PQElement>, std::greater<PQElement>>
           elements;
 
   inline bool empty() const { return elements.empty(); }
 
-  inline void put(Position item, uint64_t priority) {
+  inline void put(Position item, distance_t priority) {
     elements.emplace(priority, item);
   }
 
@@ -40,6 +42,6 @@ struct PriorityQueue {
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit);
-std::map<Position, uint64_t> setup_distance_map(WaypointGraph* graph,
+std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph,
                                                 Position entrance);
-uint64_t cost(Position from, Position to);
+distance_t cost(Position from, Position to);

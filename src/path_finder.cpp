@@ -11,23 +11,29 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
   using namespace std;
   vector<Position> path;
   // Create a distance map with infinite distance for all except entrance
-  map<Position, uint64_t> distance_map = setup_distance_map(graph, entrance);
+  map<Position, distance_t> distance_map = setup_distance_map(graph, entrance);
   map<Position, Position> came_from;
   PriorityQueue queue;
   queue.put(entrance, 0);
+	came_from[entrance] = entrance;
 
-  Position current_node = entrance;
+  while (!queue.empty()) {
+		Position current = queue.get();
+		if (current == exit) {
+			break;
+		}
+	}
 
   return path;
 }
 
-uint64_t cost(Position from, Position to) {
+distance_t cost(Position from, Position to) {
   return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y);
 }
-std::map<Position, uint64_t> setup_distance_map(WaypointGraph* graph,
+std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph,
                                                 Position entrance) {
   auto adjacency_map = graph->adjacency_map;
-  std::map<Position, uint64_t> distance_map;
+  std::map<Position, distance_t> distance_map;
   for (auto it = adjacency_map.begin(); it != adjacency_map.end(); ++it) {
     distance_map[it->first] = INFINITE_DISTANCE;
   }
