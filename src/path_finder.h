@@ -11,7 +11,7 @@
 // [Amit’s A* Pages From Red Blob
 // Games](http://theory.stanford.edu/~amitp/GameProgramming/)
 
-#define distance_t uint64_t
+typedef uint64_t distance_t;
 #define INFINITE_DISTANCE UINT64_MAX
 // 1.8e19 (2^64 - 1)
 
