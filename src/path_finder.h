@@ -44,7 +44,7 @@ struct WaypointGraph {
 // @method empty Return true if the queue is empty, false otherwise.
 // @method put   Taking a distance and a position, construct the std::pair,
 //               insert it in the queue and sort the queue.
-// @method get   Pop the top element and return its Position.
+// @method pop   Pop the top element and return its Position.
 struct PriorityQueue {
   typedef std::pair<distance_t, Position> PQElement;
   // distance goes first so that it's what primarely compared by std::greater.
@@ -61,7 +61,7 @@ struct PriorityQueue {
     elements.emplace(priority, item);
   }
 
-  Position get() {
+  Position pop() {
     Position best_item = elements.top().second;
     elements.pop();
     return best_item;

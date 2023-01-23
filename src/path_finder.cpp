@@ -15,7 +15,7 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
   queue.put(entrance, 0);
 
   while (!queue.empty()) {
-    Position current = queue.get();
+    Position current = queue.pop();
     set<Position> neighbours = graph->adjacency_map[current];
 
     for (Position candidate : neighbours) {
