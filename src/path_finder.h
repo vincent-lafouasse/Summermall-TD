@@ -7,6 +7,10 @@
 #include "SDL2/SDL.h"
 #include "geometry.h"
 
+// Special thanks go to Amit Patel redblobgames@gmail.com
+// [Amit’s A* Pages From Red Blob
+// Games](http://theory.stanford.edu/~amitp/GameProgramming/)
+
 #define distance_t uint64_t
 #define INFINITE_DISTANCE UINT64_MAX
 // 1.8e19 (2^64 - 1)
@@ -24,6 +28,17 @@ struct WaypointGraph {
 
 ///
 // A wrapper for std::priority_queue
+//
+// Made so that the method names follow the semantics and to hide the internals.
+//
+// @field elements The queue itself. It is made of std::pair<distance_t,
+//                 Position> elements ordered so that the element at the top is
+//                 the one with the smallest distance.
+//
+// @method empty Return true if the queue is empty, false otherwise.
+// @method put   Taking a distance and a position, construct the std::pair,
+//               insert it in the queue and sort the queue.
+// @method get   Pop the top element and return its Position.
 struct PriorityQueue {
   typedef std::pair<distance_t, Position> PQElement;
   // distance goes first so that it's what primarely compared by std::greater.
@@ -38,11 +53,9 @@ struct PriorityQueue {
 
   inline void put(Position item, distance_t priority) {
     elements.emplace(priority, item);
-    // `emplace` constructs, inserts and sorts
   }
 
   Position get() {
-    // Dequeue the top element, i.e. element with smallest distance
     Position best_item = elements.top().second;
     elements.pop();
     return best_item;
