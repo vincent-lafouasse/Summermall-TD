@@ -130,6 +130,7 @@ int main(void) {
   std::vector<std::vector<Position>> hardcoded_path_repr =
       get_path_repr(&hardcoded_path);
 
+  // Dijkstra path finding
   std::vector<Position> dijkstra_path =
       Dijkstra_shortest_path(&graph, checkpoint1, checkpoint2);
   std::vector<std::vector<Position>> dijkstra_path_repr =
@@ -197,7 +198,7 @@ int main(void) {
 
     // render mob
     if (!monster.m_reached_end) {
-      monster.follow_path(&hardcoded_path);
+      monster.follow_path(&dijkstra_path);
       monster.render(renderer);
     }
 
