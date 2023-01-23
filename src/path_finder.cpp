@@ -6,20 +6,20 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit) {
   using namespace std;
-  // Create a distance map with infinite distance for all except entrance
-  map<Position, distance_t> distance_map = setup_distance_map(graph, entrance);
+  // Create a distance map with infinite distance
+  map<Position, distance_t> distance_map = setup_distance_map(graph);
+  distance_map[entrance] = 0;
   map<Position, Position> came_from;
+  came_from[entrance] = entrance;
   PriorityQueue queue;
   queue.put(entrance, 0);
-  came_from[entrance] = entrance;
 
   while (!queue.empty()) {
     Position current = queue.get();
-
     set<Position> neighbours = graph->adjacency_map[current];
+
     for (Position next : neighbours) {
       distance_t new_cost = distance_map[current] + cost(current, next);
-      // if next not reached yet or next is a shorcut
       if (new_cost < distance_map[next]) {
         distance_map[next] = new_cost;
         came_from[next] = current;
@@ -51,14 +51,12 @@ std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
 distance_t cost(Position from, Position to) {
   return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y);
 }
-std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph,
-                                                  Position entrance) {
+std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph) {
   auto adjacency_map = graph->adjacency_map;
   std::map<Position, distance_t> distance_map;
   for (auto it = adjacency_map.begin(); it != adjacency_map.end(); ++it) {
     distance_map[it->first] = INFINITE_DISTANCE;
   }
-  distance_map[entrance] = 0;
   return distance_map;
 }
 

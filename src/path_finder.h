@@ -44,8 +44,7 @@ struct PriorityQueue {
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit);
-std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph,
-                                                  Position entrance);
+std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph);
 distance_t cost(Position from, Position to);
 std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
                                        Position entrance,
