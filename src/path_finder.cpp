@@ -18,16 +18,12 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
 
   while (!queue.empty()) {
     Position current = queue.get();
-    if (current == exit) {
-      break;
-    }
 
     set<Position> neighbours = graph->adjacency_map[current];
     for (Position next : neighbours) {
       distance_t new_cost = distance_map[current] + cost(current, next);
       // if next not reached yet or next is a shorcut
-      if (distance_map.find(next) == distance_map.end() ||
-          new_cost < distance_map[next]) {
+      if (new_cost < distance_map[next]) {
         distance_map[next] = new_cost;
         came_from[next] = current;
         queue.put(next, new_cost);
