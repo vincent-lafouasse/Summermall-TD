@@ -7,9 +7,9 @@
 #include "SDL2/SDL.h"
 #include "geometry.h"
 
-// Special thanks go to Amit Patel redblobgames@gmail.com
-// [Amit’s A* Pages From Red Blob
-// Games](http://theory.stanford.edu/~amitp/GameProgramming/)
+// Special thanks go to Amit Patel
+// [Amit’s A* Pages From Red Blob Games]
+// (http://theory.stanford.edu/~amitp/GameProgramming/)
 
 typedef uint64_t distance_t;
 #define INFINITE_DISTANCE UINT64_MAX
