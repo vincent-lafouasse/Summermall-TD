@@ -22,6 +22,8 @@ struct WaypointGraph {
   void render(SDL_Renderer* renderer);
 };
 
+///
+// A wrapper for std::priority_queue
 struct PriorityQueue {
   typedef std::pair<distance_t, Position> PQElement;
   // distance goes first so that it's what primarely compared by std::greater.
