@@ -1,6 +1,5 @@
 #include "path_finder.h"
 #include <SDL2/SDL.h>
-#include <stdint.h>
 #include <queue>
 #include "render.h"
 
@@ -10,16 +9,21 @@
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit) {
+  using namespace std;
+  vector<Position> path;
   // Create a distance map with infinite distance for all except entrance
-  std::map<Position, uint64_t> distance_map =
-      setup_distance_map(graph, entrance);
-  std::map<Position, Position> came_from;
-  std::priority_queue<Position, std::vector<Position>, std::greater<Position>>
-      queue;
+  map<Position, uint64_t> distance_map = setup_distance_map(graph, entrance);
+  map<Position, Position> came_from;
+  priority_queue<Position, vector<Position>, greater<Position>> queue;
 
   Position current_node = entrance;
+
+  return path;
 }
 
+uint64_t cost(Position from, Position to) {
+  return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y);
+}
 std::map<Position, uint64_t> setup_distance_map(WaypointGraph* graph,
                                                 Position entrance) {
   auto adjacency_map = graph->adjacency_map;

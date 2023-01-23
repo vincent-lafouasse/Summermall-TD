@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 #include <map>
 #include <set>
 #include <vector>
@@ -21,3 +22,4 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position exit);
 std::map<Position, uint64_t> setup_distance_map(WaypointGraph* graph,
                                                 Position entrance);
+uint64_t cost(Position from, Position to);
