@@ -23,19 +23,24 @@ struct WaypointGraph {
 };
 
 struct PriorityQueue {
-  // distance goes first so that it's what compared by std::greater
   typedef std::pair<distance_t, Position> PQElement;
+  // distance goes first so that it's what primarely compared by std::greater.
+  // If distance is the same, they are then compared by position but we don't
+  // care about this
   std::
       priority_queue<PQElement, std::vector<PQElement>, std::greater<PQElement>>
           elements;
+  // std::greater so that the smallest element is at the top
 
   inline bool empty() const { return elements.empty(); }
 
   inline void put(Position item, distance_t priority) {
     elements.emplace(priority, item);
+    // `emplace` constructs, inserts and sorts
   }
 
   Position get() {
+    // Dequeue the top element, i.e. element with smallest distance
     Position best_item = elements.top().second;
     elements.pop();
     return best_item;
