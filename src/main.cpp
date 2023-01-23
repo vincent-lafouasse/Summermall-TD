@@ -189,15 +189,11 @@ int main(void) {
 
     // show hardcoded path
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    for (size_t i = 0; i < hardcoded_path_repr.size(); i++) {
-      render_vector(&(hardcoded_path_repr[i]), renderer);
-    }
+    render_path(&hardcoded_path_repr, renderer);
 
     // show computed path
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    for (size_t i = 0; i < dijkstra_path_repr.size(); i++) {
-      render_vector(&(dijkstra_path_repr[i]), renderer);
-    }
+    render_path(&dijkstra_path_repr, renderer);
 
     // render mob
     if (!monster.m_reached_end) {

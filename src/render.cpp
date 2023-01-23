@@ -50,3 +50,10 @@ void render_vector(std::vector<Position>* vec, SDL_Renderer* renderer) {
     render_point(vec->at(i), renderer);
   }
 }
+
+void render_path(std::vector<std::vector<Position>>* path,
+                 SDL_Renderer* renderer) {
+  for (size_t i = 0; i < path->size(); i++) {
+    render_vector(&(path->at(i)), renderer);
+  }
+}
