@@ -30,14 +30,17 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
     }
   }
 
-  vector<Position> empty;
-  bool exit_found = came_from.find(exit) != came_from.end();
-  return exit_found ? reconstruct_path(&came_from, entrance, exit) : empty;
+  return reconstruct_path(&came_from, entrance, exit);
 }
 
 std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
                                        Position entrance,
                                        Position exit) {
+  if (came_from->find(exit) != came_from->end()) {
+    std::vector<Position> empty;
+    return empty;
+  }
+
   std::vector<Position> path;
   Position current = exit;
 
