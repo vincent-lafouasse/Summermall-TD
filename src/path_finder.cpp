@@ -49,7 +49,9 @@ std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
 }
 
 distance_t cost(Position from, Position to) {
-  return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y);
+  distance_t delta_x = from.x - to.x;
+  distance_t delta_y = from.y - to.y;
+  return (delta_x * delta_x) + (delta_y * delta_y);
 }
 std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph) {
   auto adjacency_map = graph->adjacency_map;
