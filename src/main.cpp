@@ -147,10 +147,11 @@ int main(void) {
 
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
+  int fps = 0;
+
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
   bool show_graph = true;
-  int fps = 0;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
 
