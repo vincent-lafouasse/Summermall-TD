@@ -7,8 +7,8 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position exit) {
   using namespace std;
   // Create a distance map with infinite distance
-  map<Position, distance_t> distance_map = setup_distance_map(graph);
-  distance_map[entrance] = 0;
+  map<Position, distance_t> distance_from_entrance = setup_distance_map(graph);
+  distance_from_entrance[entrance] = 0;
   map<Position, Position> came_from;
   came_from[entrance] = entrance;
   PriorityQueue queue;
@@ -18,12 +18,13 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
     Position current = queue.get();
     set<Position> neighbours = graph->adjacency_map[current];
 
-    for (Position next : neighbours) {
-      distance_t new_cost = distance_map[current] + cost(current, next);
-      if (new_cost < distance_map[next]) {
-        distance_map[next] = new_cost;
-        came_from[next] = current;
-        queue.put(next, new_cost);
+    for (Position candidate : neighbours) {
+      distance_t new_cost =
+          distance_from_entrance[current] + cost(current, candidate);
+      if (new_cost < distance_from_entrance[candidate]) {
+        distance_from_entrance[candidate] = new_cost;
+        came_from[candidate] = current;
+        queue.put(candidate, new_cost);
       }
     }
   }
