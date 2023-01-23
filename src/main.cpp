@@ -128,6 +128,14 @@ int main(void) {
       corner4,     corner5, corner6, checkpoint2,
   };
 
+  std::vector<Position> dijkstra_path =
+      Dijkstra_shortest_path(&graph, checkpoint1, checkpoint2);
+  std::vector<std::vector<Position>> djikstra_path_repr;
+  for (size_t i = 0; i < dijkstra_path.size() - 1; i++) {
+    djikstra_path_repr.push_back(
+        get_Bresenham_line_between(dijkstra_path[i], dijkstra_path[i + 1]));
+  }
+
   // Load mob texture
   const char* basic_mob_path =
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
@@ -178,6 +186,12 @@ int main(void) {
     if (show_graph) {
       highlight_points(&hardcoded_waypoints, 2, renderer);
       graph.render(renderer);
+    }
+
+    // show computed path
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    for (size_t i = 0; i < djikstra_path_repr.size(); i++) {
+      render_vector(&(djikstra_path_repr[i]), renderer);
     }
 
     // render mob
