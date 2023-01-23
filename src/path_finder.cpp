@@ -19,12 +19,12 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
     set<Position> neighbours = graph->adjacency_map[current];
 
     for (Position candidate : neighbours) {
-      distance_t new_cost =
-          distance_from_entrance[current] + cost(current, candidate);
-      if (new_cost < distance_from_entrance[candidate]) {
-        distance_from_entrance[candidate] = new_cost;
+      distance_t new_distance =
+          distance_from_entrance[current] + distance(current, candidate);
+      if (new_distance < distance_from_entrance[candidate]) {
+        distance_from_entrance[candidate] = new_distance;
         came_from[candidate] = current;
-        queue.put(candidate, new_cost);
+        queue.put(candidate, new_distance);
       }
     }
   }
@@ -49,7 +49,7 @@ std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
   return path;
 }
 
-distance_t cost(Position from, Position to) {
+distance_t distance(Position from, Position to) {
   distance_t delta_x = from.x - to.x;
   distance_t delta_y = from.y - to.y;
   return (delta_x * delta_x) + (delta_y * delta_y);
