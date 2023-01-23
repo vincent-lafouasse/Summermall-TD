@@ -23,6 +23,7 @@ struct WaypointGraph {
 };
 
 struct PriorityQueue {
+  // distance goes first so that it's what compared by std::greater
   typedef std::pair<distance_t, Position> PQElement;
   std::
       priority_queue<PQElement, std::vector<PQElement>, std::greater<PQElement>>
