@@ -46,13 +46,14 @@ struct WaypointGraph {
 //               insert it in the queue and sort the queue.
 // @method get   Pop the top element and return its Position.
 struct PriorityQueue {
-  typedef std::pair<distance_t, Position> PQElement;
+  typedef std::pair<distance_t, Position> PriorityQueueElement;
   // distance goes first so that it's what primarely compared by std::greater.
   // If distance is the same, they are then compared by position but we don't
   // care about this
-  std::
-      priority_queue<PQElement, std::vector<PQElement>, std::greater<PQElement>>
-          elements;
+  std::priority_queue<PriorityQueueElement,
+                      std::vector<PriorityQueueElement>,
+                      std::greater<PriorityQueueElement>>
+      elements;
   // std::greater so that the smallest element is at the top
 
   inline bool is_empty() const { return elements.empty(); }
@@ -68,6 +69,7 @@ struct PriorityQueue {
   }
 };
 
+// Return an empty vector if the exit is unattainable.
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit);
@@ -76,8 +78,7 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
 // infinite distance. Infinite distance means that the node is not visited yet.
 std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph);
 
-// Return the path from entrance to exit. Return an empty vector if the exit is
-// unattainable.
+// Return the path from entrance to exit.
 std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
                                        Position entrance,
                                        Position exit);
