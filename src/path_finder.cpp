@@ -5,6 +5,9 @@
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit) {
+  // Reference:
+  // https://www.redblobgames.com/pathfinding/a-star/implementation.html#cpp-dijkstra
+
   using namespace std;
   // Create a distance map with infinite distance for all graph nodes
   map<Position, distance_t> distance_from_entrance = setup_distance_map(graph);
