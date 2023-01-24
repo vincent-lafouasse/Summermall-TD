@@ -12,10 +12,9 @@
 #define SCREEN_HEIGHT 1440
 #define SCREEN_X_POS 0
 #define SCREEN_Y_POS 0
-#define FPS_TARGET_FPS 60.
+#define TARGET_FPS 60.
 
-// Regulate the fps to not exceed `FPS_TARGET_FPS` and return its estimated
-// value.
+// Regulate the fps to not exceed `TARGET_FPS` and return its estimated value.
 //
 // @param tick_start The tick given by `SDL_GetTicks()` at the start of game
 // loop.
@@ -206,7 +205,7 @@ int main(void) {
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
-    // Regulate fps to FPS_TARGET_FPS and estimate its actual value
+    // Regulate fps to TARGET_FPS and estimate its actual value
     fps = fps_regulate_fps(tick_start);
   }
   // End of game loop ----------------------------------------------------------
@@ -235,8 +234,8 @@ int fps_regulate_fps(Uint32 tick_start) {
   float ms_per_frame = (float)(tick_end - tick_start);
   float frame_per_s = 1 / (ms_per_frame / 1000.);
 
-  if (frame_per_s > FPS_TARGET_FPS) {
-    float ms_to_wait = ((1. / FPS_TARGET_FPS) - (1. / frame_per_s)) * 1000;
+  if (frame_per_s > TARGET_FPS) {
+    float ms_to_wait = ((1. / TARGET_FPS) - (1. / frame_per_s)) * 1000;
     SDL_Delay(ms_to_wait);
   }
 
