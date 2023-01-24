@@ -184,17 +184,18 @@ int main(void) {
     // Render map
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
-    // Show graph in red
+    // Show graph in black
     if (show_graph) {
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
       highlight_points(&hardcoded_waypoints, 2, renderer);
       graph.render(renderer);
     }
 
-    // Show hardcoded path in blue and computed path in black
+    // Show hardcoded path in blue and computed path in red
     if (show_paths) {
       SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
       render_path(&hardcoded_path_repr, renderer);
-      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
       render_path(&dijkstra_path_repr, renderer);
     }
 
