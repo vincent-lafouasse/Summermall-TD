@@ -46,13 +46,15 @@ struct WaypointGraph {
 //                  insert it in the queue and sort the queue.
 // @method pop      Pop the top element and return its Position.
 struct PriorityQueue {
-  typedef std::pair<distance_t, Position> PQElement;
+  typedef std::pair<distance_t, Position> PriorityQueueElement;
   // distance goes first so that it's what primarely compared by std::greater.
   // If distance is the same, they are then compared by position but we don't
   // care about this
-  std::
-      priority_queue<PQElement, std::vector<PQElement>, std::greater<PQElement>>
-          elements;
+  std::priority_queue<PriorityQueueElement,
+                      std::vector<PriorityQueueElement>,
+                      std::greater<PriorityQueueElement>>
+      elements;
+  // Parameters are queue element type, container and sorting order
   // std::greater so that the smallest element is at the top
 
   inline bool is_empty() const { return elements.empty(); }
@@ -86,6 +88,6 @@ std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
 // waypoints.
 std::vector<std::vector<Position>> get_path_repr(std::vector<Position>* path);
 
-// Distance used in graph traversal.
+// Cost used in graph traversal.
 // Squared euclidian distance.
 distance_t distance(Position from, Position to);
