@@ -151,6 +151,7 @@ int main(void) {
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
   bool show_graph = true;
+  bool show_paths = true;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
 
@@ -182,19 +183,20 @@ int main(void) {
     // Render map
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
-    // Show corners and checkpoints
+    // Show graph in red
     if (show_graph) {
       highlight_points(&hardcoded_waypoints, 2, renderer);
       graph.render(renderer);
     }
 
-    // show hardcoded path
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    render_path(&hardcoded_path_repr, renderer);
+    // show hardcoded path in blue and computed path in black
+    if (show_paths) {
+      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+      render_path(&hardcoded_path_repr, renderer);
 
-    // show computed path
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    render_path(&dijkstra_path_repr, renderer);
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      render_path(&dijkstra_path_repr, renderer);
+    }
 
     // render mob
     if (!monster.m_reached_end) {
