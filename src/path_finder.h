@@ -55,7 +55,7 @@ struct PriorityQueue {
           elements;
   // std::greater so that the smallest element is at the top
 
-  inline bool empty() const { return elements.empty(); }
+  inline bool is_empty() const { return elements.empty(); }
 
   inline void put(Position item, distance_t priority) {
     elements.emplace(priority, item);
