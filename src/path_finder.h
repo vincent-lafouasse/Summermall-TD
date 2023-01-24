@@ -62,7 +62,7 @@ struct PriorityQueue {
     elements.emplace(priority, item);
   }
 
-  Position get() {
+  Position pop() {
     Position best_item = elements.top().second;
     elements.pop();
     return best_item;
