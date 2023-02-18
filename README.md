@@ -1,7 +1,6 @@
 # Summermall Tower Defense
 
-A mazing tower defense game inspired by Wintermaul TD. Written basically in C
-with minimal C++ features.
+A mazing tower defense game inspired by Wintermaul TD. Written basically in C with a conservative use of C++ features for convenience.
 
 ## Build and run
 
