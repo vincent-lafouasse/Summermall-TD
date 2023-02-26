@@ -59,7 +59,7 @@ std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
 distance_t distance(Position from, Position to) {
   distance_t delta_x = from.x - to.x;
   distance_t delta_y = from.y - to.y;
-  return (delta_x * delta_x) + (delta_y * delta_y);
+  return sqrt((delta_x * delta_x) + (delta_y * delta_y));
 }
 
 std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph) {
