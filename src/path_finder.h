@@ -54,7 +54,7 @@ struct PriorityQueue {
                       std::vector<PriorityQueueElement>,
                       std::greater<PriorityQueueElement>>
       elements;
-  // std::greater so that the smallest element is at the top
+  // std::greater so that pop returns the element with the smallest distance
 
   inline bool is_empty() const { return elements.empty(); }
 
