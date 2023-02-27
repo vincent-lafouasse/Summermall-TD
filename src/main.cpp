@@ -161,7 +161,11 @@ int main(void) {
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
   Position cursor = {0, 0};
-  cursor.print();
+  const Dimension cursor_shape_tl = {1, 1};
+  const Dimension cursor_shape_px = {
+      cursor_shape_tl.w * tileshape.w,
+      cursor_shape_tl.h * tileshape.h,
+  };
 
   int fps = 0;
 
@@ -186,7 +190,7 @@ int main(void) {
               printf("FPS: %i\n", fps);
               break;
             case SDLK_RIGHT:
-              if (cursor.x < map_shape_in_tiles.w - 1) {
+              if ((cursor.x + cursor_shape_tl.w) < map_shape_in_tiles.w) {
                 cursor.x++;
               }
               break;
@@ -196,7 +200,7 @@ int main(void) {
               }
               break;
             case SDLK_DOWN:
-              if (cursor.y < map_shape_in_tiles.h - 1) {
+              if ((cursor.y + cursor_shape_tl.h) < map_shape_in_tiles.h) {
                 cursor.y++;
               }
               break;
@@ -228,7 +232,7 @@ int main(void) {
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    render_cursor(cursor, tileshape, renderer);
+    render_cursor(cursor, cursor_shape_px, renderer);
 
     // Show hardcoded path in blue and computed path in red
     if (show_paths) {
