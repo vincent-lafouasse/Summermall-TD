@@ -161,7 +161,8 @@ int main(void) {
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
   Position cursor_tl = {0, 0};
-  const Dimension cursor_shape_tl = {1, 1};
+  int cursor_size = 1;
+  const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape = {
       cursor_shape_tl.w * tileshape.w,
       cursor_shape_tl.h * tileshape.h,
