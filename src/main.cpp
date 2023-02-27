@@ -147,6 +147,9 @@ int main(void) {
 
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
+  Position cursor = {0, 0};
+  cursor.print();
+
   int fps = 0;
 
   // Game loop -----------------------------------------------------------------
@@ -190,6 +193,9 @@ int main(void) {
       highlight_points(&hardcoded_waypoints, 2, renderer);
       graph.render(renderer);
     }
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    render_cursor(cursor, tileshape, renderer);
 
     // Show hardcoded path in blue and computed path in red
     if (show_paths) {

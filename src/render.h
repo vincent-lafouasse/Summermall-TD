@@ -30,3 +30,6 @@ void highlight_points(std::vector<Position>* points,
 void render_vector(std::vector<Position>* vec, SDL_Renderer* renderer);
 void render_path(std::vector<std::vector<Position>>* path,
                  SDL_Renderer* rendere);
+void render_cursor(Position cursor,
+                   Dimension tileshape,
+                   SDL_Renderer* renderer);
