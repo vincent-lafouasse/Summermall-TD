@@ -52,16 +52,20 @@ int main(void) {
       "assets/maps/basic_1P_obstacles.tmx";
   const Map basic_1P_obstacles_map =
       parse_map_from_tmx(basic_1P_obstacles_tmx_path);
+  const char* basic_1P_map_tmx_path = "assets/maps/basic_1P.tmx";
+  const Map basic_1P_map = parse_map_from_tmx(basic_1P_map_tmx_path);
 
-  const Dimension tileshape = basic_1P_obstacles_map.src_tileshape;
-  const Dimension map_shape_tl = basic_1P_obstacles_map.shape;
+  const Map map = basic_1P_map;
+
+  const Dimension tileshape = map.src_tileshape;
+  const Dimension map_shape_tl = map.shape;
   const Dimension map_shape = {
       map_shape_tl.w * tileshape.w,
       map_shape_tl.h * tileshape.h,
   };
 
-  SDL_Texture* static_map_texture = make_static_map_texture(
-      &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
+  SDL_Texture* static_map_texture =
+      make_static_map_texture(&map, tilesheet, tileshape, renderer);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
