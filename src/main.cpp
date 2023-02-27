@@ -22,6 +22,14 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
+int max(int a, int b) {
+  return a > b ? a : b;
+}
+
+int min(int a, int b) {
+  return a < b ? a : b;
+}
+
 int main(void) {
   // Set up
   SDL_Window* window =
@@ -53,6 +61,11 @@ int main(void) {
       parse_map_from_tmx(basic_1P_obstacles_tmx_path);
 
   const Dimension tileshape = basic_1P_obstacles_map.src_tileshape;
+  const Dimension map_shape_in_tiles = basic_1P_obstacles_map.shape;
+  const Dimension map_shape = {
+      map_shape_in_tiles.w * tileshape.w,
+      map_shape_in_tiles.h * tileshape.h,
+  };
 
   SDL_Texture* static_map_texture = make_static_map_texture(
       &basic_1P_obstacles_map, tilesheet, tileshape, renderer);
@@ -171,6 +184,26 @@ int main(void) {
           switch (event.key.keysym.sym) {
             case SDLK_p:
               printf("FPS: %i\n", fps);
+              break;
+            case SDLK_RIGHT:
+              if (cursor.x < map_shape_in_tiles.w - 1) {
+                cursor.x++;
+              }
+              break;
+            case SDLK_LEFT:
+              if (cursor.x > 0) {
+                cursor.x--;
+              }
+              break;
+            case SDLK_DOWN:
+              if (cursor.y < map_shape_in_tiles.h - 1) {
+                cursor.y++;
+              }
+              break;
+            case SDLK_UP:
+              if (cursor.y > 0) {
+                cursor.y--;
+              }
               break;
           }
           break;
