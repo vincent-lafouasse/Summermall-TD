@@ -22,14 +22,6 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
-int max(int a, int b) {
-  return a > b ? a : b;
-}
-
-int min(int a, int b) {
-  return a < b ? a : b;
-}
-
 int main(void) {
   // Set up
   SDL_Window* window =
