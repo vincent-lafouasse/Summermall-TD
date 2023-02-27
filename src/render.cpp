@@ -60,8 +60,9 @@ void render_path(std::vector<std::vector<Position>>* path,
 
 void render_cursor(Position cursor,
                    Dimension cursor_shape,
+                   Dimension tileshape,
                    SDL_Renderer* renderer) {
-  SDL_Rect cursor_rect = {cursor.x * cursor_shape.w, cursor.y * cursor_shape.h,
+  SDL_Rect cursor_rect = {cursor.x * tileshape.w, cursor.y * tileshape.h,
                           cursor_shape.w, cursor_shape.h};
   SDL_RenderDrawRect(renderer, &cursor_rect);
 }

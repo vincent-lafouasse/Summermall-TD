@@ -161,7 +161,7 @@ int main(void) {
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
   Position cursor_tl = {0, 0};
-  int cursor_size = 1;
+  int cursor_size = 2;
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape = {
       cursor_shape_tl.w * tileshape.w,
@@ -233,7 +233,7 @@ int main(void) {
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    render_cursor(cursor_tl, cursor_shape, renderer);
+    render_cursor(cursor_tl, cursor_shape, tileshape, renderer);
 
     // Show hardcoded path in blue and computed path in red
     if (show_paths) {

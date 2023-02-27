@@ -32,4 +32,5 @@ void render_path(std::vector<std::vector<Position>>* path,
                  SDL_Renderer* rendere);
 void render_cursor(Position cursor,
                    Dimension cursor_shape,
+                   Dimension tileshape,
                    SDL_Renderer* renderer);
