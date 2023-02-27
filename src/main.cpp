@@ -187,6 +187,9 @@ int main(void) {
             case SDLK_p:
               printf("FPS: %i\n", fps);
               break;
+            case SDLK_l:
+              cursor_tl.print();
+              break;
             case SDLK_RIGHT:
               if ((cursor_tl.x + cursor_shape_tl.w) < map_shape_tl.w) {
                 cursor_tl.x++;
