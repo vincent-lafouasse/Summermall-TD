@@ -61,10 +61,10 @@ int main(void) {
       parse_map_from_tmx(basic_1P_obstacles_tmx_path);
 
   const Dimension tileshape = basic_1P_obstacles_map.src_tileshape;
-  const Dimension map_shape_in_tiles = basic_1P_obstacles_map.shape;
+  const Dimension map_shape_tl = basic_1P_obstacles_map.shape;
   const Dimension map_shape = {
-      map_shape_in_tiles.w * tileshape.w,
-      map_shape_in_tiles.h * tileshape.h,
+      map_shape_tl.w * tileshape.w,
+      map_shape_tl.h * tileshape.h,
   };
 
   SDL_Texture* static_map_texture = make_static_map_texture(
@@ -160,9 +160,9 @@ int main(void) {
 
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
-  Position cursor = {0, 0};
+  Position cursor_tl = {0, 0};
   const Dimension cursor_shape_tl = {1, 1};
-  const Dimension cursor_shape_px = {
+  const Dimension cursor_shape = {
       cursor_shape_tl.w * tileshape.w,
       cursor_shape_tl.h * tileshape.h,
   };
@@ -190,23 +190,23 @@ int main(void) {
               printf("FPS: %i\n", fps);
               break;
             case SDLK_RIGHT:
-              if ((cursor.x + cursor_shape_tl.w) < map_shape_in_tiles.w) {
-                cursor.x++;
+              if ((cursor_tl.x + cursor_shape_tl.w) < map_shape_tl.w) {
+                cursor_tl.x++;
               }
               break;
             case SDLK_LEFT:
-              if (cursor.x > 0) {
-                cursor.x--;
+              if (cursor_tl.x > 0) {
+                cursor_tl.x--;
               }
               break;
             case SDLK_DOWN:
-              if ((cursor.y + cursor_shape_tl.h) < map_shape_in_tiles.h) {
-                cursor.y++;
+              if ((cursor_tl.y + cursor_shape_tl.h) < map_shape_tl.h) {
+                cursor_tl.y++;
               }
               break;
             case SDLK_UP:
-              if (cursor.y > 0) {
-                cursor.y--;
+              if (cursor_tl.y > 0) {
+                cursor_tl.y--;
               }
               break;
           }
@@ -232,7 +232,7 @@ int main(void) {
     }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    render_cursor(cursor, cursor_shape_px, renderer);
+    render_cursor(cursor_tl, cursor_shape, renderer);
 
     // Show hardcoded path in blue and computed path in red
     if (show_paths) {
