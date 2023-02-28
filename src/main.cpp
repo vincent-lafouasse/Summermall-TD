@@ -87,6 +87,9 @@ int main(void) {
 
   Tower tower(tower_position, tower_shape, block_tower_texture);
 
+  std::vector<Tower> towers;
+  towers.push_back(tower);
+
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
   Position checkpoint2 = pixel_pos_from_grid({13, 23}, tileshape);
@@ -269,7 +272,9 @@ int main(void) {
       monster.render(renderer);
     }
 
-    tower.render(renderer);
+    for (size_t i = 0; i < towers.size(); ++i) {
+      (towers[i]).render(renderer);
+    }
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
