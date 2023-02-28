@@ -170,6 +170,7 @@ int main(void) {
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
   Position cursor_tl = {0, 0};
+  Position cursor;
   int cursor_size = 2;
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape = {
@@ -185,6 +186,7 @@ int main(void) {
   bool show_paths = true;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
+    cursor = pixel_pos_from_grid(cursor_tl, tileshape);
 
     // Get the next event
     SDL_Event event;
@@ -203,11 +205,18 @@ int main(void) {
               cursor_tl.print();
               break;
             case SDLK_q: {
-              Position cursor = pixel_pos_from_grid(cursor_tl, tileshape);
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
-                Tower tower(pixel_pos_from_grid(cursor_tl, tileshape),
-                            tower_shape, block_tower_texture);
+                Tower tower(cursor, tower_shape, block_tower_texture);
                 towers.push_back(tower);
+              }
+              break;
+            }
+            case SDLK_d: {
+              for (size_t i = 0; i < towers.size(); ++i) {
+                if (cursor == towers[i].m_position) {
+                  towers.erase(towers.begin() + i);
+                  break;
+                }
               }
               break;
             }
