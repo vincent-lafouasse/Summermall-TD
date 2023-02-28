@@ -13,4 +13,6 @@ class Tower {
   void render(SDL_Renderer* renderer);
 };
 
-bool can_put_tower_here(Position position, std::vector<Tower>* towers);
+bool can_put_tower_here(Position position,
+                        std::vector<Tower>* towers,
+                        Dimension tower_shape);

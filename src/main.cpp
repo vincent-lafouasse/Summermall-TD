@@ -203,9 +203,12 @@ int main(void) {
               cursor_tl.print();
               break;
             case SDLK_q: {
-              Tower tower(pixel_pos_from_grid(cursor_tl, tileshape),
-                          tower_shape, block_tower_texture);
-              towers.push_back(tower);
+              Position cursor = pixel_pos_from_grid(cursor_tl, tileshape);
+              if (can_put_tower_here(cursor, &towers, tower_shape)) {
+                Tower tower(pixel_pos_from_grid(cursor_tl, tileshape),
+                            tower_shape, block_tower_texture);
+                towers.push_back(tower);
+              }
               break;
             }
             case SDLK_RIGHT:
