@@ -72,23 +72,12 @@ int main(void) {
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile180.png";
   SDL_Texture* block_tower_texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_path));
-
-  Position tower_position_tl = {4, 3};
-  Position tower_position = {
-      tower_position_tl.x * tileshape.w,
-      tower_position_tl.y * tileshape.h,
-  };
-
   const int tower_size_tl = 2;
   const Dimension tower_shape = {
       tileshape.w * tower_size_tl,
       tileshape.h * tower_size_tl,
   };
-
-  Tower tower(tower_position, tower_shape, block_tower_texture);
-
   std::vector<Tower> towers;
-  towers.push_back(tower);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -213,6 +202,12 @@ int main(void) {
             case SDLK_l:
               cursor_tl.print();
               break;
+            case SDLK_q: {
+              Tower tower(pixel_pos_from_grid(cursor_tl, tileshape),
+                          tower_shape, block_tower_texture);
+              towers.push_back(tower);
+              break;
+            }
             case SDLK_RIGHT:
               if ((cursor_tl.x + cursor_shape_tl.w) < map_shape_tl.w) {
                 cursor_tl.x++;
