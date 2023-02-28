@@ -79,6 +79,21 @@ int main(void) {
   };
   std::vector<Tower> towers;
 
+  for (int i = 0; i < 8; ++i) {
+    Position tower_pos1 = pixel_pos_from_grid({4, 3}, tileshape);
+    Position tower_pos2 = pixel_pos_from_grid({5, 6}, tileshape);
+    Position tower_pos3 = pixel_pos_from_grid({4, 9}, tileshape);
+    tower_pos1.x += i * tower_shape.w;
+    tower_pos2.x += i * tower_shape.w;
+    tower_pos3.x += i * tower_shape.w;
+    Tower tower1(tower_pos1, tower_shape, block_tower_texture);
+    Tower tower2(tower_pos2, tower_shape, block_tower_texture);
+    Tower tower3(tower_pos3, tower_shape, block_tower_texture);
+    towers.push_back(tower1);
+    towers.push_back(tower2);
+    towers.push_back(tower3);
+  }
+
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
   Position checkpoint2 = pixel_pos_from_grid({13, 23}, tileshape);
