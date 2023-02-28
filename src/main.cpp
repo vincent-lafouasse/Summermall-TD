@@ -72,22 +72,20 @@ int main(void) {
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile180.png";
   SDL_Texture* block_tower_texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_path));
-  const int tower_size_tl = 2;
-  const Dimension tower_shape = {
-      tileshape.w * tower_size_tl,
-      tileshape.h * tower_size_tl,
-  };
+
   Position tower_position_tl = {4, 3};
   Position tower_position = {
       tower_position_tl.x * tileshape.w,
       tower_position_tl.y * tileshape.h,
   };
-  SDL_Rect tower_dst_rect = {
-      tower_position.x,
-      tower_position.y,
-      tower_shape.w,
-      tower_shape.h,
+
+  const int tower_size_tl = 2;
+  const Dimension tower_shape = {
+      tileshape.w * tower_size_tl,
+      tileshape.h * tower_size_tl,
   };
+
+  Tower tower(tower_position, tower_shape, block_tower_texture);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -271,7 +269,7 @@ int main(void) {
       monster.render(renderer);
     }
 
-    SDL_RenderCopy(renderer, block_tower_texture, NULL, &tower_dst_rect);
+    tower.render(renderer);
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 

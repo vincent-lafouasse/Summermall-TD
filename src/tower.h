@@ -4,8 +4,12 @@
 #include "geometry.h"
 
 class Tower {
-  Position position;
+ public:
+  Position m_position;
+  Dimension m_shape;
+  SDL_Texture* m_texture;
 
+  Tower(Position position, Dimension shape, SDL_Texture* texture);
   void render(SDL_Renderer* renderer);
 };
 
