@@ -48,10 +48,6 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
 
   // Load map
-  const char* basic_1P_obstacles_tmx_path =
-      "assets/maps/basic_1P_obstacles.tmx";
-  const Map basic_1P_obstacles_map =
-      parse_map_from_tmx(basic_1P_obstacles_tmx_path);
   const char* basic_1P_map_tmx_path = "assets/maps/basic_1P.tmx";
   const Map basic_1P_map = parse_map_from_tmx(basic_1P_map_tmx_path);
 
@@ -227,12 +223,7 @@ int main(void) {
               break;
             }
             case SDLK_d: {
-              for (size_t i = 0; i < towers.size(); ++i) {
-                if (cursor == towers[i].m_position) {
-                  towers.erase(towers.begin() + i);
-                  break;
-                }
-              }
+              delete_tower_at(cursor, &towers);
               break;
             }
             case SDLK_RIGHT:

@@ -15,6 +15,15 @@ bool can_put_tower_here(Position position,
   return true;
 }
 
+void delete_tower_at(Position position, std::vector<Tower>* towers) {
+  for (size_t i = 0; i < towers->size(); ++i) {
+    if (towers->at(i).m_position == position) {
+      towers->erase(towers->begin() + i);
+      break;
+    }
+  }
+}
+
 Tower::Tower(Position position, Dimension shape, SDL_Texture* texture) {
   m_position = position;
   m_shape = shape;
