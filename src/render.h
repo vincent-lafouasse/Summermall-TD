@@ -4,7 +4,7 @@
 #include <vector>
 #include "geometry.h"
 
-enum Color { BLACK, RED, BLUE };
+enum class Color { BLACK, RED, BLUE };
 
 void set_render_color(Color color, SDL_Renderer* renderer);
 

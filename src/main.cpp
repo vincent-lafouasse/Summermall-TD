@@ -42,10 +42,10 @@ int main(void) {
   }
 
   // Load tilesheet
-  const char* tilesheet_path =
+  const char* tilesheet_png_path =
       "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
   SDL_Texture* tilesheet =
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_path));
+      SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_png_path));
 
   // Load map
   const char* basic_1P_map_tmx_path = "assets/maps/basic_1P.tmx";
@@ -61,10 +61,10 @@ int main(void) {
       make_static_map_texture(&map, tilesheet, tileshape, renderer);
 
   // Load towers
-  const char* block_tower_path =
+  const char* block_tower_png_path =
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile180.png";
   SDL_Texture* block_tower_texture =
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_path));
+      SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_png_path));
   const int tower_size_tl = 2;
   const Dimension tower_shape = tileshape * tower_size_tl;
   std::vector<Tower> towers;
@@ -164,10 +164,10 @@ int main(void) {
       get_path_repr(&dijkstra_path);
 
   // Load mob texture
-  const char* basic_mob_path =
+  const char* basic_mob_png_path =
       "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
   SDL_Texture* basic_mob_texture =
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_path));
+      SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_png_path));
 
   const Dimension mob_shape = tileshape;
   Position mob_position = checkpoint1;
@@ -179,7 +179,7 @@ int main(void) {
   SDL_Texture* cursor_texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(cursor_png_path));
   Position cursor_tl = {0, 0};
-  Position cursor;
+  Position cursor = pixel_pos_from_grid(cursor_tl, tileshape);
   const int cursor_size = 2;
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape =
@@ -257,16 +257,16 @@ int main(void) {
 
     // Show graph in black
     if (show_graph) {
-      set_render_color(BLACK, renderer);
+      set_render_color(Color::BLACK, renderer);
       highlight_points(&hardcoded_waypoints, 2, renderer);
       graph.render(renderer);
     }
 
     // Show hardcoded path in blue and computed path in red
     if (show_paths) {
-      set_render_color(BLUE, renderer);
+      set_render_color(Color::BLUE, renderer);
       render_path(&hardcoded_path_repr, renderer);
-      set_render_color(RED, renderer);
+      set_render_color(Color::RED, renderer);
       render_path(&dijkstra_path_repr, renderer);
     }
 

@@ -30,14 +30,14 @@ void set_render_color(Color color, SDL_Renderer* renderer) {
   uint8_t blue = 0;
   uint8_t alpha = 255;
   switch (color) {
-    case BLACK: {
+    case Color::BLACK: {
       break;
     }
-    case RED: {
+    case Color::RED: {
       red = 255;
       break;
     }
-    case BLUE: {
+    case Color::BLUE: {
       blue = 255;
       break;
     }
