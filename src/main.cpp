@@ -259,8 +259,6 @@ int main(void) {
       }
     }
 
-    // Set the color to red
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
     // Render map
@@ -268,16 +266,16 @@ int main(void) {
 
     // Show graph in black
     if (show_graph) {
-      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      set_render_color(BLACK, renderer);
       highlight_points(&hardcoded_waypoints, 2, renderer);
       graph.render(renderer);
     }
 
     // Show hardcoded path in blue and computed path in red
     if (show_paths) {
-      SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+      set_render_color(BLUE, renderer);
       render_path(&hardcoded_path_repr, renderer);
-      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+      set_render_color(RED, renderer);
       render_path(&dijkstra_path_repr, renderer);
     }
 
@@ -290,7 +288,6 @@ int main(void) {
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
     }
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
     cursor_dst_rect = {cursor.x, cursor.y, cursor_shape.w, cursor_shape.h};
     SDL_RenderCopy(renderer, cursor_texture, NULL, &cursor_dst_rect);
     // Show the renderer contents

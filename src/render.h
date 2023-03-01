@@ -4,6 +4,10 @@
 #include <vector>
 #include "geometry.h"
 
+enum Color { BLACK, RED, BLUE };
+
+void set_render_color(Color color, SDL_Renderer* renderer);
+
 // Give the position and shape of the tile numbered `tiled_id` in the tilesheet.
 //
 // @param tile_id       The integer encoding the tile.

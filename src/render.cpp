@@ -1,4 +1,5 @@
 #include "render.h"
+#include <stdint.h>
 
 SDL_Rect make_tile_from_id(const int tile_id,
                            const Dimension src_tileshape,
@@ -21,6 +22,27 @@ SDL_Rect make_tile_from_id(const int tile_id,
   const int Y = pos_in_sheet.y * src_tileshape.h;
   const SDL_Rect tile = {X, Y, src_tileshape.w, src_tileshape.h};
   return tile;
+}
+
+void set_render_color(Color color, SDL_Renderer* renderer) {
+  uint8_t red = 0;
+  uint8_t green = 0;
+  uint8_t blue = 0;
+  uint8_t alpha = 255;
+  switch (color) {
+    case BLACK: {
+      break;
+    }
+    case RED: {
+      red = 255;
+      break;
+    }
+    case BLUE: {
+      blue = 255;
+      break;
+    }
+  }
+  SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
 }
 
 Dimension get_texture_shape(SDL_Texture* texture) {
