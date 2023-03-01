@@ -69,10 +69,7 @@ int main(void) {
   SDL_Texture* block_tower_texture =
       SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_path));
   const int tower_size_tl = 2;
-  const Dimension tower_shape = {
-      tileshape.w * tower_size_tl,
-      tileshape.h * tower_size_tl,
-  };
+  const Dimension tower_shape = tileshape * tower_size_tl;
   std::vector<Tower> towers;
 
   for (int i = 0; i < 8; ++i) {
@@ -186,7 +183,7 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(cursor_png_path));
   Position cursor_tl = {0, 0};
   Position cursor;
-  int cursor_size = 2;
+  const int cursor_size = 2;
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape = {
       cursor_shape_tl.w * tileshape.w,

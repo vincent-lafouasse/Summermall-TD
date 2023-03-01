@@ -13,6 +13,7 @@ struct Dimension {
   bool operator<(const Dimension& other) const;
   bool operator==(const Dimension& other) const;
   Dimension operator+(const Dimension& other) const;
+  Dimension operator*(const int& scalar) const;
 };
 
 struct Position {

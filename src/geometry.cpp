@@ -130,6 +130,9 @@ bool Dimension::operator==(const Dimension& other) const {
 Dimension Dimension::operator+(const Dimension& other) const {
   return Dimension(w + other.w, h + other.h);
 }
+Dimension Dimension::operator*(const int& scalar) const {
+  return Dimension(scalar * w, scalar * h);
+}
 
 bool Position::operator<(const Position& other) const {
   return x < other.x || (x == other.x && y < other.y);
