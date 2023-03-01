@@ -79,3 +79,11 @@ void render_path(std::vector<std::vector<Position>>* path,
     render_vector(&(path->at(i)), renderer);
   }
 }
+
+void render_cursor(Position position,
+                   Dimension shape,
+                   SDL_Texture* texture,
+                   SDL_Renderer* renderer) {
+  SDL_Rect dst_rect = {position.x, position.y, shape.w, shape.h};
+  SDL_RenderCopy(renderer, texture, NULL, &dst_rect);
+}

@@ -184,7 +184,6 @@ int main(void) {
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape =
       pixel_shape_from_grid(cursor_shape_tl, tileshape);
-  SDL_Rect cursor_dst_rect;
 
   int fps = 0;
 
@@ -280,8 +279,7 @@ int main(void) {
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
     }
-    cursor_dst_rect = {cursor.x, cursor.y, cursor_shape.w, cursor_shape.h};
-    SDL_RenderCopy(renderer, cursor_texture, NULL, &cursor_dst_rect);
+    render_cursor(cursor, cursor_shape, cursor_texture, renderer);
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
