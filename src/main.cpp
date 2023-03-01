@@ -55,10 +55,7 @@ int main(void) {
 
   const Dimension tileshape = map.src_tileshape;
   const Dimension map_shape_tl = map.shape;
-  const Dimension map_shape = {
-      map_shape_tl.w * tileshape.w,
-      map_shape_tl.h * tileshape.h,
-  };
+  const Dimension map_shape = pixel_shape_from_grid(map_shape_tl, tileshape);
 
   SDL_Texture* static_map_texture =
       make_static_map_texture(&map, tilesheet, tileshape, renderer);
@@ -185,10 +182,8 @@ int main(void) {
   Position cursor;
   const int cursor_size = 2;
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
-  const Dimension cursor_shape = {
-      cursor_shape_tl.w * tileshape.w,
-      cursor_shape_tl.h * tileshape.h,
-  };
+  const Dimension cursor_shape =
+      pixel_shape_from_grid(cursor_shape_tl, tileshape);
   SDL_Rect cursor_dst_rect;
 
   int fps = 0;

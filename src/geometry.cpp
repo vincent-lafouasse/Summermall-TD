@@ -113,8 +113,14 @@ int pos_2D_to_1D(Position position, int width) {
   return position.y * width + position.x;
 }
 
-Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape) {
-  return {grid_pos.x * tileshape.w, grid_pos.y * tileshape.h};
+Position pixel_pos_from_grid(Position position_tl, Dimension tileshape) {
+  return {position_tl.x * tileshape.w, position_tl.y * tileshape.h};
+}
+Dimension pixel_shape_from_grid(Dimension shape_tl, Dimension tileshape) {
+  return {
+      shape_tl.w * tileshape.w,
+      shape_tl.h * tileshape.h,
+  };
 }
 
 void Position::print(void) {

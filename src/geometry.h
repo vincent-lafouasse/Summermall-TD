@@ -42,7 +42,8 @@ struct Position {
 // @return A Position object containing the 2D coordinates.
 Position pos_1D_to_2D(int pos_1D, int width);
 int pos_2D_to_1D(Position position, int width);
-Position pixel_pos_from_grid(Position grid_pos, Dimension tileshape);
+Position pixel_pos_from_grid(Position position_tl, Dimension tileshape);
+Dimension pixel_shape_from_grid(Dimension shape_tl, Dimension tileshape);
 
 // Return the Euclidian distance between two Positions.
 float euclidian_distance(Position a, Position b);
