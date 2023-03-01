@@ -180,6 +180,10 @@ int main(void) {
 
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
+  const char* cursor_png_path =
+      "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile015.png";
+  SDL_Texture* cursor_texture =
+      SDL_CreateTextureFromSurface(renderer, IMG_Load(cursor_png_path));
   Position cursor_tl = {0, 0};
   Position cursor;
   int cursor_size = 2;
@@ -188,6 +192,7 @@ int main(void) {
       cursor_shape_tl.w * tileshape.w,
       cursor_shape_tl.h * tileshape.h,
   };
+  SDL_Rect cursor_dst_rect;
 
   int fps = 0;
 
@@ -268,9 +273,6 @@ int main(void) {
       graph.render(renderer);
     }
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    render_cursor(cursor_tl, cursor_shape, tileshape, renderer);
-
     // Show hardcoded path in blue and computed path in red
     if (show_paths) {
       SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
@@ -288,6 +290,9 @@ int main(void) {
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
     }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    cursor_dst_rect = {cursor.x, cursor.y, cursor_shape.w, cursor_shape.h};
+    SDL_RenderCopy(renderer, cursor_texture, NULL, &cursor_dst_rect);
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
@@ -301,6 +306,7 @@ int main(void) {
   SDL_DestroyTexture(static_map_texture);
   SDL_DestroyTexture(basic_mob_texture);
   SDL_DestroyTexture(block_tower_texture);
+  SDL_DestroyTexture(cursor_texture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
