@@ -81,37 +81,25 @@ int main(void) {
 
   for (int i = 0; i < 8; ++i) {
     Position tower_pos1 = pixel_pos_from_grid({4, 3}, tileshape);
-    Position tower_pos2 = pixel_pos_from_grid({5, 6}, tileshape);
-    Position tower_pos3 = pixel_pos_from_grid({4, 9}, tileshape);
     tower_pos1.x += i * tower_shape.w;
-    tower_pos2.x += i * tower_shape.w;
-    tower_pos3.x += i * tower_shape.w;
     Tower tower1(tower_pos1, tower_shape, block_tower_texture);
-    Tower tower2(tower_pos2, tower_shape, block_tower_texture);
-    Tower tower3(tower_pos3, tower_shape, block_tower_texture);
     towers.push_back(tower1);
+  }
+  for (int i = 0; i < 8; ++i) {
+    Position tower_pos2 = pixel_pos_from_grid({5, 6}, tileshape);
+    tower_pos2.x += i * tower_shape.w;
+    Tower tower2(tower_pos2, tower_shape, block_tower_texture);
     towers.push_back(tower2);
+  }
+  for (int i = 0; i < 8; ++i) {
+    Position tower_pos3 = pixel_pos_from_grid({4, 9}, tileshape);
+    tower_pos3.x += i * tower_shape.w;
+    Tower tower3(tower_pos3, tower_shape, block_tower_texture);
     towers.push_back(tower3);
   }
-
-  printf("we have %lu towers \n", towers.size());
-  printf("tower 0 is at ");
-  towers[0].m_position.print();
-  printf("tower 3 is at ");
-  towers[3].m_position.print();
-  printf("tower 6 is at ");
-  towers[6].m_position.print();
-
-  printf("tower 0 and 3 are connected: %s\n",
-         are_connected(towers[0], towers[3], tower_shape) ? "true" : "false");
-  printf("tower 6 and 3 are connected: %s\n",
-         are_connected(towers[6], towers[3], tower_shape) ? "true" : "false");
-  printf("tower 0 and 6 are connected: %s\n",
-         are_connected(towers[0], towers[6], tower_shape) ? "true" : "false");
-  printf("tower 6 and 8 are connected: %s\n",
-         are_connected(towers[6], towers[8], tower_shape) ? "true" : "false");
-  printf("tower 6 and 9 are connected: %s\n",
-         are_connected(towers[6], towers[9], tower_shape) ? "true" : "false");
+  for (size_t i = 0; i < towers.size(); i++) {
+    towers[i].m_position.print();
+  }
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
