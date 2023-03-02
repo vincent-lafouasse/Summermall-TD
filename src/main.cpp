@@ -232,7 +232,11 @@ int main(void) {
               printf("FPS: %i\n", fps);
               break;
             case SDLK_l:
+              printf("cursor gridwise position: ");
               cursor_tl.print();
+              printf("cursor pixel position: ");
+              cursor.print();
+              printf("\n");
               break;
             case SDLK_q: {
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
