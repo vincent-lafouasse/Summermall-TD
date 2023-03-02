@@ -28,7 +28,9 @@ bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
   int delta_y = tower1.m_position.y - tower2.m_position.y;
   delta_x = abs(delta_x);
   delta_y = abs(delta_y);
-  return (delta_x <= tower_shape.w && delta_y <= tower_shape.h);
+  return (delta_x <= tower_shape.w && delta_y <= tower_shape.h) &&
+         !(delta_x == 0 && delta_y == 0) &&
+         !(delta_x == tower_shape.w && delta_y == tower_shape.h);
 }
 
 std::vector<std::set<Tower>> find_connected_towers(std::vector<Tower>* towers,
