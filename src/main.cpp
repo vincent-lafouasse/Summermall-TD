@@ -28,9 +28,11 @@ bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
   int delta_y = tower1.m_position.y - tower2.m_position.y;
   delta_x = abs(delta_x);
   delta_y = abs(delta_y);
-  return (delta_x == tower_shape.w && delta_y == 0) ||
-         (delta_y == tower_shape.h && delta_x == 0);
+  return (delta_x <= tower_shape.w && delta_y <= tower_shape.h);
 }
+
+std::vector<std::set<Tower>> find_connected_towers(std::vector<Tower>* towers,
+                                                   Dimension tower_shape);
 
 int main(void) {
   // Set up
@@ -64,7 +66,7 @@ int main(void) {
 
   const Dimension tileshape = map.src_tileshape;
   const Dimension map_shape_tl = map.shape;
-  const Dimension map_shape = pixel_shape_from_grid(map_shape_tl, tileshape);
+  // const Dimension map_shape = pixel_shape_from_grid(map_shape_tl, tileshape);
 
   SDL_Texture* static_map_texture =
       make_static_map_texture(&map, tilesheet, tileshape, renderer);
