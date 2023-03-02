@@ -23,6 +23,16 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
+bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
+  int delta_x = tower1.m_position.x - tower2.m_position.x;
+  int delta_y = tower1.m_position.y - tower2.m_position.y;
+  delta_x /= tower_shape.w;
+  delta_y /= tower_shape.h;
+  delta_x = abs(delta_x);
+  delta_y = abs(delta_y);
+  return delta_x == 1 || delta_y == 1;
+}
+
 int main(void) {
   // Set up
   SDL_Window* window =
@@ -83,6 +93,25 @@ int main(void) {
     towers.push_back(tower2);
     towers.push_back(tower3);
   }
+
+  printf("we have %lu towers \n", towers.size());
+  printf("tower 0 is at ");
+  towers[0].m_position.print();
+  printf("tower 3 is at ");
+  towers[3].m_position.print();
+  printf("tower 6 is at ");
+  towers[6].m_position.print();
+
+  printf("tower 0 and 3 are connected: %s\n",
+         are_connected(towers[0], towers[3], tower_shape) ? "true" : "false");
+  printf("tower 6 and 3 are connected: %s\n",
+         are_connected(towers[6], towers[3], tower_shape) ? "true" : "false");
+  printf("tower 0 and 6 are connected: %s\n",
+         are_connected(towers[0], towers[6], tower_shape) ? "true" : "false");
+  printf("tower 6 and 8 are connected: %s\n",
+         are_connected(towers[6], towers[8], tower_shape) ? "true" : "false");
+  printf("tower 6 and 9 are connected: %s\n",
+         are_connected(towers[6], towers[9], tower_shape) ? "true" : "false");
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
