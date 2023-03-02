@@ -26,11 +26,10 @@ int fps_regulate_fps(Uint32 tick_start);
 bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
   int delta_x = tower1.m_position.x - tower2.m_position.x;
   int delta_y = tower1.m_position.y - tower2.m_position.y;
-  delta_x /= tower_shape.w;
-  delta_y /= tower_shape.h;
   delta_x = abs(delta_x);
   delta_y = abs(delta_y);
-  return delta_x == 1 || delta_y == 1;
+  return (delta_x == tower_shape.w && delta_y == 0) ||
+         (delta_y == tower_shape.h && delta_x == 0);
 }
 
 int main(void) {
@@ -99,6 +98,11 @@ int main(void) {
   }
   for (size_t i = 0; i < towers.size(); i++) {
     towers[i].m_position.print();
+  }
+  for (size_t i = 0; i < towers.size(); i++) {
+    size_t index = 1;
+    printf("are tower %lu and %lu connected ? %s\n", index, i,
+           are_connected(towers[index], towers[i], tower_shape) ? "yes" : "no");
   }
 
   // Hardcoded waypoints
