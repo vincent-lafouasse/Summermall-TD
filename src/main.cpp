@@ -65,6 +65,19 @@ std::vector<std::set<Position>> find_connected_towers(
   return tower_groups;
 }
 
+void print_tower_groups(std::vector<std::set<Position>>* tower_groups) {
+  printf("There are %lu tower groups\n", tower_groups->size());
+
+  for (size_t i = 0; i < tower_groups->size(); i++) {
+    std::set<Position> tower_group = tower_groups->at(i);
+    printf("tower group %lu:\n", i);
+    for (Position tower_position : tower_group) {
+      printf("\t");
+      tower_position.print();
+    }
+  }
+}
+
 int main(void) {
   // Set up
   SDL_Window* window =
@@ -144,16 +157,7 @@ int main(void) {
   std::vector<std::set<Position>> tower_groups =
       find_connected_towers(&towers, tower_shape);
 
-  printf("There are %lu tower groups\n", tower_groups.size());
-
-  for (size_t i = 0; i < tower_groups.size(); i++) {
-    std::set<Position> tower_group = tower_groups[i];
-    printf("tower group %lu:\n", i);
-    for (Position tower_position : tower_group) {
-      printf("\t");
-      tower_position.print();
-    }
-  }
+  print_tower_groups(&tower_groups);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -286,6 +290,11 @@ int main(void) {
               cursor.print();
               printf("\n");
               break;
+
+            case SDLK_c: {
+              tower_groups = find_connected_towers(&towers, tower_shape);
+              print_tower_groups(&tower_groups);
+            }
             case SDLK_q: {
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
                 Tower tower(cursor, tower_shape, block_tower_texture);
