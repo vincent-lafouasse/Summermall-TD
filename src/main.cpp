@@ -23,9 +23,9 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
-bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
-  int delta_x = tower1.m_position.x - tower2.m_position.x;
-  int delta_y = tower1.m_position.y - tower2.m_position.y;
+bool are_connected(Position tower1, Position tower2, Dimension tower_shape) {
+  int delta_x = tower1.x - tower2.x;
+  int delta_y = tower1.y - tower2.y;
   delta_x = abs(delta_x);
   delta_y = abs(delta_y);
   return (delta_x <= tower_shape.w && delta_y <= tower_shape.h) &&
@@ -33,8 +33,37 @@ bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
          !(delta_x == tower_shape.w && delta_y == tower_shape.h);
 }
 
-std::vector<std::set<Tower>> find_connected_towers(std::vector<Tower>* towers,
-                                                   Dimension tower_shape);
+std::vector<std::set<Position>> find_connected_towers(
+    std::vector<Tower>* towers,
+    Dimension tower_shape) {
+  std::vector<std::set<Position>> tower_groups;
+
+  for (size_t i = 0; i < towers->size(); i++) {
+    Tower tower = towers->at(i);
+    bool found_group = false;
+
+    for (size_t j = 0; j < tower_groups.size(); j++) {
+      for (Position candidate_tower : tower_groups[j]) {
+        if (are_connected(tower.m_position, candidate_tower, tower_shape)) {
+          found_group = true;
+          tower_groups[j].insert(tower.m_position);
+          break;
+        }
+      }
+      if (found_group) {
+        break;
+      }
+    }
+
+    if (!found_group) {
+      std::set<Position> new_group;
+      new_group.insert(tower.m_position);
+      tower_groups.push_back(new_group);
+    }
+  }
+
+  return tower_groups;
+}
 
 int main(void) {
   // Set up
@@ -106,7 +135,24 @@ int main(void) {
   for (size_t i = 0; i < towers.size(); i++) {
     size_t index = 1;
     printf("are tower %lu and %lu connected ? %s\n", index, i,
-           are_connected(towers[index], towers[i], tower_shape) ? "yes" : "no");
+           are_connected(towers[index].m_position, towers[i].m_position,
+                         tower_shape)
+               ? "yes"
+               : "no");
+  }
+
+  std::vector<std::set<Position>> tower_groups =
+      find_connected_towers(&towers, tower_shape);
+
+  printf("There are %lu tower groups\n", tower_groups.size());
+
+  for (size_t i = 0; i < tower_groups.size(); i++) {
+    std::set<Position> tower_group = tower_groups[i];
+    printf("tower group %lu:\n", i);
+    for (Position tower_position : tower_group) {
+      printf("\t");
+      tower_position.print();
+    }
   }
 
   // Hardcoded waypoints
