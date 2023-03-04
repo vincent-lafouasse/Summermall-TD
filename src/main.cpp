@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <list>
 #include "enemy.h"
 #include "map.h"
 #include "path_finder.h"
@@ -34,16 +35,32 @@ bool are_connected(Position tower1, Position tower2, Dimension tower_shape) {
 }
 
 std::set<Position> tower_neighbours(Position tower_position,
-                                    std::vector<Tower>* towers,
+                                    std::vector<Position>* towers,
                                     Dimension tower_shape) {
   std::set<Position> neighbours;
   for (size_t i = 0; i < towers->size(); i++) {
-    Position candidate_tower_position = towers->at(i).m_position;
+    Position candidate_tower_position = towers->at(i);
     if (are_connected(tower_position, candidate_tower_position, tower_shape)) {
       neighbours.insert(candidate_tower_position);
     }
   }
   return neighbours;
+}
+
+std::list<Position> position_vector_to_list(std::vector<Position>* vector) {
+  std::list<Position> list;
+  for (size_t i = 0; i < vector->size(); i++) {
+    list.push_back(vector->at(i));
+  }
+  return list;
+}
+
+std::vector<std::set<Position>> find_connected_towers(
+    std::vector<Position>* towers_,
+    Dimension tower_shape) {
+  std::vector<std::set<Position>> groups;
+  std::list<Position> towers = position_vector_to_list(towers_);
+  return groups;
 }
 
 void print_tower_groups(std::vector<std::set<Position>>* tower_groups) {
@@ -124,8 +141,13 @@ int main(void) {
     towers.push_back(tower3);
   }
 
+  std::vector<Position> tower_positions;
+  for (size_t i = 0; i < towers.size(); i++) {
+    tower_positions.push_back(towers[i].m_position);
+  }
+
   std::set<Position> neighbours_of_tower1 =
-      tower_neighbours(towers[1].m_position, &towers, tower_shape);
+      tower_neighbours(towers[1].m_position, &tower_positions, tower_shape);
 
   for (Position neighbour : neighbours_of_tower1) {
     printf("neighbour of tower 1 :");
