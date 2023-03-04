@@ -84,9 +84,24 @@ std::vector<std::set<Position>> find_connected_towers(
     std::vector<Position>* towers,
     Dimension tower_shape) {
   std::vector<std::set<Position>> groups;
-  std::list<Position> towers_to_process = position_vector_to_list(towers);
+  std::vector<Position> towers_to_process;
+  for (size_t i = 0; i < towers->size(); i++) {
+    towers_to_process.push_back(towers->at(i));
+  }
 
   while (!towers_to_process.empty()) {
+    Position seed_tower_position = towers_to_process.back();
+    std::set<Position> new_group = find_all_towers_connected_to(
+        seed_tower_position, &towers_to_process, tower_shape);
+    for (Position tower : new_group) {
+      for (size_t i = 0; i < towers_to_process.size(); i++) {
+        if (tower == towers_to_process[i]) {
+          towers_to_process.erase(towers_to_process.begin() + i);
+          break;
+        }
+      }
+    }
+    groups.push_back(new_group);
   }
 
   return groups;
@@ -195,6 +210,10 @@ int main(void) {
 
   printf("There are %lu towers connected to tower 0\n",
          towers_connected_to_tower0.size());
+
+  std::vector<std::set<Position>> tower_groups =
+      find_connected_towers(&tower_positions, tower_shape);
+  print_tower_groups(&tower_groups);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -329,11 +348,9 @@ int main(void) {
               break;
 
             case SDLK_c: {
-              towers_connected_to_tower0 = find_all_towers_connected_to(
-                  tower_positions[0], &tower_positions, tower_shape);
-
-              printf("There are %lu towers connected to tower 0\n",
-                     towers_connected_to_tower0.size());
+              tower_groups =
+                  find_connected_towers(&tower_positions, tower_shape);
+              print_tower_groups(&tower_groups);
               break;
             }
 
