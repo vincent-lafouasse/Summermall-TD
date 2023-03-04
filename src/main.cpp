@@ -33,36 +33,17 @@ bool are_connected(Position tower1, Position tower2, Dimension tower_shape) {
          !(delta_x == tower_shape.w && delta_y == tower_shape.h);
 }
 
-std::vector<std::set<Position>> find_connected_towers(
-    std::vector<Tower>* towers,
-    Dimension tower_shape) {
-  std::vector<std::set<Position>> tower_groups;
-
+std::set<Position> tower_neighbours(Position tower_position,
+                                    std::vector<Tower>* towers,
+                                    Dimension tower_shape) {
+  std::set<Position> neighbours;
   for (size_t i = 0; i < towers->size(); i++) {
-    Tower tower = towers->at(i);
-    bool found_group = false;
-
-    for (size_t j = 0; j < tower_groups.size(); j++) {
-      for (Position candidate_tower : tower_groups[j]) {
-        if (are_connected(tower.m_position, candidate_tower, tower_shape)) {
-          found_group = true;
-          tower_groups[j].insert(tower.m_position);
-          break;
-        }
-      }
-      if (found_group) {
-        break;
-      }
-    }
-
-    if (!found_group) {
-      std::set<Position> new_group;
-      new_group.insert(tower.m_position);
-      tower_groups.push_back(new_group);
+    Position candidate_tower_position = towers->at(i).m_position;
+    if (are_connected(tower_position, candidate_tower_position, tower_shape)) {
+      neighbours.insert(candidate_tower_position);
     }
   }
-
-  return tower_groups;
+  return neighbours;
 }
 
 void print_tower_groups(std::vector<std::set<Position>>* tower_groups) {
@@ -142,22 +123,14 @@ int main(void) {
     Tower tower3(tower_pos3, tower_shape, block_tower_texture);
     towers.push_back(tower3);
   }
-  for (size_t i = 0; i < towers.size(); i++) {
-    towers[i].m_position.print();
-  }
-  for (size_t i = 0; i < towers.size(); i++) {
-    size_t index = 1;
-    printf("are tower %lu and %lu connected ? %s\n", index, i,
-           are_connected(towers[index].m_position, towers[i].m_position,
-                         tower_shape)
-               ? "yes"
-               : "no");
-  }
 
-  std::vector<std::set<Position>> tower_groups =
-      find_connected_towers(&towers, tower_shape);
+  std::set<Position> neighbours_of_tower1 =
+      tower_neighbours(towers[1].m_position, &towers, tower_shape);
 
-  print_tower_groups(&tower_groups);
+  for (Position neighbour : neighbours_of_tower1) {
+    printf("neighbour of tower 1 :");
+    neighbour.print();
+  }
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -291,10 +264,12 @@ int main(void) {
               printf("\n");
               break;
 
-            case SDLK_c: {
-              tower_groups = find_connected_towers(&towers, tower_shape);
-              print_tower_groups(&tower_groups);
-            }
+              /*
+case SDLK_c: {
+tower_groups = find_connected_towers(&towers, tower_shape);
+print_tower_groups(&tower_groups);
+}
+      */
             case SDLK_q: {
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
                 Tower tower(cursor, tower_shape, block_tower_texture);
