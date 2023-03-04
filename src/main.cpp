@@ -55,6 +55,31 @@ std::list<Position> position_vector_to_list(std::vector<Position>* vector) {
   return list;
 }
 
+std::set<Position> find_all_towers_connected_to(
+    Position tower_position,
+    std::vector<Position>* tower_positions,
+    Dimension tower_shape) {
+  std::set<Position> reached;
+  reached.insert(tower_position);
+  std::queue<Position> queue;
+  queue.push(tower_position);
+
+  while (!queue.empty()) {
+    Position current = queue.front();
+    queue.pop();
+    std::set<Position> neighbours =
+        tower_neighbours(current, tower_positions, tower_shape);
+    for (Position candidate : neighbours) {
+      if (reached.find(candidate) == reached.end()) {
+        // if candidate has not been reached yet
+        queue.push(candidate);
+        reached.insert(candidate);
+      }
+    }
+  }
+  return reached;
+}
+
 std::vector<std::set<Position>> find_connected_towers(
     std::vector<Position>* towers,
     Dimension tower_shape) {
@@ -145,6 +170,13 @@ int main(void) {
     towers.push_back(tower3);
   }
 
+  Position new_tower_pos = {
+      towers[0].m_position.x - tower_shape.w,
+      towers[0].m_position.y + (tower_shape.h / 2),
+  };
+  Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
+  towers.push_back(new_tower);
+
   std::vector<Position> tower_positions;
   for (size_t i = 0; i < towers.size(); i++) {
     tower_positions.push_back(towers[i].m_position);
@@ -157,6 +189,12 @@ int main(void) {
     printf("neighbour of tower 1 :");
     neighbour.print();
   }
+
+  std::set<Position> towers_connected_to_tower0 = find_all_towers_connected_to(
+      tower_positions[0], &tower_positions, tower_shape);
+
+  printf("There are %lu towers connected to tower 0\n",
+         towers_connected_to_tower0.size());
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -290,16 +328,20 @@ int main(void) {
               printf("\n");
               break;
 
-              /*
-case SDLK_c: {
-tower_groups = find_connected_towers(&towers, tower_shape);
-print_tower_groups(&tower_groups);
-}
-      */
+            case SDLK_c: {
+              towers_connected_to_tower0 = find_all_towers_connected_to(
+                  tower_positions[0], &tower_positions, tower_shape);
+
+              printf("There are %lu towers connected to tower 0\n",
+                     towers_connected_to_tower0.size());
+              break;
+            }
+
             case SDLK_q: {
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
                 Tower tower(cursor, tower_shape, block_tower_texture);
                 towers.push_back(tower);
+                tower_positions.push_back(cursor);
               }
               break;
             }
