@@ -56,10 +56,14 @@ std::list<Position> position_vector_to_list(std::vector<Position>* vector) {
 }
 
 std::vector<std::set<Position>> find_connected_towers(
-    std::vector<Position>* towers_,
+    std::vector<Position>* towers,
     Dimension tower_shape) {
   std::vector<std::set<Position>> groups;
-  std::list<Position> towers = position_vector_to_list(towers_);
+  std::list<Position> towers_to_process = position_vector_to_list(towers);
+
+  while (!towers_to_process.empty()) {
+  }
+
   return groups;
 }
 
