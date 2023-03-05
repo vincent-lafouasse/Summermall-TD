@@ -24,6 +24,25 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
+bool line_is_vertical(Position start, Position end) {
+  return end.x - start.x == 0;
+}
+
+bool line_passes_through_tower(Position start,
+                               Position end,
+                               std::vector<Tower>* towers,
+                               Dimension tower_shape) {
+  if (line_is_vertical(start, end)) {
+    int x = start.x;
+    for (size_t i = 0; i < towers->size(); i++) {
+      Position tower_position = towers->at(i).m_position;
+      bool tower_is_aligned_with_x =
+          (tower_position.x <= x) && (x < tower_position.x + tower_shape.w);
+    }
+  }
+  return false;
+}
+
 int main(void) {
   // Set up
   SDL_Window* window =
