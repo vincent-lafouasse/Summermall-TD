@@ -337,7 +337,11 @@ int main(void) {
       render_path(&dijkstra_path_repr, renderer);
     }
 
-    set_render_color(Color::BLUE, renderer);
+    if (line_passes_through_tower(line_start, line_end, &towers, tower_shape)) {
+      set_render_color(Color::RED, renderer);
+    } else {
+      set_render_color(Color::BLUE, renderer);
+    }
     render_vector(&test_line_repr, renderer);
 
     // render mob
