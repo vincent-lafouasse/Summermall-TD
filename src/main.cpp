@@ -43,7 +43,9 @@ bool line_passes_through_tower(Position start,
       bool tower_is_horizontally_in_bound =
           (tower_position.y <= higher_y) &&
           (tower_position.y + tower_shape.h >= lower_y);
-      return tower_is_horizontally_in_bound && tower_is_vertically_in_bound;
+      if (tower_is_horizontally_in_bound && tower_is_vertically_in_bound) {
+        return true;
+      }
     }
   }
   return false;
@@ -121,11 +123,12 @@ int main(void) {
   Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
   towers.push_back(new_tower);
 
-  int offset = SCREEN_WIDTH / 2;
+  int offset = tileshape.w * 4;
   Position line_start = {offset, 0};
   Position line_end = {offset, SCREEN_HEIGHT};
   std::vector<Position> test_line_repr =
       get_Bresenham_line_between(line_start, line_end);
+  int test_line_increment = tileshape.w / 4;
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -232,8 +235,8 @@ int main(void) {
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
-  bool show_graph = true;
-  bool show_paths = true;
+  bool show_graph = false;
+  bool show_paths = false;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
     cursor = pixel_pos_from_grid(cursor_tl, tileshape);
@@ -276,14 +279,14 @@ int main(void) {
             }
 
             case SDLK_j: {
-              offset -= 10;
+              offset -= test_line_increment;
               line_start = {offset, 0};
               line_end = {offset, SCREEN_HEIGHT};
               test_line_repr = get_Bresenham_line_between(line_start, line_end);
               break;
             }
             case SDLK_k: {
-              offset += 10;
+              offset += test_line_increment;
               line_start = {offset, 0};
               line_end = {offset, SCREEN_HEIGHT};
               test_line_repr = get_Bresenham_line_between(line_start, line_end);
