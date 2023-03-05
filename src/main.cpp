@@ -36,8 +36,14 @@ bool line_passes_through_tower(Position start,
     int x = start.x;
     for (size_t i = 0; i < towers->size(); i++) {
       Position tower_position = towers->at(i).m_position;
-      bool tower_is_aligned_with_x =
+      bool tower_is_vertically_in_bound =
           (tower_position.x <= x) && (x < tower_position.x + tower_shape.w);
+      int higher_y = start.y < end.y ? end.y : start.y;
+      int lower_y = start.y == higher_y ? end.y : start.x;
+      bool tower_is_horizontally_in_bound =
+          (tower_position.y <= higher_y) &&
+          (tower_position.y + tower_shape.h >= lower_y);
+      return tower_is_horizontally_in_bound && tower_is_vertically_in_bound;
     }
   }
   return false;
@@ -114,6 +120,15 @@ int main(void) {
   };
   Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
   towers.push_back(new_tower);
+
+  int offset = 0;
+  Position line_start = {offset, 0};
+  Position line_end = {offset, SCREEN_HEIGHT};
+  std::vector<Position> test_line;
+  test_line.push_back(line_start);
+  test_line.push_back(line_end);
+  std::vector<Position> test_line_repr =
+      get_Bresenham_line_between(line_start, line_end);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -309,6 +324,9 @@ int main(void) {
       set_render_color(Color::RED, renderer);
       render_path(&dijkstra_path_repr, renderer);
     }
+
+    set_render_color(Color::BLUE, renderer);
+    render_vector(&test_line_repr, renderer);
 
     // render mob
     if (!monster.m_reached_end) {
