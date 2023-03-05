@@ -121,7 +121,7 @@ int main(void) {
   Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
   towers.push_back(new_tower);
 
-  int offset = 0;
+  int offset = SCREEN_WIDTH / 2;
   Position line_start = {offset, 0};
   Position line_end = {offset, SCREEN_HEIGHT};
   std::vector<Position> test_line;
@@ -275,6 +275,23 @@ int main(void) {
             }
             case SDLK_d: {
               delete_tower_at(cursor, &towers);
+              break;
+            }
+
+            case SDLK_j: {
+              offset -= 10;
+              test_line[0] = {offset, 0};
+              test_line[1] = {offset, SCREEN_HEIGHT};
+              test_line_repr =
+                  get_Bresenham_line_between(test_line[0], test_line[1]);
+              break;
+            }
+            case SDLK_k: {
+              offset += 10;
+              test_line[0] = {offset, 0};
+              test_line[1] = {offset, SCREEN_HEIGHT};
+              test_line_repr =
+                  get_Bresenham_line_between(test_line[0], test_line[1]);
               break;
             }
             case SDLK_RIGHT:
