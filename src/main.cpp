@@ -24,102 +24,6 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
-bool are_connected(Position tower1, Position tower2, Dimension tower_shape) {
-  int delta_x = tower1.x - tower2.x;
-  int delta_y = tower1.y - tower2.y;
-  delta_x = abs(delta_x);
-  delta_y = abs(delta_y);
-  return (delta_x <= tower_shape.w && delta_y <= tower_shape.h) &&
-         !(delta_x == 0 && delta_y == 0) &&
-         !(delta_x == tower_shape.w && delta_y == tower_shape.h);
-}
-
-std::set<Position> tower_neighbours(Position tower_position,
-                                    std::vector<Position>* towers,
-                                    Dimension tower_shape) {
-  std::set<Position> neighbours;
-  for (size_t i = 0; i < towers->size(); i++) {
-    Position candidate_tower_position = towers->at(i);
-    if (are_connected(tower_position, candidate_tower_position, tower_shape)) {
-      neighbours.insert(candidate_tower_position);
-    }
-  }
-  return neighbours;
-}
-
-std::list<Position> position_vector_to_list(std::vector<Position>* vector) {
-  std::list<Position> list;
-  for (size_t i = 0; i < vector->size(); i++) {
-    list.push_back(vector->at(i));
-  }
-  return list;
-}
-
-std::set<Position> find_all_towers_connected_to(
-    Position tower_position,
-    std::vector<Position>* tower_positions,
-    Dimension tower_shape) {
-  std::set<Position> reached;
-  reached.insert(tower_position);
-  std::queue<Position> queue;
-  queue.push(tower_position);
-
-  while (!queue.empty()) {
-    Position current = queue.front();
-    queue.pop();
-    std::set<Position> neighbours =
-        tower_neighbours(current, tower_positions, tower_shape);
-    for (Position candidate : neighbours) {
-      if (reached.find(candidate) == reached.end()) {
-        // if candidate has not been reached yet
-        queue.push(candidate);
-        reached.insert(candidate);
-      }
-    }
-  }
-  return reached;
-}
-
-std::vector<std::set<Position>> find_connected_towers(
-    std::vector<Position>* towers,
-    Dimension tower_shape) {
-  std::vector<std::set<Position>> groups;
-  std::vector<Position> towers_to_process;
-  for (size_t i = 0; i < towers->size(); i++) {
-    towers_to_process.push_back(towers->at(i));
-  }
-
-  while (!towers_to_process.empty()) {
-    Position seed_tower_position = towers_to_process.back();
-    std::set<Position> new_group = find_all_towers_connected_to(
-        seed_tower_position, &towers_to_process, tower_shape);
-    for (Position tower : new_group) {
-      for (size_t i = 0; i < towers_to_process.size(); i++) {
-        if (tower == towers_to_process[i]) {
-          towers_to_process.erase(towers_to_process.begin() + i);
-          break;
-        }
-      }
-    }
-    groups.push_back(new_group);
-  }
-
-  return groups;
-}
-
-void print_tower_groups(std::vector<std::set<Position>>* tower_groups) {
-  printf("There are %lu tower groups\n", tower_groups->size());
-
-  for (size_t i = 0; i < tower_groups->size(); i++) {
-    std::set<Position> tower_group = tower_groups->at(i);
-    printf("tower group %lu:\n", i);
-    for (Position tower_position : tower_group) {
-      printf("\t");
-      tower_position.print();
-    }
-  }
-}
-
 int main(void) {
   // Set up
   SDL_Window* window =
@@ -191,29 +95,6 @@ int main(void) {
   };
   Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
   towers.push_back(new_tower);
-
-  std::vector<Position> tower_positions;
-  for (size_t i = 0; i < towers.size(); i++) {
-    tower_positions.push_back(towers[i].m_position);
-  }
-
-  std::set<Position> neighbours_of_tower1 =
-      tower_neighbours(towers[1].m_position, &tower_positions, tower_shape);
-
-  for (Position neighbour : neighbours_of_tower1) {
-    printf("neighbour of tower 1 :");
-    neighbour.print();
-  }
-
-  std::set<Position> towers_connected_to_tower0 = find_all_towers_connected_to(
-      tower_positions[0], &tower_positions, tower_shape);
-
-  printf("There are %lu towers connected to tower 0\n",
-         towers_connected_to_tower0.size());
-
-  std::vector<std::set<Position>> tower_groups =
-      find_connected_towers(&tower_positions, tower_shape);
-  print_tower_groups(&tower_groups);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -348,9 +229,6 @@ int main(void) {
               break;
 
             case SDLK_c: {
-              tower_groups =
-                  find_connected_towers(&tower_positions, tower_shape);
-              print_tower_groups(&tower_groups);
               break;
             }
 
@@ -358,7 +236,6 @@ int main(void) {
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
                 Tower tower(cursor, tower_shape, block_tower_texture);
                 towers.push_back(tower);
-                tower_positions.push_back(cursor);
               }
               break;
             }
