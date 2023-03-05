@@ -124,9 +124,6 @@ int main(void) {
   int offset = SCREEN_WIDTH / 2;
   Position line_start = {offset, 0};
   Position line_end = {offset, SCREEN_HEIGHT};
-  std::vector<Position> test_line;
-  test_line.push_back(line_start);
-  test_line.push_back(line_end);
   std::vector<Position> test_line_repr =
       get_Bresenham_line_between(line_start, line_end);
 
@@ -280,18 +277,16 @@ int main(void) {
 
             case SDLK_j: {
               offset -= 10;
-              test_line[0] = {offset, 0};
-              test_line[1] = {offset, SCREEN_HEIGHT};
-              test_line_repr =
-                  get_Bresenham_line_between(test_line[0], test_line[1]);
+              line_start = {offset, 0};
+              line_end = {offset, SCREEN_HEIGHT};
+              test_line_repr = get_Bresenham_line_between(line_start, line_end);
               break;
             }
             case SDLK_k: {
               offset += 10;
-              test_line[0] = {offset, 0};
-              test_line[1] = {offset, SCREEN_HEIGHT};
-              test_line_repr =
-                  get_Bresenham_line_between(test_line[0], test_line[1]);
+              line_start = {offset, 0};
+              line_end = {offset, SCREEN_HEIGHT};
+              test_line_repr = get_Bresenham_line_between(line_start, line_end);
               break;
             }
             case SDLK_RIGHT:
