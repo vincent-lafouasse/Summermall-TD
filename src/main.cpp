@@ -129,7 +129,7 @@ int main(void) {
   Position line_end = {line_x_pos, SCREEN_HEIGHT};
   std::vector<Position> test_line_repr =
       get_Bresenham_line_between(line_start, line_end);
-  int test_line_increment = tileshape.w / 4;
+  int test_line_increment = tileshape.w;
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
