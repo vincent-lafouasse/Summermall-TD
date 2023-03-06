@@ -123,9 +123,10 @@ int main(void) {
   Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
   towers.push_back(new_tower);
 
-  int offset = tileshape.w * 4;
-  Position line_start = {offset, 0};
-  Position line_end = {offset, SCREEN_HEIGHT};
+  int line_x_pos = tileshape.w * 4;
+  int line_top_y = tileshape.w * 4;
+  Position line_start = {line_x_pos, 0};
+  Position line_end = {line_x_pos, SCREEN_HEIGHT};
   std::vector<Position> test_line_repr =
       get_Bresenham_line_between(line_start, line_end);
   int test_line_increment = tileshape.w / 4;
@@ -254,7 +255,7 @@ int main(void) {
             case SDLK_p:
               printf("FPS: %i\n", fps);
               break;
-            case SDLK_l:
+            case SDLK_t:
               printf("cursor gridwise position: ");
               cursor_tl.print();
               printf("cursor pixel position: ");
@@ -279,16 +280,30 @@ int main(void) {
             }
 
             case SDLK_j: {
-              offset -= test_line_increment;
-              line_start = {offset, 0};
-              line_end = {offset, SCREEN_HEIGHT};
+              line_top_y += test_line_increment;
+              line_start = {line_x_pos, line_top_y};
+              line_end = {line_x_pos, SCREEN_HEIGHT};
               test_line_repr = get_Bresenham_line_between(line_start, line_end);
               break;
             }
             case SDLK_k: {
-              offset += test_line_increment;
-              line_start = {offset, 0};
-              line_end = {offset, SCREEN_HEIGHT};
+              line_top_y -= test_line_increment;
+              line_start = {line_x_pos, line_top_y};
+              line_end = {line_x_pos, SCREEN_HEIGHT};
+              test_line_repr = get_Bresenham_line_between(line_start, line_end);
+              break;
+            }
+            case SDLK_h: {
+              line_x_pos -= test_line_increment;
+              line_start = {line_x_pos, line_top_y};
+              line_end = {line_x_pos, SCREEN_HEIGHT};
+              test_line_repr = get_Bresenham_line_between(line_start, line_end);
+              break;
+            }
+            case SDLK_l: {
+              line_x_pos += test_line_increment;
+              line_start = {line_x_pos, line_top_y};
+              line_end = {line_x_pos, SCREEN_HEIGHT};
               test_line_repr = get_Bresenham_line_between(line_start, line_end);
               break;
             }
