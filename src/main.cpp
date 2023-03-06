@@ -123,9 +123,9 @@ int main(void) {
   Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
   towers.push_back(new_tower);
 
-  int line_x_pos = tileshape.w * 4;
-  int line_top_y = tileshape.w * 4;
-  Position line_start = {line_x_pos, 0};
+  int line_x_pos = tileshape.w * 8;
+  int line_top_y = tileshape.w * 7;
+  Position line_start = {line_x_pos, line_top_y};
   Position line_end = {line_x_pos, SCREEN_HEIGHT};
   std::vector<Position> test_line_repr =
       get_Bresenham_line_between(line_start, line_end);
@@ -355,13 +355,6 @@ int main(void) {
       render_path(&dijkstra_path_repr, renderer);
     }
 
-    if (line_passes_through_tower(line_start, line_end, &towers, tower_shape)) {
-      set_render_color(Color::RED, renderer);
-    } else {
-      set_render_color(Color::BLUE, renderer);
-    }
-    render_vector(&test_line_repr, renderer);
-
     // render mob
     if (!monster.m_reached_end) {
       monster.follow_path(&dijkstra_path);
@@ -371,6 +364,12 @@ int main(void) {
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
     }
+    if (line_passes_through_tower(line_start, line_end, &towers, tower_shape)) {
+      set_render_color(Color::RED, renderer);
+    } else {
+      set_render_color(Color::BLUE, renderer);
+    }
+    render_vector(&test_line_repr, renderer);
     render_cursor(cursor, cursor_shape, cursor_texture, renderer);
     // Show the renderer contents
     SDL_RenderPresent(renderer);
