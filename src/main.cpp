@@ -24,6 +24,13 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
+int max_int(int a, int b) {
+  return a > b ? a : b;
+}
+int min_int(int a, int b) {
+  return a < b ? a : b;
+}
+
 bool line_is_vertical(Position start, Position end) {
   return end.x - start.x == 0;
 }
@@ -38,8 +45,8 @@ bool line_passes_through_tower(Position start,
       Position tower_position = towers->at(i).m_position;
       bool tower_is_vertically_in_bound =
           (tower_position.x <= x) && (x < tower_position.x + tower_shape.w);
-      int higher_y = start.y < end.y ? end.y : start.y;
-      int lower_y = start.y == higher_y ? end.y : start.x;
+      int higher_y = max_int(start.y, end.y);
+      int lower_y = min_int(start.y, end.y);
       bool tower_is_horizontally_in_bound =
           (tower_position.y <= higher_y) &&
           (tower_position.y + tower_shape.h >= lower_y);
