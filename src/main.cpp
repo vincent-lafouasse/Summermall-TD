@@ -54,6 +54,14 @@ bool line_passes_through_tower(Position start,
         return true;
       }
     }
+  } else {
+    int big_x = max_int(start.x, end.x);
+    int small_x = min_int(start.x, end.x);
+    int big_y = max_int(start.y, end.y);
+    int small_y = min_int(start.y, end.y);
+    // line is y = ax + b with:
+    double a = (double)(start.y - end.y) / (double)(start.x - end.x);
+    double b = (double)start.y - a * start.x;
   }
   return false;
 }
