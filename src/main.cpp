@@ -39,29 +39,41 @@ bool line_passes_through_tower(Position start,
                                Position end,
                                std::vector<Tower>* towers,
                                Dimension tower_shape) {
+  int big_x = max_int(start.x, end.x);
+  int small_x = min_int(start.x, end.x);
+  int big_y = max_int(start.y, end.y);
+  int small_y = min_int(start.y, end.y);
   if (line_is_vertical(start, end)) {
     int x = start.x;
     for (size_t i = 0; i < towers->size(); i++) {
       Position tower_position = towers->at(i).m_position;
+      int tower_small_x = tower_position.x;
+      int tower_small_y = tower_position.y;
+      int tower_big_x = tower_small_x + tower_shape.w;
+      int tower_big_y = tower_small_y + tower_shape.h;
       bool tower_is_vertically_in_bound =
-          (tower_position.x <= x) && (x < tower_position.x + tower_shape.w);
-      int higher_y = max_int(start.y, end.y);
-      int lower_y = min_int(start.y, end.y);
+          (tower_small_x <= x) && (x <= tower_big_x);
       bool tower_is_horizontally_in_bound =
-          (tower_position.y <= higher_y) &&
-          (tower_position.y + tower_shape.h >= lower_y);
+          (tower_small_y <= big_y) && (tower_big_y >= small_y);
       if (tower_is_horizontally_in_bound && tower_is_vertically_in_bound) {
         return true;
       }
     }
   } else {
-    int big_x = max_int(start.x, end.x);
-    int small_x = min_int(start.x, end.x);
-    int big_y = max_int(start.y, end.y);
-    int small_y = min_int(start.y, end.y);
     // line is y = ax + b with:
     double a = (double)(start.y - end.y) / (double)(start.x - end.x);
     double b = (double)start.y - a * start.x;
+    for (size_t i = 0; i < towers->size(); i++) {
+      Position tower_position = towers->at(i).m_position;
+      int tower_small_x = tower_position.x;
+      int tower_small_y = tower_position.y;
+      int tower_big_x = tower_small_x + tower_shape.w;
+      int tower_big_y = tower_small_y + tower_shape.h;
+      if (tower_small_x > big_x || tower_small_y > big_y ||
+          tower_big_x < small_x || tower_big_y < small_y) {
+        continue;
+      }
+    }
   }
   return false;
 }
@@ -264,6 +276,15 @@ int main(void) {
         case SDL_QUIT:
           is_running = false;
           break;
+
+        case SDL_MOUSEBUTTONDOWN: {
+          SDL_Log("+clic");
+
+          if (event.button.button == SDL_BUTTON_LEFT) {
+            SDL_Log("+left");
+          }
+          break;
+        }
 
         case SDL_KEYDOWN:
           switch (event.key.keysym.sym) {
