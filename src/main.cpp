@@ -35,6 +35,22 @@ bool line_is_vertical(Position start, Position end) {
   return end.x - start.x == 0;
 }
 
+bool is_between(int candidate, int lower_bound, int upper_bound) {
+  return (lower_bound <= candidate && candidate <= upper_bound);
+}
+
+void read_tower_borders(Tower tower,
+                        Dimension tower_shape,
+                        int* small_x,
+                        int* big_x,
+                        int* small_y,
+                        int* big_y) {
+  *small_x = tower.m_position.x;
+  *big_x = tower.m_position.x + tower_shape.w;
+  *small_y = tower.m_position.y;
+  *big_y = tower.m_position.y + tower_shape.h;
+}
+
 bool line_passes_through_tower(Position start,
                                Position end,
                                std::vector<Tower>* towers,
@@ -43,16 +59,17 @@ bool line_passes_through_tower(Position start,
   int small_x = min_int(start.x, end.x);
   int big_y = max_int(start.y, end.y);
   int small_y = min_int(start.y, end.y);
+  int tower_small_x;
+  int tower_small_y;
+  int tower_big_x;
+  int tower_big_y;
   if (line_is_vertical(start, end)) {
     int x = start.x;
     for (size_t i = 0; i < towers->size(); i++) {
-      Position tower_position = towers->at(i).m_position;
-      int tower_small_x = tower_position.x;
-      int tower_small_y = tower_position.y;
-      int tower_big_x = tower_small_x + tower_shape.w;
-      int tower_big_y = tower_small_y + tower_shape.h;
+      read_tower_borders(towers->at(i), tower_shape, &tower_small_x,
+                         &tower_big_x, &tower_small_y, &tower_big_y);
       bool tower_is_vertically_in_bound =
-          (tower_small_x <= x) && (x <= tower_big_x);
+          is_between(x, tower_small_x, tower_big_x);
       bool tower_is_horizontally_in_bound =
           (tower_small_y <= big_y) && (tower_big_y >= small_y);
       if (tower_is_horizontally_in_bound && tower_is_vertically_in_bound) {
@@ -64,11 +81,8 @@ bool line_passes_through_tower(Position start,
     double a = (double)(start.y - end.y) / (double)(start.x - end.x);
     double b = (double)start.y - a * start.x;
     for (size_t i = 0; i < towers->size(); i++) {
-      Position tower_position = towers->at(i).m_position;
-      int tower_small_x = tower_position.x;
-      int tower_small_y = tower_position.y;
-      int tower_big_x = tower_small_x + tower_shape.w;
-      int tower_big_y = tower_small_y + tower_shape.h;
+      read_tower_borders(towers->at(i), tower_shape, &tower_small_x,
+                         &tower_big_x, &tower_small_y, &tower_big_y);
       if (tower_small_x > big_x || tower_small_y > big_y ||
           tower_big_x < small_x || tower_big_y < small_y) {
         continue;
@@ -77,19 +91,19 @@ bool line_passes_through_tower(Position start,
       int possible_intersection2;
       possible_intersection1 = (int)(a * tower_small_x + b);
       possible_intersection2 = (int)(a * tower_big_x + b);
-      bool intersects1 = (tower_small_y <= possible_intersection1 &&
-                          possible_intersection1 <= tower_big_y);
-      bool intersects2 = (tower_small_y <= possible_intersection2 &&
-                          possible_intersection2 <= tower_big_y);
+      bool intersects1 =
+          is_between(possible_intersection1, tower_small_y, tower_big_y);
+      bool intersects2 =
+          is_between(possible_intersection2, tower_small_y, tower_big_y);
       if (intersects1 || intersects2) {
         return true;
       }
       possible_intersection1 = (int)((1 / a) * (tower_small_y - b));
       possible_intersection2 = (int)((1 / a) * (tower_big_y - b));
-      intersects1 = (tower_small_x <= possible_intersection1 &&
-                     possible_intersection1 <= tower_big_x);
-      intersects2 = (tower_small_x <= possible_intersection2 &&
-                     possible_intersection2 <= tower_big_x);
+      intersects1 =
+          is_between(possible_intersection1, tower_small_x, tower_big_x);
+      intersects2 =
+          is_between(possible_intersection2, tower_small_x, tower_big_x);
       if (intersects1 || intersects2) {
         return true;
       }
