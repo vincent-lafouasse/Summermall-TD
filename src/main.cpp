@@ -87,24 +87,24 @@ bool line_passes_through_tower(Position start,
           tower_big_x < small_x || tower_big_y < small_y) {
         continue;
       }
-      int possible_intersection1;
-      int possible_intersection2;
-      possible_intersection1 = (int)(a * tower_small_x + b);
-      possible_intersection2 = (int)(a * tower_big_x + b);
-      bool intersects1 =
-          is_between(possible_intersection1, tower_small_y, tower_big_y);
-      bool intersects2 =
-          is_between(possible_intersection2, tower_small_y, tower_big_y);
-      if (intersects1 || intersects2) {
+      int possible_left_intersection;
+      int possible_right_intersection;
+      possible_left_intersection = (int)(a * tower_small_x + b);
+      possible_right_intersection = (int)(a * tower_big_x + b);
+      bool intersects_left_border =
+          is_between(possible_left_intersection, tower_small_y, tower_big_y);
+      bool intersects_right_border =
+          is_between(possible_right_intersection, tower_small_y, tower_big_y);
+      if (intersects_left_border || intersects_right_border) {
         return true;
       }
-      possible_intersection1 = (int)((1 / a) * (tower_small_y - b));
-      possible_intersection2 = (int)((1 / a) * (tower_big_y - b));
-      intersects1 =
-          is_between(possible_intersection1, tower_small_x, tower_big_x);
-      intersects2 =
-          is_between(possible_intersection2, tower_small_x, tower_big_x);
-      if (intersects1 || intersects2) {
+      int possible_top_intersection = (int)((1 / a) * (tower_small_y - b));
+      int possible_bottom_intersection = (int)((1 / a) * (tower_big_y - b));
+      bool intersects_top_border =
+          is_between(possible_top_intersection, tower_small_x, tower_big_x);
+      bool intersects_bottom_border =
+          is_between(possible_bottom_intersection, tower_small_x, tower_big_x);
+      if (intersects_top_border || intersects_bottom_border) {
         return true;
       }
     }
