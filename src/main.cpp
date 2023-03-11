@@ -73,6 +73,26 @@ bool line_passes_through_tower(Position start,
           tower_big_x < small_x || tower_big_y < small_y) {
         continue;
       }
+      int possible_intersection1;
+      int possible_intersection2;
+      possible_intersection1 = (int)(a * tower_small_x + b);
+      possible_intersection2 = (int)(a * tower_big_x + b);
+      bool intersects1 = (tower_small_y <= possible_intersection1 &&
+                          possible_intersection1 <= tower_big_y);
+      bool intersects2 = (tower_small_y <= possible_intersection2 &&
+                          possible_intersection2 <= tower_big_y);
+      if (intersects1 || intersects2) {
+        return true;
+      }
+      possible_intersection1 = (int)((1 / a) * (tower_small_y - b));
+      possible_intersection2 = (int)((1 / a) * (tower_big_y - b));
+      intersects1 = (tower_small_x <= possible_intersection1 &&
+                     possible_intersection1 <= tower_big_x);
+      intersects2 = (tower_small_x <= possible_intersection2 &&
+                     possible_intersection2 <= tower_big_x);
+      if (intersects1 || intersects2) {
+        return true;
+      }
     }
   }
   return false;
