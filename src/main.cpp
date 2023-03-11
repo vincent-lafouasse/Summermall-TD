@@ -76,7 +76,6 @@ bool line_passes_through_tower(Position start,
         return true;
       }
     }
-    return false;
   } else {
     // line is y = ax + b with:
     double a = (double)(start.y - end.y) / (double)(start.x - end.x);
