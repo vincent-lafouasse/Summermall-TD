@@ -87,6 +87,8 @@ bool line_passes_through_tower(Position start,
           tower_big_x < line_small_x || tower_big_y < line_small_y) {
         continue;
       }
+
+      // Check for intersection of the line with the tower's vertical borders
       int y_possible_left_intersection = (int)(a * tower_small_x + b);
       int y_possible_right_intersection = (int)(a * tower_big_x + b);
       bool line_interects_left_border =
@@ -96,6 +98,8 @@ bool line_passes_through_tower(Position start,
       if (line_interects_left_border || line_interects_right_border) {
         return true;
       }
+
+      // Check for intersection of the line with the tower's horizontal borders
       int x_possible_top_intersection = (int)((1 / a) * (tower_small_y - b));
       int x_possible_bottom_intersection = (int)((1 / a) * (tower_big_y - b));
       bool line_interects_top_border =
