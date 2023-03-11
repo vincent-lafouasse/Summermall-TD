@@ -150,14 +150,6 @@ int main(void) {
   Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
   towers.push_back(new_tower);
 
-  int line_x_pos = tileshape.w * 8;
-  int line_top_y = tileshape.w * 7;
-  Position line_start = {line_x_pos, line_top_y};
-  Position line_end = {line_x_pos, SCREEN_HEIGHT};
-  std::vector<Position> test_line_repr =
-      get_Bresenham_line_between(line_start, line_end);
-  int test_line_increment = tileshape.w;
-
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
   Position checkpoint2 = pixel_pos_from_grid({13, 23}, tileshape);
@@ -259,6 +251,11 @@ int main(void) {
   const Dimension cursor_shape =
       pixel_shape_from_grid(cursor_shape_tl, tileshape);
 
+  Position line_fixed_end = checkpoint2;
+  Position line_movable_end = checkpoint1;
+  std::vector<Position> test_line_repr =
+      get_Bresenham_line_between(line_fixed_end, line_movable_end);
+
   int fps = 0;
 
   // Game loop -----------------------------------------------------------------
@@ -278,10 +275,11 @@ int main(void) {
           break;
 
         case SDL_MOUSEBUTTONDOWN: {
-          SDL_Log("+clic");
-
           if (event.button.button == SDL_BUTTON_LEFT) {
-            SDL_Log("+left");
+            line_movable_end.x = event.button.x;
+            line_movable_end.y = event.button.y;
+            test_line_repr =
+                get_Bresenham_line_between(line_fixed_end, line_movable_end);
           }
           break;
         }
@@ -312,35 +310,6 @@ int main(void) {
             }
             case SDLK_d: {
               delete_tower_at(cursor, &towers);
-              break;
-            }
-
-            case SDLK_j: {
-              line_top_y += test_line_increment;
-              line_start = {line_x_pos, line_top_y};
-              line_end = {line_x_pos, SCREEN_HEIGHT};
-              test_line_repr = get_Bresenham_line_between(line_start, line_end);
-              break;
-            }
-            case SDLK_k: {
-              line_top_y -= test_line_increment;
-              line_start = {line_x_pos, line_top_y};
-              line_end = {line_x_pos, SCREEN_HEIGHT};
-              test_line_repr = get_Bresenham_line_between(line_start, line_end);
-              break;
-            }
-            case SDLK_h: {
-              line_x_pos -= test_line_increment;
-              line_start = {line_x_pos, line_top_y};
-              line_end = {line_x_pos, SCREEN_HEIGHT};
-              test_line_repr = get_Bresenham_line_between(line_start, line_end);
-              break;
-            }
-            case SDLK_l: {
-              line_x_pos += test_line_increment;
-              line_start = {line_x_pos, line_top_y};
-              line_end = {line_x_pos, SCREEN_HEIGHT};
-              test_line_repr = get_Bresenham_line_between(line_start, line_end);
               break;
             }
             case SDLK_RIGHT:
@@ -400,7 +369,8 @@ int main(void) {
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
     }
-    if (line_passes_through_tower(line_start, line_end, &towers, tower_shape)) {
+    if (line_passes_through_tower(line_fixed_end, line_movable_end, &towers,
+                                  tower_shape)) {
       set_render_color(Color::RED, renderer);
     } else {
       set_render_color(Color::BLUE, renderer);
