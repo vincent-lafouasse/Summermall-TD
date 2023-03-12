@@ -56,8 +56,8 @@ int main(void) {
 
   const Dimension tileshape = map.src_tileshape;
   const Dimension map_shape_tl = map.shape;
-  std::set<Position> non_buildable_tiles = map.non_buildable_tiles;
-  std::set<Position> non_traversable_tiles = map.non_traversable_tiles;
+  std::set<Position> buildable_tiles = map.buildable_tiles;
+  std::set<Position> traversable_tiles = map.traversable_tiles;
 
   SDL_Texture* static_map_texture =
       make_static_map_texture(&map, tilesheet, tileshape, renderer);
@@ -209,8 +209,8 @@ int main(void) {
   bool show_graph = false;
   bool show_paths = false;
   bool show_test_line = false;
-  bool show_non_buildable_tiles = false;
-  bool show_non_traversable_tiles = true;
+  bool show_buildable_tiles = true;
+  bool show_traversable_tiles = false;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -331,16 +331,15 @@ int main(void) {
       render_vector(&test_line_repr, renderer);
     }
 
-    if (show_non_buildable_tiles) {
-      set_render_color(Color::BLACK, renderer);
-      for (Position tile_pos_tl : non_buildable_tiles) {
+    set_render_color(Color::BLACK, renderer);
+    if (show_buildable_tiles) {
+      for (Position tile_pos_tl : buildable_tiles) {
         highlight_tile(pixel_pos_from_grid(tile_pos_tl, tileshape), tileshape,
                        renderer);
       }
     }
-    if (show_non_traversable_tiles) {
-      set_render_color(Color::BLACK, renderer);
-      for (Position tile_pos_tl : non_traversable_tiles) {
+    if (show_traversable_tiles) {
+      for (Position tile_pos_tl : traversable_tiles) {
         highlight_tile(pixel_pos_from_grid(tile_pos_tl, tileshape), tileshape,
                        renderer);
       }

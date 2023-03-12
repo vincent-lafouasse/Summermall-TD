@@ -18,8 +18,8 @@ struct Map {
   const Dimension shape;
   const Dimension src_tileshape;
   int_vector_3D layers;
-  std::set<Position> non_buildable_tiles;
-  std::set<Position> non_traversable_tiles;
+  std::set<Position> buildable_tiles;
+  std::set<Position> traversable_tiles;
 };
 
 // Kenney tilesheet tile ids
@@ -33,7 +33,7 @@ enum GroundTile : int {
 //
 const Map parse_map_from_tmx(const char* tmx_path);
 
-void read_non_buildability_and_traversability(
+void read_buildability_and_traversability(
     int_vector_2D* ground_layer,
-    std::set<Position>* return_non_traversable_tiles,
-    std::set<Position>* return_non_buildable_tiles);
+    std::set<Position>* return_traversable_tiles,
+    std::set<Position>* return_buildable_tiles);
