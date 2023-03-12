@@ -5,26 +5,6 @@
 
 #define PI 3.141592653589793238
 
-float line_angle(std::vector<Position>* line) {
-  int delta_x = (line->back().x - line->front().x);
-  int delta_y = (line->back().y - line->front().y);
-  if (delta_x == 0) {
-    return copysign(90.0, delta_y);
-  }
-  float angle = atan((float)delta_y / (float)delta_x) * 180. / PI;
-  return angle += (delta_x < 0) * 180.0;
-}
-
-int squared_euclidian_distance(Position a, Position b) {
-  int delta_x = a.x - b.x;
-  int delta_y = a.y - b.y;
-  return (delta_x * delta_x + delta_y * delta_y);
-}
-
-float euclidian_distance(Position a, Position b) {
-  return sqrt(squared_euclidian_distance(a, b));
-}
-
 static std::vector<Position> Bresenham_y_driving_axis(Position start,
                                                       Position end);
 static std::vector<Position> Bresenham_x_driving_axis(Position start,
@@ -103,6 +83,24 @@ static std::vector<Position> Bresenham_y_driving_axis(Position start,
     deviation += 2 * delta_x;
   }
   return line;
+}
+
+float line_angle(std::vector<Position>* line) {
+  int delta_x = (line->back().x - line->front().x);
+  int delta_y = (line->back().y - line->front().y);
+  if (delta_x == 0) {
+    return copysign(90.0, delta_y);
+  }
+  float angle = atan((float)delta_y / (float)delta_x) * 180. / PI;
+  return angle += (delta_x < 0) * 180.0;
+}
+
+bool line_is_vertical(Position start, Position end) {
+  return end.x - start.x == 0;
+}
+
+bool is_between(int candidate, int lower_bound, int upper_bound) {
+  return (lower_bound <= candidate && candidate <= upper_bound);
 }
 
 Position pos_1D_to_2D(int pos_1D, int width) {

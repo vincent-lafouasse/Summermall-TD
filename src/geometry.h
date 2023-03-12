@@ -45,11 +45,10 @@ int pos_2D_to_1D(Position position, int width);
 Position pixel_pos_from_grid(Position position_tl, Dimension tileshape);
 Dimension pixel_shape_from_grid(Dimension shape_tl, Dimension tileshape);
 
-// Return the Euclidian distance between two Positions.
-float euclidian_distance(Position a, Position b);
-int squared_euclidian_distance(Position a, Position b);
-
 float line_angle(std::vector<Position>* line);
 
 // Return the rasterized line between two Positions.
 std::vector<Position> get_Bresenham_line_between(Position start, Position end);
+
+bool line_is_vertical(Position start, Position end);
+bool is_between(int candidate, int lower_bound, int upper_bound);
