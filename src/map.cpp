@@ -29,24 +29,32 @@ const Map parse_map_from_tmx(const char* tmx_path) {
     layers.push_back(vector_2D_from_string_csv(layer_csv));
     layer = layer->NextSiblingElement();
   }
-  std::set<Position> non_buildable_tiles =
-      get_non_buildable_tiles_set(&(layers[0]));
-  Map map = {map_shape, map_src_tileshape, layers, non_buildable_tiles};
+  std::set<Position> non_buildable_tiles;
+  std::set<Position> non_traversable_tiles;
+  read_non_buildability_and_traversability(&(layers[0]), &non_traversable_tiles,
+                                           &non_buildable_tiles);
+  Map map = {map_shape, map_src_tileshape, layers, non_buildable_tiles,
+             non_traversable_tiles};
   return map;
 }
 
-std::set<Position> get_non_buildable_tiles_set(int_vector_2D* ground_layer) {
-  std::set<Position> non_buildable_tiles;
-
+void read_non_buildability_and_traversability(
+    int_vector_2D* ground_layer,
+    std::set<Position>* return_non_traversable_tiles,
+    std::set<Position>* return_non_buildable_tiles) {
   for (size_t row_idx = 0; row_idx < ground_layer->size(); row_idx++) {
     int_vector_1D row = ground_layer->at(row_idx);
     for (size_t column_idx = 0; column_idx < row.size(); column_idx++) {
+      Position tile = {(int)column_idx, (int)row_idx};
       switch (row[column_idx]) {
-        case WALL:
-        case SAND:
-        case DIRT: {
-          Position non_buildable_tile = {(int)column_idx, (int)row_idx};
-          non_buildable_tiles.insert(non_buildable_tile);
+        case DIRT:
+        case SAND: {
+          return_non_buildable_tiles->insert(tile);
+          break;
+        }
+        case WALL: {
+          return_non_traversable_tiles->insert(tile);
+          return_non_buildable_tiles->insert(tile);
           break;
         }
         default:
@@ -54,7 +62,6 @@ std::set<Position> get_non_buildable_tiles_set(int_vector_2D* ground_layer) {
       }
     }
   }
-  return non_buildable_tiles;
 }
 
 static int_vector_2D vector_2D_from_string_csv(char* csv_string) {
