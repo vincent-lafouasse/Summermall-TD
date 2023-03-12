@@ -24,100 +24,94 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
-bool are_connected(Position tower1, Position tower2, Dimension tower_shape) {
-  int delta_x = tower1.x - tower2.x;
-  int delta_y = tower1.y - tower2.y;
-  delta_x = abs(delta_x);
-  delta_y = abs(delta_y);
-  return (delta_x <= tower_shape.w && delta_y <= tower_shape.h) &&
-         !(delta_x == 0 && delta_y == 0) &&
-         !(delta_x == tower_shape.w && delta_y == tower_shape.h);
+int max_int(int a, int b) {
+  return a > b ? a : b;
+}
+int min_int(int a, int b) {
+  return a < b ? a : b;
 }
 
-std::set<Position> tower_neighbours(Position tower_position,
-                                    std::vector<Position>* towers,
-                                    Dimension tower_shape) {
-  std::set<Position> neighbours;
-  for (size_t i = 0; i < towers->size(); i++) {
-    Position candidate_tower_position = towers->at(i);
-    if (are_connected(tower_position, candidate_tower_position, tower_shape)) {
-      neighbours.insert(candidate_tower_position);
+bool line_is_vertical(Position start, Position end) {
+  return end.x - start.x == 0;
+}
+
+bool is_between(int candidate, int lower_bound, int upper_bound) {
+  return (lower_bound <= candidate && candidate <= upper_bound);
+}
+
+void get_tower_borders(Tower tower,
+                       Dimension tower_shape,
+                       int* return_small_x,
+                       int* return_big_x,
+                       int* return_small_y,
+                       int* return_big_y) {
+  *return_small_x = tower.m_position.x;
+  *return_big_x = tower.m_position.x + tower_shape.w;
+  *return_small_y = tower.m_position.y;
+  *return_big_y = tower.m_position.y + tower_shape.h;
+}
+
+bool line_passes_through_tower(Position start,
+                               Position end,
+                               std::vector<Tower>* towers,
+                               Dimension tower_shape) {
+  int line_big_x = max_int(start.x, end.x);
+  int line_small_x = min_int(start.x, end.x);
+  int line_big_y = max_int(start.y, end.y);
+  int line_small_y = min_int(start.y, end.y);
+  int tower_small_x;
+  int tower_small_y;
+  int tower_big_x;
+  int tower_big_y;
+  if (line_is_vertical(start, end)) {
+    int line_x = line_big_x;
+    for (size_t i = 0; i < towers->size(); i++) {
+      get_tower_borders(towers->at(i), tower_shape, &tower_small_x,
+                        &tower_big_x, &tower_small_y, &tower_big_y);
+      bool tower_is_vertically_in_bound =
+          is_between(line_x, tower_small_x, tower_big_x);
+      bool tower_is_horizontally_in_bound =
+          (tower_small_y <= line_big_y) && (tower_big_y >= line_small_y);
+      if (tower_is_horizontally_in_bound && tower_is_vertically_in_bound) {
+        return true;
+      }
     }
-  }
-  return neighbours;
-}
+  } else {
+    // line is y = ax + b with:
+    double a = (double)(start.y - end.y) / (double)(start.x - end.x);
+    double b = (double)start.y - a * start.x;
+    for (size_t i = 0; i < towers->size(); i++) {
+      get_tower_borders(towers->at(i), tower_shape, &tower_small_x,
+                        &tower_big_x, &tower_small_y, &tower_big_y);
+      if (tower_small_x > line_big_x || tower_small_y > line_big_y ||
+          tower_big_x < line_small_x || tower_big_y < line_small_y) {
+        continue;
+      }
 
-std::list<Position> position_vector_to_list(std::vector<Position>* vector) {
-  std::list<Position> list;
-  for (size_t i = 0; i < vector->size(); i++) {
-    list.push_back(vector->at(i));
-  }
-  return list;
-}
+      // Check for intersection of the line with the tower's vertical borders
+      int y_possible_left_intersection = (int)(a * tower_small_x + b);
+      int y_possible_right_intersection = (int)(a * tower_big_x + b);
+      bool line_interects_left_border =
+          is_between(y_possible_left_intersection, tower_small_y, tower_big_y);
+      bool line_interects_right_border =
+          is_between(y_possible_right_intersection, tower_small_y, tower_big_y);
+      if (line_interects_left_border || line_interects_right_border) {
+        return true;
+      }
 
-std::set<Position> find_all_towers_connected_to(
-    Position tower_position,
-    std::vector<Position>* tower_positions,
-    Dimension tower_shape) {
-  std::set<Position> reached;
-  reached.insert(tower_position);
-  std::queue<Position> queue;
-  queue.push(tower_position);
-
-  while (!queue.empty()) {
-    Position current = queue.front();
-    queue.pop();
-    std::set<Position> neighbours =
-        tower_neighbours(current, tower_positions, tower_shape);
-    for (Position candidate : neighbours) {
-      if (reached.find(candidate) == reached.end()) {
-        // if candidate has not been reached yet
-        queue.push(candidate);
-        reached.insert(candidate);
+      // Check for intersection of the line with the tower's horizontal borders
+      int x_possible_top_intersection = (int)((1 / a) * (tower_small_y - b));
+      int x_possible_bottom_intersection = (int)((1 / a) * (tower_big_y - b));
+      bool line_interects_top_border =
+          is_between(x_possible_top_intersection, tower_small_x, tower_big_x);
+      bool line_interects_bottom_border = is_between(
+          x_possible_bottom_intersection, tower_small_x, tower_big_x);
+      if (line_interects_top_border || line_interects_bottom_border) {
+        return true;
       }
     }
   }
-  return reached;
-}
-
-std::vector<std::set<Position>> find_connected_towers(
-    std::vector<Position>* towers,
-    Dimension tower_shape) {
-  std::vector<std::set<Position>> groups;
-  std::vector<Position> towers_to_process;
-  for (size_t i = 0; i < towers->size(); i++) {
-    towers_to_process.push_back(towers->at(i));
-  }
-
-  while (!towers_to_process.empty()) {
-    Position seed_tower_position = towers_to_process.back();
-    std::set<Position> new_group = find_all_towers_connected_to(
-        seed_tower_position, &towers_to_process, tower_shape);
-    for (Position tower : new_group) {
-      for (size_t i = 0; i < towers_to_process.size(); i++) {
-        if (tower == towers_to_process[i]) {
-          towers_to_process.erase(towers_to_process.begin() + i);
-          break;
-        }
-      }
-    }
-    groups.push_back(new_group);
-  }
-
-  return groups;
-}
-
-void print_tower_groups(std::vector<std::set<Position>>* tower_groups) {
-  printf("There are %lu tower groups\n", tower_groups->size());
-
-  for (size_t i = 0; i < tower_groups->size(); i++) {
-    std::set<Position> tower_group = tower_groups->at(i);
-    printf("tower group %lu:\n", i);
-    for (Position tower_position : tower_group) {
-      printf("\t");
-      tower_position.print();
-    }
-  }
+  return false;
 }
 
 int main(void) {
@@ -191,29 +185,6 @@ int main(void) {
   };
   Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
   towers.push_back(new_tower);
-
-  std::vector<Position> tower_positions;
-  for (size_t i = 0; i < towers.size(); i++) {
-    tower_positions.push_back(towers[i].m_position);
-  }
-
-  std::set<Position> neighbours_of_tower1 =
-      tower_neighbours(towers[1].m_position, &tower_positions, tower_shape);
-
-  for (Position neighbour : neighbours_of_tower1) {
-    printf("neighbour of tower 1 :");
-    neighbour.print();
-  }
-
-  std::set<Position> towers_connected_to_tower0 = find_all_towers_connected_to(
-      tower_positions[0], &tower_positions, tower_shape);
-
-  printf("There are %lu towers connected to tower 0\n",
-         towers_connected_to_tower0.size());
-
-  std::vector<std::set<Position>> tower_groups =
-      find_connected_towers(&tower_positions, tower_shape);
-  print_tower_groups(&tower_groups);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -316,12 +287,18 @@ int main(void) {
   const Dimension cursor_shape =
       pixel_shape_from_grid(cursor_shape_tl, tileshape);
 
+  Position line_fixed_end = checkpoint2;
+  Position line_movable_end = checkpoint1;
+  std::vector<Position> test_line_repr =
+      get_Bresenham_line_between(line_fixed_end, line_movable_end);
+
   int fps = 0;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
-  bool show_graph = true;
-  bool show_paths = true;
+  bool show_graph = false;
+  bool show_paths = false;
+  bool show_test_line = false;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
     cursor = pixel_pos_from_grid(cursor_tl, tileshape);
@@ -334,12 +311,22 @@ int main(void) {
           is_running = false;
           break;
 
+        case SDL_MOUSEBUTTONDOWN: {
+          if (event.button.button == SDL_BUTTON_LEFT) {
+            line_movable_end.x = event.button.x;
+            line_movable_end.y = event.button.y;
+            test_line_repr =
+                get_Bresenham_line_between(line_fixed_end, line_movable_end);
+          }
+          break;
+        }
+
         case SDL_KEYDOWN:
           switch (event.key.keysym.sym) {
             case SDLK_p:
               printf("FPS: %i\n", fps);
               break;
-            case SDLK_l:
+            case SDLK_t:
               printf("cursor gridwise position: ");
               cursor_tl.print();
               printf("cursor pixel position: ");
@@ -348,9 +335,6 @@ int main(void) {
               break;
 
             case SDLK_c: {
-              tower_groups =
-                  find_connected_towers(&tower_positions, tower_shape);
-              print_tower_groups(&tower_groups);
               break;
             }
 
@@ -358,7 +342,6 @@ int main(void) {
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
                 Tower tower(cursor, tower_shape, block_tower_texture);
                 towers.push_back(tower);
-                tower_positions.push_back(cursor);
               }
               break;
             }
@@ -422,6 +405,15 @@ int main(void) {
 
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
+    }
+    if (show_test_line) {
+      if (line_passes_through_tower(line_fixed_end, line_movable_end, &towers,
+                                    tower_shape)) {
+        set_render_color(Color::RED, renderer);
+      } else {
+        set_render_color(Color::BLUE, renderer);
+      }
+      render_vector(&test_line_repr, renderer);
     }
     render_cursor(cursor, cursor_shape, cursor_texture, renderer);
     // Show the renderer contents
