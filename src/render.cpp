@@ -67,6 +67,13 @@ void render_point(Position position, SDL_Renderer* renderer) {
   SDL_RenderDrawRect(renderer, &point);
 }
 
+void highlight_tile(Position position,
+                    Dimension tileshape,
+                    SDL_Renderer* renderer) {
+  SDL_Rect rect = {position.x, position.y, tileshape.w, tileshape.h};
+  SDL_RenderDrawRect(renderer, &rect);
+}
+
 void render_vector(std::vector<Position>* vec, SDL_Renderer* renderer) {
   for (size_t i = 0; i < vec->size(); i++) {
     render_point(vec->at(i), renderer);

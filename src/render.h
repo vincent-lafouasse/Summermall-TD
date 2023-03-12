@@ -38,3 +38,6 @@ void render_cursor(Position position,
                    Dimension shape,
                    SDL_Texture* texture,
                    SDL_Renderer* renderer);
+void highlight_tile(Position position,
+                    Dimension tileshape,
+                    SDL_Renderer* renderer);

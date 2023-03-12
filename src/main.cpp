@@ -56,6 +56,7 @@ int main(void) {
 
   const Dimension tileshape = map.src_tileshape;
   const Dimension map_shape_tl = map.shape;
+  std::set<Position> non_buildable_tiles = map.non_buildable_tiles;
   // const Dimension map_shape = pixel_shape_from_grid(map_shape_tl, tileshape);
 
   SDL_Texture* static_map_texture =
@@ -204,11 +205,14 @@ int main(void) {
 
   int fps = 0;
 
-  // Game loop -----------------------------------------------------------------
-  bool is_running = true;
+  // debug options
   bool show_graph = false;
   bool show_paths = false;
   bool show_test_line = false;
+  bool show_non_buildable_tiles = true;
+
+  // Game loop -----------------------------------------------------------------
+  bool is_running = true;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
     cursor = pixel_pos_from_grid(cursor_tl, tileshape);
@@ -324,6 +328,14 @@ int main(void) {
         set_render_color(Color::BLUE, renderer);
       }
       render_vector(&test_line_repr, renderer);
+    }
+
+    if (show_non_buildable_tiles) {
+      set_render_color(Color::BLACK, renderer);
+      for (Position tile_pos_tl : non_buildable_tiles) {
+        highlight_tile(pixel_pos_from_grid(tile_pos_tl, tileshape), tileshape,
+                       renderer);
+      }
     }
     render_cursor(cursor, cursor_shape, cursor_texture, renderer);
     // Show the renderer contents
