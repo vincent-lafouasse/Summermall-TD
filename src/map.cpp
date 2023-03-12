@@ -32,7 +32,7 @@ const Map parse_map_from_tmx(const char* tmx_path) {
   std::set<Position> buildable_tiles;
   std::set<Position> traversable_tiles;
   read_buildability_and_traversability(&(layers[0]), &traversable_tiles,
-                                           &buildable_tiles);
+                                       &buildable_tiles);
   Map map = {map_shape, map_src_tileshape, layers, buildable_tiles,
              traversable_tiles};
   return map;
@@ -47,14 +47,14 @@ void read_buildability_and_traversability(
     for (size_t column_idx = 0; column_idx < row.size(); column_idx++) {
       Position tile = {(int)column_idx, (int)row_idx};
       switch (row[column_idx]) {
-				case GRASS:
-					return_buildable_tiles->insert(tile);
-					return_traversable_tiles->insert(tile);
-					break;
-				case SAND:
-				case DIRT:
-					return_traversable_tiles->insert(tile);
-					break;
+        case GRASS:
+          return_buildable_tiles->insert(tile);
+          return_traversable_tiles->insert(tile);
+          break;
+        case SAND:
+        case DIRT:
+          return_traversable_tiles->insert(tile);
+          break;
         default:
           break;
       }
