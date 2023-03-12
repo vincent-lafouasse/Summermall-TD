@@ -39,12 +39,12 @@ bool is_between(int candidate, int lower_bound, int upper_bound) {
   return (lower_bound <= candidate && candidate <= upper_bound);
 }
 
-void read_tower_borders(Tower tower,
-                        Dimension tower_shape,
-                        int* return_small_x,
-                        int* return_big_x,
-                        int* return_small_y,
-                        int* return_big_y) {
+void get_tower_borders(Tower tower,
+                       Dimension tower_shape,
+                       int* return_small_x,
+                       int* return_big_x,
+                       int* return_small_y,
+                       int* return_big_y) {
   *return_small_x = tower.m_position.x;
   *return_big_x = tower.m_position.x + tower_shape.w;
   *return_small_y = tower.m_position.y;
@@ -66,8 +66,8 @@ bool line_passes_through_tower(Position start,
   if (line_is_vertical(start, end)) {
     int line_x = line_big_x;
     for (size_t i = 0; i < towers->size(); i++) {
-      read_tower_borders(towers->at(i), tower_shape, &tower_small_x,
-                         &tower_big_x, &tower_small_y, &tower_big_y);
+      get_tower_borders(towers->at(i), tower_shape, &tower_small_x,
+                        &tower_big_x, &tower_small_y, &tower_big_y);
       bool tower_is_vertically_in_bound =
           is_between(line_x, tower_small_x, tower_big_x);
       bool tower_is_horizontally_in_bound =
@@ -81,8 +81,8 @@ bool line_passes_through_tower(Position start,
     double a = (double)(start.y - end.y) / (double)(start.x - end.x);
     double b = (double)start.y - a * start.x;
     for (size_t i = 0; i < towers->size(); i++) {
-      read_tower_borders(towers->at(i), tower_shape, &tower_small_x,
-                         &tower_big_x, &tower_small_y, &tower_big_y);
+      get_tower_borders(towers->at(i), tower_shape, &tower_small_x,
+                        &tower_big_x, &tower_small_y, &tower_big_y);
       if (tower_small_x > line_big_x || tower_small_y > line_big_y ||
           tower_big_x < line_small_x || tower_big_y < line_small_y) {
         continue;
@@ -298,6 +298,7 @@ int main(void) {
   bool is_running = true;
   bool show_graph = false;
   bool show_paths = false;
+  bool show_test_line = false;
   while (is_running) {
     Uint32 tick_start = SDL_GetTicks();
     cursor = pixel_pos_from_grid(cursor_tl, tileshape);
@@ -405,13 +406,15 @@ int main(void) {
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
     }
-    if (line_passes_through_tower(line_fixed_end, line_movable_end, &towers,
-                                  tower_shape)) {
-      set_render_color(Color::RED, renderer);
-    } else {
-      set_render_color(Color::BLUE, renderer);
+    if (show_test_line) {
+      if (line_passes_through_tower(line_fixed_end, line_movable_end, &towers,
+                                    tower_shape)) {
+        set_render_color(Color::RED, renderer);
+      } else {
+        set_render_color(Color::BLUE, renderer);
+      }
+      render_vector(&test_line_repr, renderer);
     }
-    render_vector(&test_line_repr, renderer);
     render_cursor(cursor, cursor_shape, cursor_texture, renderer);
     // Show the renderer contents
     SDL_RenderPresent(renderer);
