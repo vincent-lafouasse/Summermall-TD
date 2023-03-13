@@ -7,8 +7,8 @@ SDL_Texture* make_static_map_texture(const Map* map,
                                      const Dimension dst_tileshape,
                                      SDL_Renderer* renderer) {
   // Set shape of rendered map
-  int width = map->shape.w * dst_tileshape.w;
-  int height = map->shape.h * dst_tileshape.h;
+  int width = map->shape_tl.w * dst_tileshape.w;
+  int height = map->shape_tl.h * dst_tileshape.h;
 
   // Create  writable texture
   SDL_Texture* static_map_texture =

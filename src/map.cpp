@@ -14,8 +14,8 @@ const Map parse_map_from_tmx(const char* tmx_path) {
 
   // Extract metadata
   XMLElement* root = map_xml.FirstChildElement("map");
-  const Dimension map_shape = {atoi(root->Attribute("width")),
-                               atoi(root->Attribute("height"))};
+  const Dimension map_shape_tl = {atoi(root->Attribute("width")),
+                                  atoi(root->Attribute("height"))};
   const Dimension map_src_tileshape = {atoi(root->Attribute("tilewidth")),
                                        atoi(root->Attribute("tileheight"))};
 
@@ -33,7 +33,7 @@ const Map parse_map_from_tmx(const char* tmx_path) {
   std::set<Position> traversable_tiles;
   read_buildability_and_traversability(&(layers[0]), &traversable_tiles,
                                        &buildable_tiles);
-  Map map = {map_shape, map_src_tileshape, layers, buildable_tiles,
+  Map map = {map_shape_tl, map_src_tileshape, layers, buildable_tiles,
              traversable_tiles};
   return map;
 }

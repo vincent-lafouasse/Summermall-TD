@@ -55,7 +55,7 @@ int main(void) {
   const Map map = basic_1P_map;
 
   const Dimension tileshape = map.src_tileshape;
-  const Dimension map_shape_tl = map.shape;
+  const Dimension map_shape_tl = map.shape_tl;
 
   SDL_Texture* static_map_texture =
       make_static_map_texture(&map, tilesheet, tileshape, renderer);

@@ -15,7 +15,7 @@ typedef std::vector<std::vector<std::vector<int>>> int_vector_3D;
 // @field layers        A vector containing 2D vector representations of each
 //                      layer of the map.
 struct Map {
-  const Dimension shape;
+  const Dimension shape_tl;
   const Dimension src_tileshape;
   int_vector_3D layers;
   std::set<Position> buildable_tiles;
