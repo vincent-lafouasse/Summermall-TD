@@ -56,8 +56,6 @@ int main(void) {
 
   const Dimension tileshape = map.src_tileshape;
   const Dimension map_shape_tl = map.shape;
-  std::set<Position> buildable_tiles = map.buildable_tiles;
-  std::set<Position> traversable_tiles = map.traversable_tiles;
 
   SDL_Texture* static_map_texture =
       make_static_map_texture(&map, tilesheet, tileshape, renderer);
@@ -89,13 +87,6 @@ int main(void) {
     Tower tower3(tower_pos3, tower_shape, block_tower_texture);
     towers.push_back(tower3);
   }
-
-  Position new_tower_pos = {
-      towers[0].m_position.x - tower_shape.w,
-      towers[0].m_position.y + (tower_shape.h / 2),
-  };
-  Tower new_tower(new_tower_pos, tower_shape, block_tower_texture);
-  towers.push_back(new_tower);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
@@ -185,17 +176,11 @@ int main(void) {
   const Dimension cursor_shape =
       pixel_shape_from_grid(cursor_shape_tl, tileshape);
 
-  Position line_fixed_end = checkpoint2;
-  Position line_movable_end = checkpoint1;
-  std::vector<Position> test_line_repr =
-      get_Bresenham_line_between(line_fixed_end, line_movable_end);
-
   int fps = 0;
 
   // debug options
   bool show_graph = false;
   bool show_paths = false;
-  bool show_test_line = false;
   bool show_buildable_tiles = true;
   bool show_traversable_tiles = false;
 
@@ -215,10 +200,6 @@ int main(void) {
 
         case SDL_MOUSEBUTTONDOWN: {
           if (event.button.button == SDL_BUTTON_LEFT) {
-            line_movable_end.x = event.button.x;
-            line_movable_end.y = event.button.y;
-            test_line_repr =
-                get_Bresenham_line_between(line_fixed_end, line_movable_end);
           }
           break;
         }
@@ -307,25 +288,16 @@ int main(void) {
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
     }
-    if (show_test_line) {
-      if (line_passes_through_tower(line_fixed_end, line_movable_end, &towers,
-                                    tower_shape)) {
-        set_render_color(Color::RED, renderer);
-      } else {
-        set_render_color(Color::BLUE, renderer);
-      }
-      render_vector(&test_line_repr, renderer);
-    }
 
     set_render_color(Color::BLACK, renderer);
     if (show_buildable_tiles) {
-      for (Position tile_pos_tl : buildable_tiles) {
+      for (Position tile_pos_tl : map.buildable_tiles) {
         highlight_tile(pixel_pos_from_grid(tile_pos_tl, tileshape), tileshape,
                        renderer);
       }
     }
     if (show_traversable_tiles) {
-      for (Position tile_pos_tl : traversable_tiles) {
+      for (Position tile_pos_tl : map.traversable_tiles) {
         highlight_tile(pixel_pos_from_grid(tile_pos_tl, tileshape), tileshape,
                        renderer);
       }
