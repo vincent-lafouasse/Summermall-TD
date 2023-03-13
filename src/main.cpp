@@ -179,9 +179,9 @@ int main(void) {
   int fps = 0;
 
   // debug options
-  bool show_graph = false;
+  bool show_hardcoded_graph = true;
   bool show_paths = false;
-  bool show_buildable_tiles = true;
+  bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
 
   // Game loop -----------------------------------------------------------------
@@ -266,7 +266,7 @@ int main(void) {
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
     // Show graph in black
-    if (show_graph) {
+    if (show_hardcoded_graph) {
       set_render_color(Color::BLACK, renderer);
       hardcoded_graph.render(renderer);
     }
