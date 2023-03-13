@@ -104,6 +104,10 @@ void WaypointGraph::render(SDL_Renderer* renderer) {
   for (size_t i = 0; i < edges_repr.size(); i++) {
     render_vector(&(edges_repr[i]), renderer);
   }
+
+  for (auto it = adjacency_map.begin(); it != adjacency_map.end(); it++) {
+    highlight_point(it->first, 2, renderer);
+  }
 }
 
 std::vector<std::vector<Position>> get_path_repr(std::vector<Position>* path) {
