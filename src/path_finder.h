@@ -6,6 +6,8 @@
 #include <vector>
 #include "SDL2/SDL.h"
 #include "geometry.h"
+#include "map.h"
+#include "tower.h"
 
 // Special thanks go to Amit Patel
 // [Amit’s A* Pages From Red Blob Games]
@@ -68,6 +70,13 @@ struct PriorityQueue {
     return best_item;
   }
 };
+
+WaypointGraph build_waypoint_graph(const Map* map,
+                                   std::vector<Tower>* towers,
+                                   Position entrance,
+                                   Position exit,
+                                   Dimension tileshape,
+                                   int tower_size_tl);
 
 // Return an empty vector if the exit is unattainable.
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,

@@ -2,6 +2,33 @@
 #include <SDL2/SDL.h>
 #include "render.h"
 
+WaypointGraph build_waypoint_graph(const Map* map,
+                                   std::vector<Tower>* towers,
+                                   Position entrance,
+                                   Position exit,
+                                   Dimension tileshape,
+                                   int tower_size_tl) {
+  WaypointGraph graph;
+
+  for (Position tile_tl : map->traversable_tiles) {
+    Position tile = pixel_pos_from_grid(tile_tl, tileshape);
+    bool keep = true;
+
+    if (keep) {
+      Position tile_center = {tile.x + tileshape.w / 2,
+                              tile.y + tileshape.h / 2};
+      graph.add_vertex(tile_center);
+      printf("new vertex added\n");
+    }
+  }
+
+  graph.add_vertex(entrance);
+  graph.add_vertex(exit);
+
+  printf("size of graph: %lu\n", graph.adjacency_map.size());
+  return graph;
+}
+
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
                                              Position entrance,
                                              Position exit) {

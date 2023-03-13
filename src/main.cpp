@@ -88,9 +88,14 @@ int main(void) {
     towers.push_back(tower3);
   }
 
-  // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
   Position checkpoint2 = pixel_pos_from_grid({13, 23}, tileshape);
+  WaypointGraph graph = build_waypoint_graph(
+      &map, &towers, checkpoint1, checkpoint2, tileshape, tower_size_tl);
+  printf("n of traversable tiles: %lu\n", map.traversable_tiles.size());
+  printf("size of graph: %lu\n", graph.adjacency_map.size());
+
+  // Hardcoded waypoints
   Position corner1 = pixel_pos_from_grid({20, 3}, tileshape);
   Position corner2 = pixel_pos_from_grid({20, 5}, tileshape);
   Position corner3 = pixel_pos_from_grid({5, 6}, tileshape);
@@ -179,7 +184,8 @@ int main(void) {
   int fps = 0;
 
   // debug options
-  bool show_hardcoded_graph = true;
+  bool show_graph = true;
+  bool show_hardcoded_graph = false;
   bool show_paths = false;
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
@@ -269,6 +275,10 @@ int main(void) {
     if (show_hardcoded_graph) {
       set_render_color(Color::BLACK, renderer);
       hardcoded_graph.render(renderer);
+    }
+    if (show_graph) {
+      set_render_color(Color::BLACK, renderer);
+      graph.render(renderer);
     }
 
     // Show hardcoded path in blue and computed path in red
