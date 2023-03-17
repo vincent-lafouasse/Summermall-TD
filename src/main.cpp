@@ -7,7 +7,6 @@
 #include "map.h"
 #include "path_finder.h"
 #include "render.h"
-#include "render_map.h"
 #include "tower.h"
 
 #define SCREEN_WIDTH 800
