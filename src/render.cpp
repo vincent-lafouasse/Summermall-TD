@@ -1,6 +1,19 @@
 #include "render.h"
 #include <stdint.h>
 
+std::vector<std::vector<Position>> make_polygon_outline(
+    std::vector<Position> polygon) {
+  std::vector<std::vector<Position>> polygon_edges;
+  for (size_t i = 0; i < polygon.size() - 1; i++) {
+    std::vector<Position> edge =
+        get_Bresenham_line_between(polygon[i], polygon[i + 1]);
+    polygon_edges.push_back(edge);
+  }
+  polygon_edges.push_back(
+      get_Bresenham_line_between(polygon.front(), polygon.back()));
+  return polygon_edges;
+}
+
 SDL_Rect make_tile_from_id(const int tile_id,
                            const Dimension src_tileshape,
                            SDL_Texture* tilesheet) {

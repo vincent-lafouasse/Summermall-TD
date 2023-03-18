@@ -193,6 +193,15 @@ int main(void) {
   std::vector<std::vector<Position>> hardcoded_path_repr =
       get_path_repr(&hardcoded_path);
 
+  std::vector<Position> random_polygon;
+  random_polygon.push_back(checkpoint1);
+  random_polygon.push_back({0, 0});
+  random_polygon.push_back({420, 69});
+  random_polygon.push_back(corner1);
+  random_polygon.push_back(checkpoint2);
+  std::vector<std::vector<Position>> polygon_outline =
+      make_polygon_outline(random_polygon);
+
   WaypointGraph hardcoded_graph;
   hardcoded_graph.add_vertices(&hardcoded_path);
   hardcoded_graph.add_edge(checkpoint1, corner1);
@@ -408,6 +417,9 @@ int main(void) {
                        renderer);
       }
     }
+
+    render_path(&polygon_outline, renderer);
+
     render_cursor(cursor, cursor_shape, cursor_texture, renderer);
     // Show the renderer contents
     SDL_RenderPresent(renderer);

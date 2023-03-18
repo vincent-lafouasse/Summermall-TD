@@ -50,6 +50,8 @@ SDL_Rect make_tile_from_id(const int tile_id,
 // @return A Dimension object containing the width and height of `texture`.
 Dimension get_texture_shape(SDL_Texture* texture);
 
+std::vector<std::vector<Position>> make_polygon_outline(
+    std::vector<Position> polygon);
 void highlight_point(Position point, int width, SDL_Renderer* renderer);
 void highlight_points(std::vector<Position>* points,
                       int width,
