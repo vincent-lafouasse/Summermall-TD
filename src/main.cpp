@@ -28,6 +28,29 @@ void init_sdl(const Position screen_pos,
               SDL_Window** return_window,
               SDL_Renderer** return_renderer);
 
+std::vector<Position> tower_frontier(Tower tower, Dimension tower_shape) {
+  int small_x;
+  int small_y;
+  int big_x;
+  int big_y;
+  get_tower_borders(tower, tower_shape, &small_x, &big_x, &small_y, &big_y);
+  std::vector<Position> tower_polygon;
+  tower_polygon.push_back({small_x, small_y});
+  tower_polygon.push_back({big_x, small_y});
+  tower_polygon.push_back({big_x, big_y});
+  tower_polygon.push_back({small_x, big_y});
+  std::vector<std::vector<Position>> tower_edges =
+      make_polygon_outline(tower_polygon);
+  std::vector<Position> tower_frontier;
+  for (size_t i = 0; i < tower_edges.size(); i++) {
+    std::vector<Position> edge = tower_edges[i];
+    for (size_t j = 0; j < edge.size(); j++) {
+      tower_frontier.push_back(edge[j]);
+    }
+  }
+  return tower_frontier;
+}
+
 bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
   int delta_x = tower1.m_position.x - tower2.m_position.x;
   int delta_y = tower1.m_position.y - tower2.m_position.y;
@@ -157,6 +180,9 @@ int main(void) {
     Tower tower3(tower_pos3, tower_shape, block_tower_texture);
     towers.push_back(tower3);
   }
+
+  std::vector<Position> tower1_frontier =
+      tower_frontier(towers[1], tower_shape);
 
   printf("towe 1 as %lu neighbours\n",
          tower_neighbours(towers[1], &towers, tower_shape).size());
@@ -403,6 +429,9 @@ int main(void) {
         highlight_tile(tower.m_position, tower_shape, renderer);
       }
     }
+
+    set_render_color(Color::RED, renderer);
+    highlight_points(&tower1_frontier, 1, renderer);
 
     set_render_color(Color::BLACK, renderer);
     if (show_buildable_tiles) {
