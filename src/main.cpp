@@ -51,14 +51,6 @@ std::set<Tower> tower_neighbours(Tower tower,
   return neighbours;
 }
 
-std::list<Tower> tower_vector_to_list(std::vector<Tower>* vector) {
-  std::list<Tower> list;
-  for (size_t i = 0; i < vector->size(); i++) {
-    list.push_back(vector->at(i));
-  }
-  return list;
-}
-
 std::set<Tower> find_all_towers_connected_to(Tower tower,
                                              std::vector<Tower>* towers,
                                              Dimension tower_shape) {
@@ -319,11 +311,15 @@ int main(void) {
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
                 Tower tower(cursor, tower_shape, block_tower_texture);
                 towers.push_back(tower);
+                tower_groups = find_connected_towers(&towers, tower_shape);
+                print_tower_groups(&tower_groups);
               }
               break;
             }
             case SDLK_d: {
               delete_tower_at(cursor, &towers);
+              tower_groups = find_connected_towers(&towers, tower_shape);
+              print_tower_groups(&tower_groups);
               break;
             }
             case SDLK_RIGHT:
