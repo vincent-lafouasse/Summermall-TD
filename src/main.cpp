@@ -23,23 +23,17 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
+void init_sdl(const Position screen_pos,
+              const Dimension screen_shape,
+              SDL_Window** return_window,
+              SDL_Renderer** return_renderer);
 int main(void) {
   // Set up
-  SDL_Window* window =
-      SDL_CreateWindow("Summermall TD", SCREEN_X_POS, SCREEN_Y_POS,
-                       SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
-
-  if (window == nullptr) {
-    SDL_Log("Could not create a window: %s", SDL_GetError());
-    return -1;
-  }
-
-  SDL_Renderer* renderer =
-      SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-  if (renderer == nullptr) {
-    SDL_Log("Could not create a renderer: %s", SDL_GetError());
-    return -1;
-  }
+  const Position screen_position = {SCREEN_X_POS, SCREEN_Y_POS};
+  const Dimension screen_shape = {SCREEN_WIDTH, SCREEN_HEIGHT};
+  SDL_Window* window = NULL;
+  SDL_Renderer* renderer = NULL;
+  init_sdl(screen_position, screen_shape, &window, &renderer);
 
   // Load tilesheet
   const char* tilesheet_png_path =
@@ -357,4 +351,26 @@ int fps_regulate_fps(Uint32 tick_start) {
   frame_per_s = 1 / (ms_per_frame / 1000.);
 
   return (int)frame_per_s;
+}
+
+void init_sdl(const Position screen_pos,
+              const Dimension screen_shape,
+              SDL_Window** return_window,
+              SDL_Renderer** return_renderer) {
+  *return_window =
+      SDL_CreateWindow("Summermall TD", screen_pos.x, screen_pos.y,
+                       screen_shape.w, screen_shape.h, SDL_WINDOW_OPENGL);
+
+  if (*return_window == nullptr) {
+    SDL_Log("Could not create a window: %s", SDL_GetError());
+    exit(EXIT_FAILURE);
+  }
+
+  *return_renderer =
+      SDL_CreateRenderer(*return_window, -1, SDL_RENDERER_ACCELERATED);
+
+  if (*return_renderer == nullptr) {
+    SDL_Log("Could not create a renderer: %s", SDL_GetError());
+    exit(EXIT_FAILURE);
+  }
 }
