@@ -157,6 +157,85 @@ void print_tower_groups(std::vector<std::set<Tower>>* tower_groups) {
   }
 }
 
+std::vector<Tower> setup_towers(Dimension tower_shape, SDL_Texture* texture) {
+  std::vector<Tower> towers;
+  Position to_add;
+  Tower tower({0, 0}, tower_shape, texture);
+  to_add = {128, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {192, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {256, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {320, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {384, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {448, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {512, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 160};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 224};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 288};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 352};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 416};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 480};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 192};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 256};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 320};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 384};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 448};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 512};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {192, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {256, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {320, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  return towers;
+}
+
 int main(void) {
   // Set up
   const Position screen_position = {SCREEN_X_POS, SCREEN_Y_POS};
@@ -210,6 +289,8 @@ int main(void) {
     Tower tower3(tower_pos3, tower_shape, block_tower_texture);
     towers.push_back(tower3);
   }
+  std::vector<Tower> alt_towers = towers;
+  towers = setup_towers(tower_shape, block_tower_texture);
 
   std::vector<Position> tower1_frontier =
       tower_frontier(towers[1], tower_shape);
@@ -341,6 +422,7 @@ int main(void) {
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
   bool show_tower_groups = true;
+  bool show_monster = false;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -448,9 +530,11 @@ int main(void) {
     }
 
     // render mob
-    if (!monster.m_reached_end) {
-      monster.follow_path(&dijkstra_path);
-      monster.render(renderer);
+    if (show_monster) {
+      if (!monster.m_reached_end) {
+        monster.follow_path(&dijkstra_path);
+        monster.render(renderer);
+      }
     }
 
     for (size_t i = 0; i < towers.size(); ++i) {
