@@ -72,11 +72,9 @@ struct PriorityQueue {
 };
 
 WaypointGraph build_waypoint_graph(const Map* map,
-                                   std::vector<Tower>* towers,
                                    Position entrance,
                                    Position exit,
-                                   Dimension tileshape,
-                                   int tower_size_tl);
+                                   Dimension tileshape);
 
 // Return an empty vector if the exit is unattainable.
 std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
