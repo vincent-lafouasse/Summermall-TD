@@ -233,6 +233,47 @@ std::vector<Tower> setup_towers(Dimension tower_shape, SDL_Texture* texture) {
   to_add = {320, 576};
   tower = Tower(to_add, tower_shape, texture);
   towers.push_back(tower);
+
+  to_add = {224, 192};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {224, 256};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {288, 256};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {288, 320};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {352, 320};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {352, 384};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {416, 384};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {416, 448};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {480, 448};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {480, 512};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {480, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {544, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {608, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+
   return towers;
 }
 
@@ -423,6 +464,7 @@ int main(void) {
   bool show_traversable_tiles = false;
   bool show_tower_groups = true;
   bool show_monster = false;
+  bool show_polygon = false;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -568,8 +610,9 @@ int main(void) {
     highlight_points(&polygon_seed_tower_group1, 1, renderer);
     set_render_color(Color::BLACK, renderer);
 
-    render_path(&polygon_outline, renderer);
-
+    if (show_polygon) {
+      render_path(&polygon_outline, renderer);
+    }
     render_cursor(cursor, cursor_shape, cursor_texture, renderer);
     // Show the renderer contents
     SDL_RenderPresent(renderer);
