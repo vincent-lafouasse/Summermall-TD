@@ -54,12 +54,31 @@ std::vector<Position> flatten_2D_vector(
   return flattened;
 }
 
+std::vector<Position> append_position_vector(std::vector<Position>* vec1,
+                                             std::vector<Position>* vec2) {
+  std::vector<Position> output = *vec1;
+  for (size_t i = 0; i < vec2->size(); i++) {
+    output.push_back(vec2->at(i));
+  }
+  return output;
+}
+
 std::vector<Position> tower_frontier(Tower tower, Dimension tower_shape) {
   std::vector<Position> tower_polygon = get_tower_polygon(tower, tower_shape);
   std::vector<std::vector<Position>> tower_edges =
       make_polygon_outline(tower_polygon);
   std::vector<Position> tower_frontier = flatten_2D_vector(&tower_edges);
   return tower_frontier;
+}
+
+std::vector<Position> tower_group_to_polygon_seed(std::set<Tower>* tower_group,
+                                                  Dimension tower_shape) {
+  std::vector<Position> polygon_seed;
+  for (Tower tower : *tower_group) {
+    std::vector frontier = tower_frontier(tower, tower_shape);
+    polygon_seed = append_position_vector(&polygon_seed, &frontier);
+  }
+  return polygon_seed;
 }
 
 bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
@@ -205,6 +224,9 @@ int main(void) {
   std::vector<std::set<Tower>> tower_groups =
       find_connected_towers(&towers, tower_shape);
   print_tower_groups(&tower_groups);
+
+  std::vector<Position> polygon_seed_tower_group1 =
+      tower_group_to_polygon_seed(&(tower_groups[1]), tower_shape);
 
   size_t tower_groups_idx = 0;
   std::set<Tower> tower_group = tower_groups[tower_groups_idx];
@@ -457,6 +479,10 @@ int main(void) {
                        renderer);
       }
     }
+
+    set_render_color(Color::BLUE, renderer);
+    highlight_points(&polygon_seed_tower_group1, 1, renderer);
+    set_render_color(Color::BLACK, renderer);
 
     render_path(&polygon_outline, renderer);
 
