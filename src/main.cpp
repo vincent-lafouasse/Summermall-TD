@@ -28,17 +28,22 @@ void init_sdl(const Position screen_pos,
               SDL_Window** return_window,
               SDL_Renderer** return_renderer);
 
-std::vector<Position> tower_frontier(Tower tower, Dimension tower_shape) {
+std::vector<Position> get_tower_polygon(Tower tower, Dimension tower_shape) {
+  std::vector<Position> tower_polygon;
   int small_x;
   int small_y;
   int big_x;
   int big_y;
   get_tower_borders(tower, tower_shape, &small_x, &big_x, &small_y, &big_y);
-  std::vector<Position> tower_polygon;
   tower_polygon.push_back({small_x, small_y});
   tower_polygon.push_back({big_x, small_y});
   tower_polygon.push_back({big_x, big_y});
   tower_polygon.push_back({small_x, big_y});
+  return tower_polygon;
+}
+
+std::vector<Position> tower_frontier(Tower tower, Dimension tower_shape) {
+  std::vector<Position> tower_polygon = get_tower_polygon(tower, tower_shape);
   std::vector<std::vector<Position>> tower_edges =
       make_polygon_outline(tower_polygon);
   std::vector<Position> tower_frontier;
