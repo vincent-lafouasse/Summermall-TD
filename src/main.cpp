@@ -169,6 +169,9 @@ int main(void) {
       find_connected_towers(&towers, tower_shape);
   print_tower_groups(&tower_groups);
 
+  size_t tower_groups_idx = 0;
+  std::set<Tower> tower_group = tower_groups[tower_groups_idx];
+
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
   Position checkpoint2 = pixel_pos_from_grid({13, 23}, tileshape);
@@ -269,6 +272,7 @@ int main(void) {
   bool show_paths = false;
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
+  bool show_tower_groups = true;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -304,6 +308,8 @@ int main(void) {
               break;
 
             case SDLK_c: {
+              tower_groups_idx = (1 + tower_groups_idx) % tower_groups.size();
+              tower_group = tower_groups[tower_groups_idx];
               break;
             }
 
@@ -381,6 +387,12 @@ int main(void) {
 
     for (size_t i = 0; i < towers.size(); ++i) {
       (towers[i]).render(renderer);
+    }
+
+    if (show_tower_groups) {
+      for (Tower tower : tower_group) {
+        highlight_tile(tower.m_position, tower_shape, renderer);
+      }
     }
 
     set_render_color(Color::BLACK, renderer);
