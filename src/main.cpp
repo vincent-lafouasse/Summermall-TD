@@ -42,17 +42,23 @@ std::vector<Position> get_tower_polygon(Tower tower, Dimension tower_shape) {
   return tower_polygon;
 }
 
+std::vector<Position> flatten_2D_vector(
+    std::vector<std::vector<Position>>* vector) {
+  std::vector<Position> flattened;
+  for (size_t i = 0; i < vector->size(); i++) {
+    std::vector<Position> sub_vector = vector->at(i);
+    for (size_t j = 0; j < sub_vector.size(); j++) {
+      flattened.push_back(sub_vector[j]);
+    }
+  }
+  return flattened;
+}
+
 std::vector<Position> tower_frontier(Tower tower, Dimension tower_shape) {
   std::vector<Position> tower_polygon = get_tower_polygon(tower, tower_shape);
   std::vector<std::vector<Position>> tower_edges =
       make_polygon_outline(tower_polygon);
-  std::vector<Position> tower_frontier;
-  for (size_t i = 0; i < tower_edges.size(); i++) {
-    std::vector<Position> edge = tower_edges[i];
-    for (size_t j = 0; j < edge.size(); j++) {
-      tower_frontier.push_back(edge[j]);
-    }
-  }
+  std::vector<Position> tower_frontier = flatten_2D_vector(&tower_edges);
   return tower_frontier;
 }
 
