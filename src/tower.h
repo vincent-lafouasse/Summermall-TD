@@ -12,6 +12,7 @@ class Tower {
 
   Tower(Position position, Dimension shape, SDL_Texture* texture);
   void render(SDL_Renderer* renderer);
+  bool operator<(const Tower& other) const;
 };
 
 void delete_tower_at(Position position, std::vector<Tower>* towers);

@@ -101,6 +101,10 @@ bool line_passes_through_tower(Position start,
   return false;
 }
 
+bool Tower::operator<(const Tower& other) const {
+  return m_position < other.m_position;
+}
+
 void get_tower_borders(Tower tower,
                        Dimension tower_shape,
                        int* return_small_x,
