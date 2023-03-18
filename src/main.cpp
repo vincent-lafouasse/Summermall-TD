@@ -51,8 +51,8 @@ std::set<Tower> tower_neighbours(Tower tower,
   return neighbours;
 }
 
-std::list<Position> position_vector_to_list(std::vector<Position>* vector) {
-  std::list<Position> list;
+std::list<Tower> tower_vector_to_list(std::vector<Tower>* vector) {
+  std::list<Tower> list;
   for (size_t i = 0; i < vector->size(); i++) {
     list.push_back(vector->at(i));
   }
@@ -82,27 +82,27 @@ std::set<Tower> find_all_towers_connected_to(Tower tower,
   return reached;
 }
 
-std::vector<std::set<Position>> find_connected_towers(
-    std::vector<Position>* towers,
-    Dimension tower_shape) {
-  std::vector<std::set<Position>> groups;
-  std::list<Position> towers_to_process = position_vector_to_list(towers);
+std::vector<std::set<Tower>> find_connected_towers(std::vector<Tower>* towers,
+                                                   Dimension tower_shape) {
+  std::vector<std::set<Tower>> groups;
+  std::list<Tower> towers_to_process = tower_vector_to_list(towers);
 
   while (!towers_to_process.empty()) {
+    break;
   }
 
   return groups;
 }
 
-void print_tower_groups(std::vector<std::set<Position>>* tower_groups) {
+void print_tower_groups(std::vector<std::set<Tower>>* tower_groups) {
   printf("There are %lu tower groups\n", tower_groups->size());
 
   for (size_t i = 0; i < tower_groups->size(); i++) {
-    std::set<Position> tower_group = tower_groups->at(i);
+    std::set<Tower> tower_group = tower_groups->at(i);
     printf("tower group %lu:\n", i);
-    for (Position tower_position : tower_group) {
+    for (Tower tower : tower_group) {
       printf("\t");
-      tower_position.print();
+      tower.m_position.print();
     }
   }
 }
@@ -167,6 +167,10 @@ int main(void) {
       find_all_towers_connected_to(towers[1], &towers, tower_shape);
   printf("there are %lu towers connected to tower[1]\n",
          towers_connected_to_tower1.size());
+
+  std::vector<std::set<Tower>> tower_groups =
+      find_connected_towers(&towers, tower_shape);
+  print_tower_groups(&tower_groups);
 
   // Hardcoded waypoints
   Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
