@@ -85,10 +85,15 @@ std::set<Tower> find_all_towers_connected_to(Tower tower,
 std::vector<std::set<Tower>> find_connected_towers(std::vector<Tower>* towers,
                                                    Dimension tower_shape) {
   std::vector<std::set<Tower>> groups;
-  std::list<Tower> towers_to_process = tower_vector_to_list(towers);
+  std::vector<Tower> towers_to_process = *towers;
 
   while (!towers_to_process.empty()) {
-    break;
+    std::set<Tower> new_group = find_all_towers_connected_to(
+        towers_to_process[0], &towers_to_process, tower_shape);
+    groups.push_back(new_group);
+    for (Tower processed_tower : new_group) {
+      delete_tower_at(processed_tower.m_position, &towers_to_process);
+    }
   }
 
   return groups;
