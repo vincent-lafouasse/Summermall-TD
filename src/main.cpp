@@ -28,6 +28,12 @@ void init_sdl(const Position screen_pos,
               SDL_Window** return_window,
               SDL_Renderer** return_renderer);
 
+std::vector<Tower> setup_polygon_test_towers(Dimension tower_shape,
+                                             SDL_Texture* texture);
+std::vector<Tower> setup_standard_maze(Dimension tower_shape,
+                                       SDL_Texture* texture,
+                                       Dimension tileshape);
+
 std::vector<Position> get_tower_polygon(Tower tower, Dimension tower_shape) {
   std::vector<Position> tower_polygon;
   int small_x;
@@ -157,126 +163,6 @@ void print_tower_groups(std::vector<std::set<Tower>>* tower_groups) {
   }
 }
 
-std::vector<Tower> setup_towers(Dimension tower_shape, SDL_Texture* texture) {
-  std::vector<Tower> towers;
-  Position to_add;
-  Tower tower({0, 0}, tower_shape, texture);
-  to_add = {128, 96};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {192, 96};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {256, 96};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {320, 96};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {384, 96};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {448, 96};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {512, 96};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {576, 96};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {576, 160};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {576, 224};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {576, 288};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {576, 352};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {576, 416};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {576, 480};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {128, 192};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {128, 256};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {128, 320};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {128, 384};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {128, 448};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {128, 512};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {128, 576};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {192, 576};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {256, 576};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {320, 576};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-
-  to_add = {224, 192};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {224, 256};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {288, 256};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {288, 320};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {352, 320};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {352, 384};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {416, 384};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {416, 448};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {480, 448};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {480, 512};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {480, 576};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {544, 576};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-  to_add = {608, 576};
-  tower = Tower(to_add, tower_shape, texture);
-  towers.push_back(tower);
-
-  return towers;
-}
-
 int main(void) {
   // Set up
   const Position screen_position = {SCREEN_X_POS, SCREEN_Y_POS};
@@ -310,28 +196,8 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_png_path));
   const int tower_size_tl = 2;
   const Dimension tower_shape = tileshape * tower_size_tl;
-  std::vector<Tower> towers;
-
-  for (int i = 0; i < 8; ++i) {
-    Position tower_pos1 = pixel_pos_from_grid({4, 3}, tileshape);
-    tower_pos1.x += i * tower_shape.w;
-    Tower tower1(tower_pos1, tower_shape, block_tower_texture);
-    towers.push_back(tower1);
-  }
-  for (int i = 0; i < 8; ++i) {
-    Position tower_pos2 = pixel_pos_from_grid({5, 6}, tileshape);
-    tower_pos2.x += i * tower_shape.w;
-    Tower tower2(tower_pos2, tower_shape, block_tower_texture);
-    towers.push_back(tower2);
-  }
-  for (int i = 0; i < 8; ++i) {
-    Position tower_pos3 = pixel_pos_from_grid({4, 9}, tileshape);
-    tower_pos3.x += i * tower_shape.w;
-    Tower tower3(tower_pos3, tower_shape, block_tower_texture);
-    towers.push_back(tower3);
-  }
-  std::vector<Tower> alt_towers = towers;
-  towers = setup_towers(tower_shape, block_tower_texture);
+  std::vector<Tower> towers =
+      setup_polygon_test_towers(tower_shape, block_tower_texture);
 
   std::vector<Position> tower1_frontier =
       tower_frontier(towers[1], tower_shape);
@@ -681,4 +547,151 @@ void init_sdl(const Position screen_pos,
     SDL_Log("Could not create a renderer: %s", SDL_GetError());
     exit(EXIT_FAILURE);
   }
+}
+
+std::vector<Tower> setup_standard_maze(Dimension tower_shape,
+                                       SDL_Texture* texture,
+                                       Dimension tileshape) {
+  std::vector<Tower> towers;
+
+  for (int i = 0; i < 8; ++i) {
+    Position tower_pos1 = pixel_pos_from_grid({4, 3}, tileshape);
+    tower_pos1.x += i * tower_shape.w;
+    Tower tower1(tower_pos1, tower_shape, texture);
+    towers.push_back(tower1);
+  }
+  for (int i = 0; i < 8; ++i) {
+    Position tower_pos2 = pixel_pos_from_grid({5, 6}, tileshape);
+    tower_pos2.x += i * tower_shape.w;
+    Tower tower2(tower_pos2, tower_shape, texture);
+    towers.push_back(tower2);
+  }
+  for (int i = 0; i < 8; ++i) {
+    Position tower_pos3 = pixel_pos_from_grid({4, 9}, tileshape);
+    tower_pos3.x += i * tower_shape.w;
+    Tower tower3(tower_pos3, tower_shape, texture);
+    towers.push_back(tower3);
+  }
+  return towers;
+}
+
+std::vector<Tower> setup_polygon_test_towers(Dimension tower_shape,
+                                             SDL_Texture* texture) {
+  std::vector<Tower> towers;
+  Position to_add;
+  Tower tower({0, 0}, tower_shape, texture);
+  to_add = {128, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {192, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {256, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {320, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {384, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {448, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {512, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 96};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 160};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 224};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 288};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 352};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 416};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {576, 480};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 192};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 256};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 320};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 384};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 448};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 512};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {128, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {192, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {256, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {320, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+
+  to_add = {224, 192};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {224, 256};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {288, 256};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {288, 320};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {352, 320};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {352, 384};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {416, 384};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {416, 448};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {480, 448};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {480, 512};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {480, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {544, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+  to_add = {608, 576};
+  tower = Tower(to_add, tower_shape, texture);
+  towers.push_back(tower);
+
+  return towers;
 }
