@@ -52,3 +52,7 @@ std::vector<Position> get_Bresenham_line_between(Position start, Position end);
 
 bool line_is_vertical(Position start, Position end);
 bool is_between(int candidate, int lower_bound, int upper_bound);
+std::vector<Position> flatten_2D_position_vector(
+    std::vector<std::vector<Position>>* vector);
+std::vector<Position> append_position_vector(std::vector<Position>* vec1,
+                                             std::vector<Position>* vec2);

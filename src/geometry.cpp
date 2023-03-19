@@ -85,6 +85,27 @@ static std::vector<Position> Bresenham_y_driving_axis(Position start,
   return line;
 }
 
+std::vector<Position> flatten_2D_position_vector(
+    std::vector<std::vector<Position>>* vector) {
+  std::vector<Position> flattened;
+  for (size_t i = 0; i < vector->size(); i++) {
+    std::vector<Position> sub_vector = vector->at(i);
+    for (size_t j = 0; j < sub_vector.size(); j++) {
+      flattened.push_back(sub_vector[j]);
+    }
+  }
+  return flattened;
+}
+
+std::vector<Position> append_position_vector(std::vector<Position>* vec1,
+                                             std::vector<Position>* vec2) {
+  std::vector<Position> output = *vec1;
+  for (size_t i = 0; i < vec2->size(); i++) {
+    output.push_back(vec2->at(i));
+  }
+  return output;
+}
+
 float line_angle(std::vector<Position>* line) {
   int delta_x = (line->back().x - line->front().x);
   int delta_y = (line->back().y - line->front().y);

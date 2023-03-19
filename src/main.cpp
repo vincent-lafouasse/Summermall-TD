@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <list>
 #include "enemy.h"
+#include "geometry.h"
 #include "map.h"
 #include "path_finder.h"
 #include "render.h"
@@ -48,32 +49,12 @@ std::vector<Position> get_tower_polygon(Tower tower, Dimension tower_shape) {
   return tower_polygon;
 }
 
-std::vector<Position> flatten_2D_vector(
-    std::vector<std::vector<Position>>* vector) {
-  std::vector<Position> flattened;
-  for (size_t i = 0; i < vector->size(); i++) {
-    std::vector<Position> sub_vector = vector->at(i);
-    for (size_t j = 0; j < sub_vector.size(); j++) {
-      flattened.push_back(sub_vector[j]);
-    }
-  }
-  return flattened;
-}
-
-std::vector<Position> append_position_vector(std::vector<Position>* vec1,
-                                             std::vector<Position>* vec2) {
-  std::vector<Position> output = *vec1;
-  for (size_t i = 0; i < vec2->size(); i++) {
-    output.push_back(vec2->at(i));
-  }
-  return output;
-}
-
 std::vector<Position> tower_frontier(Tower tower, Dimension tower_shape) {
   std::vector<Position> tower_polygon = get_tower_polygon(tower, tower_shape);
   std::vector<std::vector<Position>> tower_edges =
       make_polygon_outline(tower_polygon);
-  std::vector<Position> tower_frontier = flatten_2D_vector(&tower_edges);
+  std::vector<Position> tower_frontier =
+      flatten_2D_position_vector(&tower_edges);
   return tower_frontier;
 }
 
