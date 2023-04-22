@@ -70,7 +70,7 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_png_path));
   const int tower_size_tl = 2;
 
-  std::vector<Tower> towers = setup_maze0(tower_size_tl, block_tower_texture);
+  std::vector<Tower> towers = setup_maze1(tower_size_tl, block_tower_texture);
 
   // --------------WAYPOINTS--------------------------------------
   Position checkpoint1 = tile_center(
@@ -125,10 +125,10 @@ int main(void) {
 
   // debug options
   bool show_hardcoded_graph = false;
-  bool show_paths = true;
+  bool show_paths = false;
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
-  bool show_monster = true;
+  bool show_monster = false;
   bool show_neighbors = true;
 
   // Game loop -----------------------------------------------------------------
