@@ -28,121 +28,10 @@ void init_sdl(const Position screen_pos,
               const Dimension screen_shape,
               SDL_Window** return_window,
               SDL_Renderer** return_renderer);
-
-std::vector<Tower> setup_polygon_test_towers(Dimension tower_shape,
-                                             SDL_Texture* texture);
 std::vector<Tower> setup_standard_maze(Dimension tower_shape,
                                        SDL_Texture* texture,
                                        Dimension tileshape);
-
-std::vector<Position> get_tower_polygon(Tower tower, Dimension tower_shape) {
-  std::vector<Position> tower_polygon;
-  int small_x;
-  int small_y;
-  int big_x;
-  int big_y;
-  get_tower_borders(tower, tower_shape, &small_x, &big_x, &small_y, &big_y);
-  tower_polygon.push_back({small_x, small_y});
-  tower_polygon.push_back({big_x, small_y});
-  tower_polygon.push_back({big_x, big_y});
-  tower_polygon.push_back({small_x, big_y});
-  return tower_polygon;
-}
-
-std::vector<Position> tower_frontier(Tower tower, Dimension tower_shape) {
-  std::vector<Position> tower_polygon = get_tower_polygon(tower, tower_shape);
-  std::vector<std::vector<Position>> tower_edges =
-      make_polygon_outline(tower_polygon);
-  std::vector<Position> tower_frontier =
-      flatten_2D_position_vector(&tower_edges);
-  return tower_frontier;
-}
-
-std::vector<Position> tower_group_to_polygon_seed(std::set<Tower>* tower_group,
-                                                  Dimension tower_shape) {
-  std::vector<Position> polygon_seed;
-  for (Tower tower : *tower_group) {
-    std::vector frontier = tower_frontier(tower, tower_shape);
-    polygon_seed = append_position_vector(&polygon_seed, &frontier);
-  }
-  return polygon_seed;
-}
-
-bool are_connected(Tower tower1, Tower tower2, Dimension tower_shape) {
-  int delta_x = tower1.m_position.x - tower2.m_position.x;
-  int delta_y = tower1.m_position.y - tower2.m_position.y;
-  delta_x = abs(delta_x);
-  delta_y = abs(delta_y);
-  return (delta_x <= tower_shape.w && delta_y <= tower_shape.h) &&
-         !(delta_x == 0 && delta_y == 0) &&
-         !(delta_x == tower_shape.w && delta_y == tower_shape.h);
-}
-
-std::set<Tower> tower_neighbours(Tower tower,
-                                 std::vector<Tower>* towers,
-                                 Dimension tower_shape) {
-  std::set<Tower> neighbours;
-  for (size_t i = 0; i < towers->size(); i++) {
-    Tower candidate_tower = towers->at(i);
-    if (are_connected(tower, candidate_tower, tower_shape)) {
-      neighbours.insert(candidate_tower);
-    }
-  }
-  return neighbours;
-}
-
-std::set<Tower> find_all_towers_connected_to(Tower tower,
-                                             std::vector<Tower>* towers,
-                                             Dimension tower_shape) {
-  std::set<Tower> reached;
-  reached.insert(tower);
-  std::queue<Tower> queue;
-  queue.push(tower);
-
-  while (!queue.empty()) {
-    Tower current = queue.front();
-    queue.pop();
-    std::set<Tower> neighbours = tower_neighbours(current, towers, tower_shape);
-    for (Tower candidate : neighbours) {
-      if (reached.find(candidate) == reached.end()) {
-        // if candidate has not been reached yet
-        queue.push(candidate);
-        reached.insert(candidate);
-      }
-    }
-  }
-  return reached;
-}
-
-std::vector<std::set<Tower>> find_connected_towers(std::vector<Tower>* towers,
-                                                   Dimension tower_shape) {
-  std::vector<std::set<Tower>> groups;
-  std::vector<Tower> towers_to_process = *towers;
-
-  while (!towers_to_process.empty()) {
-    std::set<Tower> new_group = find_all_towers_connected_to(
-        towers_to_process[0], &towers_to_process, tower_shape);
-    groups.push_back(new_group);
-    for (Tower processed_tower : new_group) {
-      delete_tower_at(processed_tower.m_position, &towers_to_process);
-    }
-  }
-
-  return groups;
-}
-
-void print_tower_groups(std::vector<std::set<Tower>>* tower_groups) {
-  printf("There are %lu tower groups\n", tower_groups->size());
-
-  for (size_t i = 0; i < tower_groups->size(); i++) {
-    std::set<Tower> tower_group = tower_groups->at(i);
-    printf("tower group %lu:\n", i);
-    for (Tower tower : tower_group) {
-      printf("\t");
-      tower.m_position.print();
-    }
-  }
-}
+std::vector<Tower> setup_maze1(Dimension tower_shape, SDL_Texture* texture);
 
 int main(void) {
   // Set up
@@ -177,28 +66,8 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_png_path));
   const int tower_size_tl = 2;
   const Dimension tower_shape = tileshape * tower_size_tl;
-  std::vector<Tower> towers =
-      setup_polygon_test_towers(tower_shape, block_tower_texture);
 
-  std::vector<Position> tower1_frontier =
-      tower_frontier(towers[1], tower_shape);
-
-  printf("towe 1 as %lu neighbours\n",
-         tower_neighbours(towers[1], &towers, tower_shape).size());
-  std::set<Tower> towers_connected_to_tower1 =
-      find_all_towers_connected_to(towers[1], &towers, tower_shape);
-  printf("there are %lu towers connected to tower[1]\n",
-         towers_connected_to_tower1.size());
-
-  std::vector<std::set<Tower>> tower_groups =
-      find_connected_towers(&towers, tower_shape);
-  print_tower_groups(&tower_groups);
-
-  std::vector<Position> polygon_seed_tower_group1 =
-      tower_group_to_polygon_seed(&(tower_groups[1]), tower_shape);
-
-  size_t tower_groups_idx = 0;
-  std::set<Tower> tower_group = tower_groups[tower_groups_idx];
+  std::vector<Tower> towers = setup_maze1(tower_shape, block_tower_texture);
 
   // Hardcoded waypoints
   Position checkpoint1 =
@@ -311,9 +180,7 @@ int main(void) {
   bool show_paths = false;
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
-  bool show_tower_groups = true;
   bool show_monster = false;
-  bool show_polygon = false;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -348,25 +215,15 @@ int main(void) {
               printf("\n");
               break;
 
-            case SDLK_c: {
-              tower_groups_idx = (1 + tower_groups_idx) % tower_groups.size();
-              tower_group = tower_groups[tower_groups_idx];
-              break;
-            }
-
             case SDLK_q: {
               if (can_put_tower_here(cursor, &towers, tower_shape)) {
                 Tower tower(cursor, tower_shape, block_tower_texture);
                 towers.push_back(tower);
-                tower_groups = find_connected_towers(&towers, tower_shape);
-                print_tower_groups(&tower_groups);
               }
               break;
             }
             case SDLK_d: {
               delete_tower_at(cursor, &towers);
-              tower_groups = find_connected_towers(&towers, tower_shape);
-              print_tower_groups(&tower_groups);
               break;
             }
             case SDLK_RIGHT:
@@ -432,15 +289,6 @@ int main(void) {
       (towers[i]).render(renderer);
     }
 
-    if (show_tower_groups) {
-      for (Tower tower : tower_group) {
-        highlight_tile(tower.m_position, tower_shape, renderer);
-      }
-    }
-
-    set_render_color(Color::RED, renderer);
-    highlight_points(&tower1_frontier, 1, renderer);
-
     set_render_color(Color::BLACK, renderer);
     if (show_buildable_tiles) {
       for (Position tile_pos_tl : map.buildable_tiles) {
@@ -455,14 +303,10 @@ int main(void) {
       }
     }
 
-    set_render_color(Color::BLUE, renderer);
-    highlight_points(&polygon_seed_tower_group1, 1, renderer);
     set_render_color(Color::BLACK, renderer);
 
-    if (show_polygon) {
-      render_path(&polygon_outline, renderer);
-    }
     render_cursor(cursor, cursor_shape, cursor_texture, renderer);
+
     // Show the renderer contents
     SDL_RenderPresent(renderer);
 
@@ -558,8 +402,7 @@ std::vector<Tower> setup_standard_maze(Dimension tower_shape,
   return towers;
 }
 
-std::vector<Tower> setup_polygon_test_towers(Dimension tower_shape,
-                                             SDL_Texture* texture) {
+std::vector<Tower> setup_maze1(Dimension tower_shape, SDL_Texture* texture) {
   std::vector<Tower> towers;
   Position to_add;
   Tower tower({0, 0}, tower_shape, texture);
