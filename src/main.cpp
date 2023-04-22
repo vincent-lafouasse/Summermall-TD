@@ -6,6 +6,7 @@
 #include "enemy.h"
 #include "geometry.h"
 #include "map.h"
+#include "old_path_finder.h"
 #include "path_finder.h"
 #include "render.h"
 #include "tower.h"
@@ -89,6 +90,11 @@ int main(void) {
       Dijkstra_shortest_path(&hardcoded_graph, checkpoint1, checkpoint2);
   std::vector<std::vector<Position>> dijkstra_path_repr =
       get_path_repr(&dijkstra_path);
+
+  // --------------DISTANCE FIELD--------------------------------------
+  DistanceField distance_field;
+  distance_field.init(&map);
+  distance_field.print();
 
   // --------------ENEMY--------------------------------------
   const char* basic_mob_png_path =
