@@ -28,9 +28,9 @@ void init_sdl(const Position screen_pos,
               const Dimension screen_shape,
               SDL_Window** return_window,
               SDL_Renderer** return_renderer);
-std::vector<Tower> setup_standard_maze(Dimension tower_shape,
-                                       SDL_Texture* texture,
-                                       Dimension tileshape);
+std::vector<Tower> setup_maze0(Dimension tower_shape,
+                               SDL_Texture* texture,
+                               Dimension tileshape);
 std::vector<Tower> setup_maze1(Dimension tower_shape, SDL_Texture* texture);
 
 int main(void) {
@@ -67,15 +67,14 @@ int main(void) {
   const int tower_size_tl = 2;
   const Dimension tower_shape = tileshape * tower_size_tl;
 
-  std::vector<Tower> towers = setup_maze1(tower_shape, block_tower_texture);
+  std::vector<Tower> towers =
+      setup_maze0(tower_shape, block_tower_texture, tileshape);
 
   // Hardcoded waypoints
   Position checkpoint1 =
       pixel_pos_from_grid(map.checkpoint_tiles[0], tileshape);
   Position checkpoint2 =
       pixel_pos_from_grid(map.checkpoint_tiles[1], tileshape);
-  WaypointGraph graph =
-      build_waypoint_graph(&map, checkpoint1, checkpoint2, tileshape);
 
   // Hardcoded waypoints
   Position corner1 = pixel_pos_from_grid({20, 3}, tileshape);
@@ -175,12 +174,11 @@ int main(void) {
   int fps = 0;
 
   // debug options
-  bool show_graph = false;
   bool show_hardcoded_graph = false;
-  bool show_paths = false;
+  bool show_paths = true;
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
-  bool show_monster = false;
+  bool show_monster = true;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -263,10 +261,6 @@ int main(void) {
     if (show_hardcoded_graph) {
       set_render_color(Color::BLACK, renderer);
       hardcoded_graph.render(renderer);
-    }
-    if (show_graph) {
-      set_render_color(Color::BLACK, renderer);
-      graph.render(renderer);
     }
 
     // Show hardcoded path in blue and computed path in red
@@ -376,9 +370,9 @@ void init_sdl(const Position screen_pos,
   }
 }
 
-std::vector<Tower> setup_standard_maze(Dimension tower_shape,
-                                       SDL_Texture* texture,
-                                       Dimension tileshape) {
+std::vector<Tower> setup_maze0(Dimension tower_shape,
+                               SDL_Texture* texture,
+                               Dimension tileshape) {
   std::vector<Tower> towers;
 
   for (int i = 0; i < 8; ++i) {
