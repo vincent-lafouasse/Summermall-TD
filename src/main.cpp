@@ -201,8 +201,10 @@ int main(void) {
   std::set<Tower> tower_group = tower_groups[tower_groups_idx];
 
   // Hardcoded waypoints
-  Position checkpoint1 = pixel_pos_from_grid({13, 1}, tileshape);
-  Position checkpoint2 = pixel_pos_from_grid({13, 23}, tileshape);
+  Position checkpoint1 =
+      pixel_pos_from_grid(map.checkpoint_tiles[0], tileshape);
+  Position checkpoint2 =
+      pixel_pos_from_grid(map.checkpoint_tiles[1], tileshape);
   WaypointGraph graph =
       build_waypoint_graph(&map, checkpoint1, checkpoint2, tileshape);
 

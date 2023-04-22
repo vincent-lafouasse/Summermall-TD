@@ -5,6 +5,19 @@
 static int_vector_1D vector_1D_from_string_line(char* line_string);
 static int_vector_2D vector_2D_from_string_csv(char* csv_string);
 
+void read_checkpoints(int_vector_2D* checkpoint_layer,
+                      std::vector<Position>* return_checkpoint_tiles) {
+  for (size_t row_idx = 0; row_idx < checkpoint_layer->size(); row_idx++) {
+    int_vector_1D row = checkpoint_layer->at(row_idx);
+    for (size_t column_idx = 0; column_idx < row.size(); column_idx++) {
+      if (row[column_idx] != 0) {
+        Position checkpoint = Position(column_idx, row_idx);
+        (*return_checkpoint_tiles).push_back(checkpoint);
+      }
+    }
+  }
+}
+
 const Map parse_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;
   XMLDocument map_xml;
@@ -33,8 +46,10 @@ const Map parse_map_from_tmx(const char* tmx_path) {
   std::set<Position> traversable_tiles;
   read_buildability_and_traversability(&(layers[0]), &traversable_tiles,
                                        &buildable_tiles);
-  Map map = {map_shape_tl, map_src_tileshape, layers, buildable_tiles,
-             traversable_tiles};
+  std::vector<Position> checkpoint_tiles;
+  read_checkpoints(&(layers[layers.size() - 1]), &checkpoint_tiles);
+  Map map = {map_shape_tl,    map_src_tileshape, layers,
+             buildable_tiles, traversable_tiles, checkpoint_tiles};
   return map;
 }
 

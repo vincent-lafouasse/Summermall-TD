@@ -20,6 +20,7 @@ struct Map {
   int_vector_3D layers;
   std::set<Position> buildable_tiles;
   std::set<Position> traversable_tiles;
+  std::vector<Position> checkpoint_tiles;
 };
 
 // Kenney tilesheet tile ids
