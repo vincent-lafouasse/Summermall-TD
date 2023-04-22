@@ -94,6 +94,9 @@ int main(void) {
   // --------------DISTANCE FIELD--------------------------------------
   DistanceField distance_field;
   distance_field.init(&map);
+  distance_field.set_at(Position(0, 0), 420);
+  distance_field.set_at(Position(12, 3), 69);
+  distance_field.print();
 
   Position current_tile;
   std::vector<Position> neighbors;
