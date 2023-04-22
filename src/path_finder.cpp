@@ -3,12 +3,16 @@
 
 void DistanceField::init(const Map* map) {
   for (int row_idx = 0; row_idx < map->shape_tl.h; row_idx++) {
-    std::vector<alt_distance_t> row;
+    std::vector<distance_t> row;
     for (int col_idx = 0; col_idx < map->shape_tl.w; col_idx++) {
       row.push_back(UNKNOWN_DISTANCE);
     }
     elements.push_back(row);
   }
+}
+
+void DistanceField::set_at(Position position, distance_t distance) {
+  elements[position.y][position.x] = distance;
 }
 
 static bool contains(const std::set<Position>* set, Position element) {
@@ -69,7 +73,7 @@ std::vector<Position> neighboring_tiles(Position tile,
 
 void DistanceField::print(void) const {
   for (size_t row_idx = 0; row_idx < elements.size(); row_idx++) {
-    std::vector<alt_distance_t> row = elements[row_idx];
+    std::vector<distance_t> row = elements[row_idx];
     for (size_t col_idx = 0; col_idx < row.size(); col_idx++) {
       printf("%i ", row[col_idx]);
     }

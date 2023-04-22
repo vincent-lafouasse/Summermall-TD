@@ -10,7 +10,8 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
 
   using namespace std;
   // Create a distance map with infinite distance for all graph nodes
-  map<Position, distance_t> distance_from_entrance = setup_distance_map(graph);
+  map<Position, old_distance_t> distance_from_entrance =
+      setup_distance_map(graph);
   distance_from_entrance[entrance] = 0;
   map<Position, Position> came_from;
   came_from[entrance] = entrance;
@@ -23,7 +24,7 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
 
     for (Position candidate : neighbours) {
       // Calculate distance from entrance to candidate passing through current
-      distance_t new_distance =
+      old_distance_t new_distance =
           distance_from_entrance[current] + distance(current, candidate);
 
       if (new_distance < distance_from_entrance[candidate]) {
@@ -58,17 +59,17 @@ std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
   return path;
 }
 
-distance_t distance(Position from, Position to) {
-  distance_t delta_x = from.x - to.x;
-  distance_t delta_y = from.y - to.y;
+old_distance_t distance(Position from, Position to) {
+  old_distance_t delta_x = from.x - to.x;
+  old_distance_t delta_y = from.y - to.y;
   return sqrt((delta_x * delta_x) + (delta_y * delta_y));
 }
 
-std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph) {
+std::map<Position, old_distance_t> setup_distance_map(WaypointGraph* graph) {
   auto adjacency_map = graph->adjacency_map;
-  std::map<Position, distance_t> distance_map;
+  std::map<Position, old_distance_t> distance_map;
   for (auto it = adjacency_map.begin(); it != adjacency_map.end(); ++it) {
-    distance_map[it->first] = INFINITE_DISTANCE;
+    distance_map[it->first] = OLD_INFINITE_DISTANCE;
   }
   return distance_map;
 }

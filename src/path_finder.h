@@ -7,13 +7,14 @@
 #define UNKNOWN_DISTANCE -1
 #define UNTRAVERSABLE -2
 
-typedef int alt_distance_t;
+typedef int distance_t;
 
 struct DistanceField {
-  std::vector<std::vector<alt_distance_t>> elements;
+  std::vector<std::vector<distance_t>> elements;
 
   void init(const Map* map);
   void print(void) const;
+  void set_at(Position position, distance_t distance);
 };
 
 std::vector<Position> neighboring_tiles(Position tile,

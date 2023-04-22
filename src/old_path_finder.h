@@ -13,8 +13,8 @@
 // [Amit’s A* Pages From Red Blob Games]
 // (http://theory.stanford.edu/~amitp/GameProgramming/)
 
-typedef uint64_t distance_t;
-#define INFINITE_DISTANCE UINT64_MAX
+typedef uint64_t old_distance_t;
+#define OLD_INFINITE_DISTANCE UINT64_MAX
 // 1.8e19 (2^64 - 1)
 
 ///
@@ -39,7 +39,7 @@ struct WaypointGraph {
 //
 // Made so that the method names follow the semantics and to hide the internals.
 //
-// @field elements The queue itself. It is made of std::pair<distance_t,
+// @field elements The queue itself. It is made of std::pair<old_distance_t,
 //                 Position> elements ordered so that the element at the top is
 //                 the one with the smallest distance.
 //
@@ -48,7 +48,7 @@ struct WaypointGraph {
 //               insert it in the queue and sort the queue.
 // @method get   Pop the top element and return its Position.
 struct PriorityQueue {
-  typedef std::pair<distance_t, Position> PriorityQueueElement;
+  typedef std::pair<old_distance_t, Position> PriorityQueueElement;
   // distance goes first so that it's what primarely compared by std::greater.
   // If distance is the same, they are then compared by position but we don't
   // care about this
@@ -60,7 +60,7 @@ struct PriorityQueue {
 
   inline bool is_empty() const { return elements.empty(); }
 
-  inline void put(Position item, distance_t priority) {
+  inline void put(Position item, old_distance_t priority) {
     elements.emplace(priority, item);
   }
 
@@ -78,7 +78,7 @@ std::vector<Position> Dijkstra_shortest_path(WaypointGraph* graph,
 
 // Create a map with each graph node as a key, with a value representing an
 // infinite distance. Infinite distance means that the node is not visited yet.
-std::map<Position, distance_t> setup_distance_map(WaypointGraph* graph);
+std::map<Position, old_distance_t> setup_distance_map(WaypointGraph* graph);
 
 // Return the path from entrance to exit.
 std::vector<Position> reconstruct_path(std::map<Position, Position>* came_from,
@@ -91,4 +91,4 @@ std::vector<std::vector<Position>> get_path_repr(std::vector<Position>* path);
 
 // Distance used in graph traversal.
 // Squared euclidian distance.
-distance_t distance(Position from, Position to);
+old_distance_t distance(Position from, Position to);
