@@ -85,7 +85,7 @@ int main(void) {
   std::vector<std::vector<Position>> hardcoded_path_repr =
       get_path_repr(&hardcoded_path);
 
-  // --------------PATH FINDING--------------------------------------
+  // --------------OLD PATH FINDING--------------------------------------
   std::vector<Position> dijkstra_path =
       Dijkstra_shortest_path(&hardcoded_graph, checkpoint1, checkpoint2);
   std::vector<std::vector<Position>> dijkstra_path_repr =
