@@ -108,7 +108,12 @@ void DistanceField::print(void) const {
   for (size_t row_idx = 0; row_idx < elements.size(); row_idx++) {
     std::vector<distance_t> row = elements[row_idx];
     for (size_t col_idx = 0; col_idx < row.size(); col_idx++) {
-      printf("%03i ", row[col_idx]);
+      distance_t element = row[col_idx];
+      if (element != UNKNOWN_DISTANCE) {
+        printf("%03i ", element);
+      } else {
+        printf("... ");
+      }
     }
     printf("\n");
   }
