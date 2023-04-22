@@ -11,10 +11,6 @@ void DistanceField::init(const Map* map) {
   }
 }
 
-void DistanceField::set_at(Position position, distance_t distance) {
-  elements[position.y][position.x] = distance;
-}
-
 static bool contains(const std::set<Position>* set, Position element) {
   auto search = set->find(element);
   return search != set->end();
@@ -69,6 +65,14 @@ std::vector<Position> neighboring_tiles(Position tile,
     neighbors.push_back(candidate);
   }
   return neighbors;
+}
+
+void DistanceField::set_at(Position position, distance_t distance) {
+  elements[position.y][position.x] = distance;
+}
+
+distance_t DistanceField::at(Position position) {
+  return elements[position.y][position.x];
 }
 
 void DistanceField::print(void) const {

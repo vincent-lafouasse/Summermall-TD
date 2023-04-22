@@ -15,6 +15,7 @@ struct DistanceField {
   void init(const Map* map);
   void print(void) const;
   void set_at(Position position, distance_t distance);
+  distance_t at(Position position);
 };
 
 std::vector<Position> neighboring_tiles(Position tile,
