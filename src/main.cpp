@@ -94,7 +94,9 @@ int main(void) {
   // --------------DISTANCE FIELD--------------------------------------
   DistanceField distance_field;
   distance_field.init(&map);
-  distance_field.print();
+
+  Position current_tile;
+  std::vector<Position> neighbors;
 
   // --------------ENEMY--------------------------------------
   const char* basic_mob_png_path =
@@ -114,7 +116,7 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(cursor_png_path));
   Position cursor_tl = {0, 0};
   Position cursor = pixel_pos_from_grid(cursor_tl, tileshape);
-  const int cursor_size = 2;
+  const int cursor_size = 1;
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape =
       pixel_shape_from_grid(cursor_shape_tl, tileshape);
@@ -127,6 +129,7 @@ int main(void) {
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
   bool show_monster = true;
+  bool show_neighbors = true;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
@@ -160,6 +163,12 @@ int main(void) {
               cursor.print();
               printf("\n");
               break;
+
+            case SDLK_c: {
+              current_tile = cursor_tl;
+              neighbors = neighboring_tiles(current_tile, &map, &towers);
+              break;
+            }
 
             case SDLK_q: {
               if (can_put_tower_here(cursor_tl, &towers)) {
@@ -241,6 +250,17 @@ int main(void) {
     if (show_traversable_tiles) {
       for (Position tile_pos_tl : map.traversable_tiles) {
         highlight_tile(pixel_pos_from_grid(tile_pos_tl, tileshape), tileshape,
+                       renderer);
+      }
+    }
+
+    if (show_neighbors) {
+      set_render_color(Color::BLUE, renderer);
+      highlight_tile(pixel_pos_from_grid(current_tile, tileshape), tileshape,
+                     renderer);
+      set_render_color(Color::BLACK, renderer);
+      for (size_t i = 0; i < neighbors.size(); i++) {
+        highlight_tile(pixel_pos_from_grid(neighbors[i], tileshape), tileshape,
                        renderer);
       }
     }

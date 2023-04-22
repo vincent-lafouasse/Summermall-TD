@@ -15,3 +15,7 @@ struct DistanceField {
   void init(const Map* map);
   void print(void) const;
 };
+
+std::vector<Position> neighboring_tiles(Position tile,
+                                        const Map* map,
+                                        std::vector<Tower>* towers);
