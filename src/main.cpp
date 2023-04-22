@@ -33,6 +33,11 @@ std::vector<Tower> setup_maze0(Dimension tower_shape,
                                Dimension tileshape);
 std::vector<Tower> setup_maze1(Dimension tower_shape, SDL_Texture* texture);
 
+void get_hardcoded_graph_and_path_maze0(const Map* map,
+                                        Dimension tileshape,
+                                        WaypointGraph* return_graph,
+                                        std::vector<Position>* return_path);
+
 int main(void) {
   // Set up
   const Position screen_position = {SCREEN_X_POS, SCREEN_Y_POS};
@@ -70,78 +75,17 @@ int main(void) {
   std::vector<Tower> towers =
       setup_maze0(tower_shape, block_tower_texture, tileshape);
 
-  // Hardcoded waypoints
   Position checkpoint1 = tile_center(
       pixel_pos_from_grid(map.checkpoint_tiles[0], tileshape), tileshape);
   Position checkpoint2 = tile_center(
       pixel_pos_from_grid(map.checkpoint_tiles[1], tileshape), tileshape);
 
-  // Hardcoded waypoints
-  Position corner1 = pixel_pos_from_grid({20, 3}, tileshape);
-  Position corner2 = pixel_pos_from_grid({20, 5}, tileshape);
-  Position corner3 = pixel_pos_from_grid({5, 6}, tileshape);
-  Position corner4 = pixel_pos_from_grid({5, 8}, tileshape);
-  Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
-  Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
-
-  std::vector<Position> hardcoded_path{
-      checkpoint1, corner1, corner2, corner3,
-      corner4,     corner5, corner6, checkpoint2,
-  };
+  std::vector<Position> hardcoded_path;
+  WaypointGraph hardcoded_graph;
+  get_hardcoded_graph_and_path_maze0(&map, tileshape, &hardcoded_graph,
+                                     &hardcoded_path);
   std::vector<std::vector<Position>> hardcoded_path_repr =
       get_path_repr(&hardcoded_path);
-
-  std::vector<Position> random_polygon;
-  random_polygon.push_back(checkpoint1);
-  random_polygon.push_back({0, 0});
-  random_polygon.push_back({420, 69});
-  random_polygon.push_back(corner1);
-  random_polygon.push_back(checkpoint2);
-  std::vector<std::vector<Position>> polygon_outline =
-      make_polygon_outline(random_polygon);
-
-  WaypointGraph hardcoded_graph;
-  hardcoded_graph.add_vertices(&hardcoded_path);
-  hardcoded_graph.add_edge(checkpoint1, corner1);
-  hardcoded_graph.add_edge(corner1, corner2);
-  hardcoded_graph.add_edge(corner2, corner3);
-  hardcoded_graph.add_edge(corner3, corner4);
-  hardcoded_graph.add_edge(corner4, corner5);
-  hardcoded_graph.add_edge(corner5, corner6);
-  hardcoded_graph.add_edge(checkpoint2, corner6);
-
-  // bad waypoints to test path finder
-  Position node1 = pixel_pos_from_grid({4, 1}, tileshape);
-  hardcoded_graph.add_edge(node1, checkpoint1);
-  hardcoded_graph.add_edge(node1, corner1);
-  Position node2 = pixel_pos_from_grid({19, 0}, tileshape);
-  hardcoded_graph.add_edge(node2, checkpoint1);
-  hardcoded_graph.add_edge(node2, corner1);
-  hardcoded_graph.add_edge(node2, node1);
-  Position node3 = pixel_pos_from_grid({4, 3}, tileshape);
-  hardcoded_graph.add_edge(node3, node1);
-  hardcoded_graph.add_edge(node3, corner1);
-  Position node4 = pixel_pos_from_grid({21, 3}, tileshape);
-  hardcoded_graph.add_edge(node4, checkpoint1);
-  hardcoded_graph.add_edge(node4, corner1);
-  hardcoded_graph.add_edge(node4, corner2);
-  Position node5 = pixel_pos_from_grid({7, 5}, tileshape);
-  hardcoded_graph.add_edge(node5, corner2);
-  hardcoded_graph.add_edge(node5, corner3);
-  Position node6 = pixel_pos_from_grid({15, 6}, tileshape);
-  hardcoded_graph.add_edge(node6, corner2);
-  hardcoded_graph.add_edge(node6, corner3);
-  hardcoded_graph.add_edge(node6, node5);
-  Position node7 = pixel_pos_from_grid({9, 9}, tileshape);
-  hardcoded_graph.add_edge(node7, corner4);
-  hardcoded_graph.add_edge(node7, corner5);
-  Position node8 = pixel_pos_from_grid({5, 14}, tileshape);
-  hardcoded_graph.add_edge(node8, corner6);
-  hardcoded_graph.add_edge(node8, checkpoint2);
-  Position node9 = pixel_pos_from_grid({13, 11}, tileshape);
-  hardcoded_graph.add_edge(node9, corner6);
-  hardcoded_graph.add_edge(node9, checkpoint2);
-  hardcoded_graph.add_edge(node9, node8);
 
   // Dijkstra path finding
   std::vector<Position> dijkstra_path =
@@ -394,6 +338,74 @@ std::vector<Tower> setup_maze0(Dimension tower_shape,
     towers.push_back(tower3);
   }
   return towers;
+}
+
+void get_hardcoded_graph_and_path_maze0(const Map* map,
+                                        Dimension tileshape,
+                                        WaypointGraph* return_graph,
+                                        std::vector<Position>* return_path) {
+  Position checkpoint1 = tile_center(
+      pixel_pos_from_grid(map->checkpoint_tiles[0], tileshape), tileshape);
+  Position checkpoint2 = tile_center(
+      pixel_pos_from_grid(map->checkpoint_tiles[1], tileshape), tileshape);
+
+  Position corner1 = pixel_pos_from_grid({20, 3}, tileshape);
+  Position corner2 = pixel_pos_from_grid({20, 5}, tileshape);
+  Position corner3 = pixel_pos_from_grid({5, 6}, tileshape);
+  Position corner4 = pixel_pos_from_grid({5, 8}, tileshape);
+  Position corner5 = pixel_pos_from_grid({20, 9}, tileshape);
+  Position corner6 = pixel_pos_from_grid({20, 11}, tileshape);
+
+  (*return_path).push_back(checkpoint1);
+  (*return_path).push_back(corner1);
+  (*return_path).push_back(corner2);
+  (*return_path).push_back(corner3);
+  (*return_path).push_back(corner4);
+  (*return_path).push_back(corner5);
+  (*return_path).push_back(corner6);
+  (*return_path).push_back(checkpoint2);
+
+  (*return_graph).add_vertices(return_path);
+  (*return_graph).add_edge(checkpoint1, corner1);
+  (*return_graph).add_edge(corner1, corner2);
+  (*return_graph).add_edge(corner2, corner3);
+  (*return_graph).add_edge(corner3, corner4);
+  (*return_graph).add_edge(corner4, corner5);
+  (*return_graph).add_edge(corner5, corner6);
+  (*return_graph).add_edge(checkpoint2, corner6);
+
+  // bad waypoints to test path finder
+  Position node1 = pixel_pos_from_grid({4, 1}, tileshape);
+  (*return_graph).add_edge(node1, checkpoint1);
+  (*return_graph).add_edge(node1, corner1);
+  Position node2 = pixel_pos_from_grid({19, 0}, tileshape);
+  (*return_graph).add_edge(node2, checkpoint1);
+  (*return_graph).add_edge(node2, corner1);
+  (*return_graph).add_edge(node2, node1);
+  Position node3 = pixel_pos_from_grid({4, 3}, tileshape);
+  (*return_graph).add_edge(node3, node1);
+  (*return_graph).add_edge(node3, corner1);
+  Position node4 = pixel_pos_from_grid({21, 3}, tileshape);
+  (*return_graph).add_edge(node4, checkpoint1);
+  (*return_graph).add_edge(node4, corner1);
+  (*return_graph).add_edge(node4, corner2);
+  Position node5 = pixel_pos_from_grid({7, 5}, tileshape);
+  (*return_graph).add_edge(node5, corner2);
+  (*return_graph).add_edge(node5, corner3);
+  Position node6 = pixel_pos_from_grid({15, 6}, tileshape);
+  (*return_graph).add_edge(node6, corner2);
+  (*return_graph).add_edge(node6, corner3);
+  (*return_graph).add_edge(node6, node5);
+  Position node7 = pixel_pos_from_grid({9, 9}, tileshape);
+  (*return_graph).add_edge(node7, corner4);
+  (*return_graph).add_edge(node7, corner5);
+  Position node8 = pixel_pos_from_grid({5, 14}, tileshape);
+  (*return_graph).add_edge(node8, corner6);
+  (*return_graph).add_edge(node8, checkpoint2);
+  Position node9 = pixel_pos_from_grid({13, 11}, tileshape);
+  (*return_graph).add_edge(node9, corner6);
+  (*return_graph).add_edge(node9, checkpoint2);
+  (*return_graph).add_edge(node9, node8);
 }
 
 std::vector<Tower> setup_maze1(Dimension tower_shape, SDL_Texture* texture) {
