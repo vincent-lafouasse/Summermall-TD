@@ -93,10 +93,10 @@ int main(void) {
 
   // --------------DISTANCE FIELD--------------------------------------
   DistanceField distance_field;
-  distance_field.init(&map);
-  distance_field.set_at(Position(0, 0), 420);
-  distance_field.set_at(Position(12, 3), 69);
+  bool bfs_success = distance_field.try_computing_BFS(
+      &map, &towers, map.checkpoint_tiles[0], map.checkpoint_tiles[1]);
   distance_field.print();
+  printf("BFS success: %s\n", bfs_success ? "yes" : "no");
 
   Position current_tile;
   std::vector<Position> neighbors;

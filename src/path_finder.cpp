@@ -1,7 +1,36 @@
 #include "path_finder.h"
 #include <stdio.h>
+#include <queue>
+
+bool DistanceField::try_computing_BFS(const Map* map,
+                                      std::vector<Tower>* towers,
+                                      Position entrance,
+                                      Position exit) {
+  init(map);
+  set_at(exit, 0);
+
+  std::queue<Position> queue;
+  queue.push(exit);
+
+  while (!queue.empty()) {
+    Position current = queue.front();
+    distance_t current_distance = at(current);
+    queue.pop();
+    std::vector<Position> neighbors = neighboring_tiles(current, map, towers);
+
+    for (size_t i = 0; i < neighbors.size(); i++) {
+      Position candidate = neighbors[i];
+      if (at(candidate) == UNKNOWN_DISTANCE) {
+        set_at(candidate, current_distance + 1);
+        queue.push(candidate);
+      }
+    }
+  }
+  return at(entrance) != UNKNOWN_DISTANCE;
+}
 
 void DistanceField::init(const Map* map) {
+  elements.clear();
   for (int row_idx = 0; row_idx < map->shape_tl.h; row_idx++) {
     std::vector<distance_t> row;
     for (int col_idx = 0; col_idx < map->shape_tl.w; col_idx++) {
@@ -79,7 +108,7 @@ void DistanceField::print(void) const {
   for (size_t row_idx = 0; row_idx < elements.size(); row_idx++) {
     std::vector<distance_t> row = elements[row_idx];
     for (size_t col_idx = 0; col_idx < row.size(); col_idx++) {
-      printf("%i ", row[col_idx]);
+      printf("%03i ", row[col_idx]);
     }
     printf("\n");
   }
