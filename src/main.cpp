@@ -71,10 +71,10 @@ int main(void) {
       setup_maze0(tower_shape, block_tower_texture, tileshape);
 
   // Hardcoded waypoints
-  Position checkpoint1 =
-      pixel_pos_from_grid(map.checkpoint_tiles[0], tileshape);
-  Position checkpoint2 =
-      pixel_pos_from_grid(map.checkpoint_tiles[1], tileshape);
+  Position checkpoint1 = tile_center(
+      pixel_pos_from_grid(map.checkpoint_tiles[0], tileshape), tileshape);
+  Position checkpoint2 = tile_center(
+      pixel_pos_from_grid(map.checkpoint_tiles[1], tileshape), tileshape);
 
   // Hardcoded waypoints
   Position corner1 = pixel_pos_from_grid({20, 3}, tileshape);

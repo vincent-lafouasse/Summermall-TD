@@ -45,6 +45,8 @@ int pos_2D_to_1D(Position position, int width);
 Position pixel_pos_from_grid(Position position_tl, Dimension tileshape);
 Dimension pixel_shape_from_grid(Dimension shape_tl, Dimension tileshape);
 
+Position tile_center(Position tile, Dimension tileshape);
+
 float line_angle(std::vector<Position>* line);
 
 // Return the rasterized line between two Positions.
