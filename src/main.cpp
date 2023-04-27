@@ -119,7 +119,7 @@ int main(void) {
       SDL_CreateTextureFromSurface(renderer, IMG_Load(cursor_png_path));
   Position cursor_tl = {0, 0};
   Position cursor = pixel_pos_from_grid(cursor_tl, tileshape);
-  const int cursor_size = 1;
+  const int cursor_size = 2;
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape =
       pixel_shape_from_grid(cursor_shape_tl, tileshape);
@@ -127,12 +127,12 @@ int main(void) {
   int fps = 0;
 
   // debug options
-  bool show_hardcoded_graph = false;
-  bool show_paths = false;
+  bool show_hardcoded_graph = true;
+  bool show_paths = true;
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
-  bool show_monster = false;
-  bool show_neighbors = true;
+  bool show_monster = true;
+  bool show_neighbors = false;
 
   // Game loop -----------------------------------------------------------------
   bool is_running = true;
