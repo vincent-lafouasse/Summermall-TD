@@ -25,17 +25,29 @@
 // @return The current regulated FPS estimate.
 int fps_regulate_fps(Uint32 tick_start);
 
+// init window and renderer and handle some errors
 void init_sdl(const Position screen_pos,
               const Dimension screen_shape,
               SDL_Window** return_window,
               SDL_Renderer** return_renderer);
+
+// Create hardcoded maze 0 (simple)
 std::vector<Tower> setup_maze0(int tower_size_tl, SDL_Texture* tower_texture);
+// Create hardcoded maze 1 (non convex tower clusters)
 std::vector<Tower> setup_maze1(int tower_size_tl, SDL_Texture* tower_texture);
 
+// Create hardcoded waypoint graph and path for maze 0
 void get_hardcoded_graph_and_path_maze0(const Map* map,
                                         Dimension tileshape,
                                         WaypointGraph* return_graph,
                                         std::vector<Position>* return_path);
+
+// Contain hardcoded paths to assets
+SDL_Texture* load_mob_texture(SDL_Renderer* renderer);
+SDL_Texture* load_block_tower_texture(SDL_Renderer* renderer);
+SDL_Texture* load_tilesheet_texture(SDL_Renderer* renderer);
+SDL_Texture* load_cursor_texture(SDL_Renderer* renderer);
+Map load_basic_map(void);
 
 int main(void) {
   // --------------SDL--------------------------------------
@@ -46,14 +58,10 @@ int main(void) {
   init_sdl(screen_position, screen_shape, &window, &renderer);
 
   // --------------TILESHEET--------------------------------------
-  const char* tilesheet_png_path =
-      "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
-  SDL_Texture* tilesheet =
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_png_path));
+  SDL_Texture* tilesheet = load_tilesheet_texture(renderer);
 
   // --------------MAP--------------------------------------
-  const char* basic_1P_map_tmx_path = "assets/maps/basic_1P.tmx";
-  const Map basic_1P_map = parse_map_from_tmx(basic_1P_map_tmx_path);
+  const Map basic_1P_map = load_basic_map();
 
   const Map map = basic_1P_map;
 
@@ -64,13 +72,10 @@ int main(void) {
       make_static_map_texture(&map, tilesheet, tileshape, renderer);
 
   // --------------TOWERS--------------------------------------
-  const char* block_tower_png_path =
-      "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile180.png";
-  SDL_Texture* block_tower_texture =
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_png_path));
+  SDL_Texture* block_tower_texture = load_block_tower_texture(renderer);
   const int tower_size_tl = 2;
 
-  std::vector<Tower> towers = setup_maze1(tower_size_tl, block_tower_texture);
+  std::vector<Tower> towers = setup_maze0(tower_size_tl, block_tower_texture);
 
   // --------------WAYPOINTS--------------------------------------
   Position checkpoint1 = tile_center(
@@ -78,6 +83,7 @@ int main(void) {
   Position checkpoint2 = tile_center(
       pixel_pos_from_grid(map.checkpoint_tiles[1], tileshape), tileshape);
 
+  // --------------OLD PATH FINDING--------------------------------------
   std::vector<Position> hardcoded_path;
   WaypointGraph hardcoded_graph;
   get_hardcoded_graph_and_path_maze0(&map, tileshape, &hardcoded_graph,
@@ -85,7 +91,6 @@ int main(void) {
   std::vector<std::vector<Position>> hardcoded_path_repr =
       get_path_repr(&hardcoded_path);
 
-  // --------------OLD PATH FINDING--------------------------------------
   std::vector<Position> dijkstra_path =
       Dijkstra_shortest_path(&hardcoded_graph, checkpoint1, checkpoint2);
   std::vector<std::vector<Position>> dijkstra_path_repr =
@@ -99,13 +104,11 @@ int main(void) {
   printf("BFS success: %s\n", bfs_success ? "yes" : "no");
 
   Position current_tile;
-  std::vector<Position> neighbors;
+  std::vector<Position> neighbors;  // for debugging by pressing C during exec
+                                    // with `show_neighbors = true`
 
   // --------------ENEMY--------------------------------------
-  const char* basic_mob_png_path =
-      "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
-  SDL_Texture* basic_mob_texture =
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_png_path));
+  SDL_Texture* basic_mob_texture = load_mob_texture(renderer);
 
   const Dimension mob_shape = tileshape;
   Position mob_position = checkpoint1;
@@ -113,12 +116,11 @@ int main(void) {
   Monster monster(mob_position, mob_shape, basic_mob_texture);
 
   // --------------CURSOR--------------------------------------
-  const char* cursor_png_path =
-      "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile015.png";
-  SDL_Texture* cursor_texture =
-      SDL_CreateTextureFromSurface(renderer, IMG_Load(cursor_png_path));
+  SDL_Texture* cursor_texture = load_cursor_texture(renderer);
+
   Position cursor_tl = {0, 0};
   Position cursor = pixel_pos_from_grid(cursor_tl, tileshape);
+
   const int cursor_size = 2;
   const Dimension cursor_shape_tl = {cursor_size, cursor_size};
   const Dimension cursor_shape =
@@ -127,7 +129,7 @@ int main(void) {
   int fps = 0;
 
   // debug options
-  bool show_hardcoded_graph = true;
+  bool show_hardcoded_graph = false;
   bool show_paths = true;
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
@@ -509,7 +511,6 @@ std::vector<Tower> setup_maze1(int tower_size_tl, SDL_Texture* tower_texture) {
   to_add = {10, 18};
   tower = Tower(to_add, tower_size_tl, tower_texture);
   towers.push_back(tower);
-
   to_add = {7, 6};
   tower = Tower(to_add, tower_size_tl, tower_texture);
   towers.push_back(tower);
@@ -551,4 +552,33 @@ std::vector<Tower> setup_maze1(int tower_size_tl, SDL_Texture* tower_texture) {
   towers.push_back(tower);
 
   return towers;
+}
+
+SDL_Texture* load_mob_texture(SDL_Renderer* renderer) {
+  const char* basic_mob_png_path =
+      "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png";
+  return SDL_CreateTextureFromSurface(renderer, IMG_Load(basic_mob_png_path));
+}
+
+SDL_Texture* load_block_tower_texture(SDL_Renderer* renderer) {
+  const char* block_tower_png_path =
+      "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile180.png";
+  return SDL_CreateTextureFromSurface(renderer, IMG_Load(block_tower_png_path));
+}
+
+SDL_Texture* load_tilesheet_texture(SDL_Renderer* renderer) {
+  const char* tilesheet_png_path =
+      "assets/tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png";
+  return SDL_CreateTextureFromSurface(renderer, IMG_Load(tilesheet_png_path));
+}
+
+SDL_Texture* load_cursor_texture(SDL_Renderer* renderer) {
+  const char* cursor_png_path =
+      "assets/tower-defense-top-down/PNG/Default size/towerDefense_tile015.png";
+  return SDL_CreateTextureFromSurface(renderer, IMG_Load(cursor_png_path));
+}
+
+Map load_basic_map(void) {
+  const char* basic_1P_map_tmx_path = "assets/maps/basic_1P.tmx";
+  return parse_map_from_tmx(basic_1P_map_tmx_path);
 }
