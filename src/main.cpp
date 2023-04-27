@@ -183,7 +183,7 @@ int main(void) {
               break;
             }
             case SDLK_d: {
-              delete_tower_at(cursor, &towers);
+              delete_tower_at(cursor_tl, &towers);
               break;
             }
             case SDLK_RIGHT:
