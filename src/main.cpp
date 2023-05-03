@@ -31,12 +31,12 @@ void init_sdl(const Position screen_pos,
               SDL_Window** return_window,
               SDL_Renderer** return_renderer);
 
-// Create hardcoded maze 0 (simple)
+// Construct hardcoded maze 0 (simple)
 std::vector<Tower> setup_maze0(int tower_size_tl, SDL_Texture* tower_texture);
-// Create hardcoded maze 1 (non convex tower clusters)
+// Construct hardcoded maze 1 (non convex tower clusters)
 std::vector<Tower> setup_maze1(int tower_size_tl, SDL_Texture* tower_texture);
 
-// Create hardcoded waypoint graph and path for maze 0
+// Construct hardcoded waypoint graph and path for maze 0
 void get_hardcoded_graph_and_path_maze0(const Map* map,
                                         Dimension tileshape,
                                         WaypointGraph* return_graph,
