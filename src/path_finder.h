@@ -25,10 +25,6 @@ struct DistanceField {
   void set_at(Position position, distance_t distance);
   bool min_neighbour(std::vector<Tower>* towers,
                      Position position_tl,
-                     Position* next_position_tl);
-  distance_t at(Position position);
+                     Position* next_position_tl) const;
+  distance_t at(Position position) const;
 };
-
-std::vector<Position> neighboring_tiles(Position tile,
-                                        const Map* map,
-                                        std::vector<Tower>* towers);
