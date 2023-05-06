@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <set>
 #include <vector>
 #include "geometry.h"
@@ -22,8 +23,8 @@ struct Map {
   std::set<Position> buildable_tiles;
   std::set<Position> traversable_tiles;
   std::vector<Position> checkpoint_tiles;
-  std::vector<Position> neighboring_tiles(Position tile,
-                                          std::vector<Tower>* towers) const;
+  std::array<Position, 4> neighboring_tiles(Position tile,
+                                            std::vector<Tower>* towers) const;
 };
 
 // Kenney tilesheet tile ids

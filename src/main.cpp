@@ -104,8 +104,8 @@ int main(void) {
   printf("BFS success: %s\n", bfs_success ? "yes" : "no");
 
   Position current_tile;
-  std::vector<Position> neighbors;  // for debugging by pressing C during exec
-                                    // with `show_neighbors = true`
+  std::array<Position, 4> neighbors;  // for debugging by pressing C during exec
+                                      // with `show_neighbors = true`
 
   // --------------ENEMY--------------------------------------
   SDL_Texture* basic_mob_texture = load_mob_texture(renderer);

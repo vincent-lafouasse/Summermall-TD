@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+#define INVALID_POSITION Position(-1, -1)
+
 struct Dimension {
   int w;
   int h;

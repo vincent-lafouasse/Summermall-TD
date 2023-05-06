@@ -109,15 +109,20 @@ static int_vector_1D vector_1D_from_string_line(char* line_string) {
   return output;
 }
 
-std::vector<Position> Map::neighboring_tiles(Position tile,
-                                             std::vector<Tower>* towers) const {
+std::array<Position, 4> Map::neighboring_tiles(
+    Position tile,
+    std::vector<Tower>* towers) const {
+  std::array<Position, 4> neighbors;
+  for (auto& tile : neighbors)
+    tile = INVALID_POSITION;
+  size_t array_index = 0;
+
   std::vector<Position> candidates;
   candidates.push_back({tile.x + 1, tile.y});
   candidates.push_back({tile.x - 1, tile.y});
   candidates.push_back({tile.x, tile.y + 1});
   candidates.push_back({tile.x, tile.y - 1});
 
-  std::vector<Position> neighbors;
   for (size_t i = 0; i < candidates.size(); i++) {
     Position candidate = candidates[i];
 
@@ -154,7 +159,8 @@ std::vector<Position> Map::neighboring_tiles(Position tile,
       continue;
     }
 
-    neighbors.push_back(candidate);
+    neighbors[array_index] = candidate;
+    array_index++;
   }
   return neighbors;
 }
