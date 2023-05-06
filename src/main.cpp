@@ -177,11 +177,21 @@ int main(void) {
               if (can_put_tower_here(cursor_tl, &towers)) {
                 Tower tower(cursor_tl, tower_size_tl, block_tower_texture);
                 towers.push_back(tower);
+                distance_field.reset();
+                bfs_success = distance_field.try_computing_BFS(
+                    &towers, map.checkpoint_tiles[0], map.checkpoint_tiles[1]);
+                distance_field.print();
+                printf("BFS success: %s\n", bfs_success ? "yes" : "no");
               }
               break;
             }
             case SDLK_d: {
               delete_tower_at(cursor_tl, &towers);
+              distance_field.reset();
+              bfs_success = distance_field.try_computing_BFS(
+                  &towers, map.checkpoint_tiles[0], map.checkpoint_tiles[1]);
+              distance_field.print();
+              printf("BFS success: %s\n", bfs_success ? "yes" : "no");
               break;
             }
             case SDLK_RIGHT:
