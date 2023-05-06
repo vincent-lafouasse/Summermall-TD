@@ -129,8 +129,6 @@ int main(void) {
   int fps = 0;
 
   // debug options
-  bool show_hardcoded_graph = false;
-  bool show_paths = true;
   bool show_buildable_tiles = false;
   bool show_traversable_tiles = false;
   bool show_monster = true;
@@ -219,24 +217,9 @@ int main(void) {
     // Render map
     SDL_RenderCopy(renderer, static_map_texture, NULL, NULL);
 
-    // Show graph in black
-    if (show_hardcoded_graph) {
-      set_render_color(Color::BLACK, renderer);
-      hardcoded_graph.render(renderer);
-    }
-
-    // Show hardcoded path in blue and computed path in red
-    if (show_paths) {
-      set_render_color(Color::BLUE, renderer);
-      render_path(&hardcoded_path_repr, renderer);
-      set_render_color(Color::RED, renderer);
-      render_path(&dijkstra_path_repr, renderer);
-    }
-
     // render mob
     if (show_monster) {
       Position mob_pos_tl = grid_pos_from_pixel(monster.m_position, tileshape);
-
       distance_t curr_dist = distance_field.at(mob_pos_tl);
 
       if (curr_dist != 0) {
@@ -244,11 +227,9 @@ int main(void) {
 
         if (distance_field.min_neighbour(&towers, mob_pos_tl,
                                          &next_mob_pos_tl)) {
-          // WIP
-        }
-
-        if (!monster.m_reached_end) {
-          monster.follow_path(&dijkstra_path);
+          Position next_mob_pos_px = tile_center(
+              pixel_pos_from_grid(next_mob_pos_tl, tileshape), tileshape);
+          monster.step_toward_simple(next_mob_pos_px);
           monster.render(renderer);
         }
       }
