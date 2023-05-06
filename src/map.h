@@ -3,6 +3,7 @@
 #include <set>
 #include <vector>
 #include "geometry.h"
+#include "tower.h"
 
 typedef std::vector<int> int_vector_1D;
 typedef std::vector<std::vector<int>> int_vector_2D;
@@ -21,6 +22,8 @@ struct Map {
   std::set<Position> buildable_tiles;
   std::set<Position> traversable_tiles;
   std::vector<Position> checkpoint_tiles;
+  std::vector<Position> neighboring_tiles(Position tile,
+                                          std::vector<Tower>* towers) const;
 };
 
 // Kenney tilesheet tile ids

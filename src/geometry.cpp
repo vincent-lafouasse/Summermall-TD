@@ -136,6 +136,10 @@ int pos_2D_to_1D(Position position, int width) {
   return position.y * width + position.x;
 }
 
+Position grid_pos_from_pixel(Position position_px, Dimension tileshape) {
+  return {position_px.x / tileshape.w, position_px.y / tileshape.h};
+}
+
 Position pixel_pos_from_grid(Position position_tl, Dimension tileshape) {
   return {position_tl.x * tileshape.w, position_tl.y * tileshape.h};
 }

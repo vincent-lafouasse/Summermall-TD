@@ -10,15 +10,22 @@
 typedef int distance_t;
 
 struct DistanceField {
+  const Map* m_map;
+
+  DistanceField(const Map* map) : m_map(map) { reset(); }
+
   std::vector<std::vector<distance_t>> elements;
 
-  bool try_computing_BFS(const Map* map,
-                         std::vector<Tower>* towers,
+  bool try_computing_BFS(std::vector<Tower>* towers,
                          Position entrance,
                          Position exit);
-  void init(const Map* map);
+  void reset();
+  void reset(const Map* map);
   void print(void) const;
   void set_at(Position position, distance_t distance);
+  bool min_neighbour(std::vector<Tower>* towers,
+                     Position position_tl,
+                     Position* next_position_tl);
   distance_t at(Position position);
 };
 

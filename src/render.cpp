@@ -80,7 +80,7 @@ void highlight_points(std::vector<Position>* points,
 }
 
 void render_point(Position position, SDL_Renderer* renderer) {
-  SDL_Rect point = {position.x, position.y, 1, 1};
+  SDL_Rect point = {position.x, position.y, 4, 4};
   SDL_RenderDrawRect(renderer, &point);
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <algorithm>
 #include <map>
 #include <queue>
 #include <set>

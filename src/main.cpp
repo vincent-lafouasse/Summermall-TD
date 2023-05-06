@@ -97,9 +97,9 @@ int main(void) {
       get_path_repr(&dijkstra_path);
 
   // --------------DISTANCE FIELD--------------------------------------
-  DistanceField distance_field;
+  DistanceField distance_field(&map);
   bool bfs_success = distance_field.try_computing_BFS(
-      &map, &towers, map.checkpoint_tiles[0], map.checkpoint_tiles[1]);
+      &towers, map.checkpoint_tiles[0], map.checkpoint_tiles[1]);
   distance_field.print();
   printf("BFS success: %s\n", bfs_success ? "yes" : "no");
 
@@ -171,7 +171,7 @@ int main(void) {
 
             case SDLK_c: {
               current_tile = cursor_tl;
-              neighbors = neighboring_tiles(current_tile, &map, &towers);
+              neighbors = map.neighboring_tiles(current_tile, &towers);
               break;
             }
 
@@ -235,9 +235,22 @@ int main(void) {
 
     // render mob
     if (show_monster) {
-      if (!monster.m_reached_end) {
-        monster.follow_path(&dijkstra_path);
-        monster.render(renderer);
+      Position mob_pos_tl = grid_pos_from_pixel(monster.m_position, tileshape);
+
+      distance_t curr_dist = distance_field.at(mob_pos_tl);
+
+      if (curr_dist != 0) {
+        Position next_mob_pos_tl;
+
+        if (distance_field.min_neighbour(&towers, mob_pos_tl,
+                                         &next_mob_pos_tl)) {
+          // WIP
+        }
+
+        if (!monster.m_reached_end) {
+          monster.follow_path(&dijkstra_path);
+          monster.render(renderer);
+        }
       }
     }
 

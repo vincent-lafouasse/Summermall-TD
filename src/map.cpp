@@ -1,6 +1,7 @@
 #include "map.h"
 #include <string.h>
 #include "third_party_lib/tinyxml2.h"
+#include "utils.h"
 
 static int_vector_1D vector_1D_from_string_line(char* line_string);
 static int_vector_2D vector_2D_from_string_csv(char* csv_string);
@@ -106,4 +107,54 @@ static int_vector_1D vector_1D_from_string_line(char* line_string) {
     cell = strtok_r(NULL, cell_delim, &mem);
   }
   return output;
+}
+
+std::vector<Position> Map::neighboring_tiles(Position tile,
+                                             std::vector<Tower>* towers) const {
+  std::vector<Position> candidates;
+  candidates.push_back({tile.x + 1, tile.y});
+  candidates.push_back({tile.x - 1, tile.y});
+  candidates.push_back({tile.x, tile.y + 1});
+  candidates.push_back({tile.x, tile.y - 1});
+
+  std::vector<Position> neighbors;
+  for (size_t i = 0; i < candidates.size(); i++) {
+    Position candidate = candidates[i];
+
+    if (candidate.x < 0 || candidate.y < 0 || candidate.x >= shape_tl.w ||
+        candidate.y >= shape_tl.h) {
+      // ignore if out of bounds
+      continue;
+    }
+
+    if (!contains(&(traversable_tiles), candidate)) {
+      // ignore if tile is not in the set of traversable tiles
+      continue;
+    }
+
+    bool is_valid = true;
+
+    for (size_t i = 0; i < towers->size(); i++) {
+      Tower tower = towers->at(i);
+      std::set<Position> tiles_covered_by_tower;
+      for (int x_inc = 0; x_inc < tower.m_size_tl; x_inc++) {
+        for (int y_inc = 0; y_inc < tower.m_size_tl; y_inc++) {
+          tiles_covered_by_tower.insert(Position(
+              tower.m_position_tl.x + x_inc, tower.m_position_tl.y + y_inc));
+        }
+      }
+      if (contains(&tiles_covered_by_tower, candidate)) {
+        // ignore if within a towes
+        is_valid = false;
+        break;
+      }
+    }
+
+    if (!is_valid) {
+      continue;
+    }
+
+    neighbors.push_back(candidate);
+  }
+  return neighbors;
 }

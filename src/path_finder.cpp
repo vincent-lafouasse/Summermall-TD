@@ -2,34 +2,12 @@
 #include <stdio.h>
 #include <queue>
 
-bool DistanceField::try_computing_BFS(const Map* map,
-                                      std::vector<Tower>* towers,
-                                      Position entrance,
-                                      Position exit) {
-  init(map);
-  set_at(exit, 0);
-
-  std::queue<Position> queue;
-  queue.push(exit);
-
-  while (!queue.empty()) {
-    Position current = queue.front();
-    distance_t current_distance = at(current);
-    queue.pop();
-    std::vector<Position> neighbors = neighboring_tiles(current, map, towers);
-
-    for (size_t i = 0; i < neighbors.size(); i++) {
-      Position candidate = neighbors[i];
-      if (at(candidate) == UNKNOWN_DISTANCE) {
-        set_at(candidate, current_distance + 1);
-        queue.push(candidate);
-      }
-    }
-  }
-  return at(entrance) != UNKNOWN_DISTANCE;
+void DistanceField::reset() {
+  reset(m_map);
 }
 
-void DistanceField::init(const Map* map) {
+void DistanceField::reset(const Map* map) {
+  m_map = map;
   elements.clear();
   for (int row_idx = 0; row_idx < map->shape_tl.h; row_idx++) {
     std::vector<distance_t> row;
@@ -40,60 +18,33 @@ void DistanceField::init(const Map* map) {
   }
 }
 
-static bool contains(const std::set<Position>* set, Position element) {
-  auto search = set->find(element);
-  return search != set->end();
-}
-
-std::vector<Position> neighboring_tiles(Position tile,
-                                        const Map* map,
-                                        std::vector<Tower>* towers) {
-  std::vector<Position> candidates;
-  candidates.push_back({tile.x + 1, tile.y});
-  candidates.push_back({tile.x - 1, tile.y});
-  candidates.push_back({tile.x, tile.y + 1});
-  candidates.push_back({tile.x, tile.y - 1});
-
-  std::vector<Position> neighbors;
-  for (size_t i = 0; i < candidates.size(); i++) {
-    Position candidate = candidates[i];
-
-    if (candidate.x < 0 || candidate.y < 0 || candidate.x >= map->shape_tl.w ||
-        candidate.y >= map->shape_tl.h) {
-      // ignore if out of bounds
-      continue;
-    }
-
-    if (!contains(&(map->traversable_tiles), candidate)) {
-      // ignore if tile is not in the set of traversable tiles
-      continue;
-    }
-
-    bool is_valid = true;
-
-    for (size_t i = 0; i < towers->size(); i++) {
-      Tower tower = towers->at(i);
-      std::set<Position> tiles_covered_by_tower;
-      for (int x_inc = 0; x_inc < tower.m_size_tl; x_inc++) {
-        for (int y_inc = 0; y_inc < tower.m_size_tl; y_inc++) {
-          tiles_covered_by_tower.insert(Position(
-              tower.m_position_tl.x + x_inc, tower.m_position_tl.y + y_inc));
-        }
-      }
-      if (contains(&tiles_covered_by_tower, candidate)) {
-        // ignore if within a towes
-        is_valid = false;
-        break;
-      }
-    }
-
-    if (!is_valid) {
-      continue;
-    }
-
-    neighbors.push_back(candidate);
+bool DistanceField::try_computing_BFS(std::vector<Tower>* towers,
+                                      Position entrance,
+                                      Position exit) {
+  if (m_map == nullptr) {
+    return false;
   }
-  return neighbors;
+
+  set_at(exit, 0);
+
+  std::queue<Position> queue;
+  queue.push(exit);
+
+  while (!queue.empty()) {
+    Position current = queue.front();
+    distance_t current_distance = at(current);
+    queue.pop();
+    std::vector<Position> neighbors = m_map->neighboring_tiles(current, towers);
+
+    for (size_t i = 0; i < neighbors.size(); i++) {
+      Position candidate = neighbors[i];
+      if (at(candidate) == UNKNOWN_DISTANCE) {
+        set_at(candidate, current_distance + 1);
+        queue.push(candidate);
+      }
+    }
+  }
+  return at(entrance) != UNKNOWN_DISTANCE;
 }
 
 void DistanceField::set_at(Position position, distance_t distance) {
@@ -117,4 +68,28 @@ void DistanceField::print(void) const {
     }
     printf("\n");
   }
+}
+
+bool DistanceField::min_neighbour(std::vector<Tower>* towers,
+                                  Position position_tl,
+                                  Position* next_position_tl) {
+  std::vector<Position> neighbours =
+      m_map->neighboring_tiles(position_tl, towers);
+  if (neighbours.size() == 0) {
+    return false;
+  }
+
+  int min_distance = elements[neighbours[0].y][neighbours[0].x];
+  Position arg_min_distance = neighbours[0];
+  for (Position neighbour : neighbours) {
+    if (elements[neighbour.y][neighbour.x] < min_distance) {
+      min_distance = elements[neighbour.y][neighbour.x];
+      arg_min_distance = neighbour;
+    }
+  }
+
+  if (next_position_tl != nullptr) {
+    *next_position_tl = arg_min_distance;
+  }
+  return true;
 }
