@@ -85,6 +85,10 @@ static std::vector<Position> Bresenham_y_driving_axis(Position start,
   return line;
 }
 
+Position tile_center(Position tile, Dimension tileshape) {
+  return {tile.x + tileshape.w / 2, tile.y + tileshape.h / 2};
+}
+
 std::vector<Position> flatten_2D_position_vector(
     std::vector<std::vector<Position>>* vector) {
   std::vector<Position> flattened;
@@ -130,6 +134,10 @@ Position pos_1D_to_2D(int pos_1D, int width) {
 
 int pos_2D_to_1D(Position position, int width) {
   return position.y * width + position.x;
+}
+
+Position grid_pos_from_pixel(Position position_px, Dimension tileshape) {
+  return {position_px.x / tileshape.w, position_px.y / tileshape.h};
 }
 
 Position pixel_pos_from_grid(Position position_tl, Dimension tileshape) {

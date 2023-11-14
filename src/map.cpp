@@ -1,9 +1,23 @@
 #include "map.h"
 #include <string.h>
 #include "third_party_lib/tinyxml2.h"
+#include "utils.h"
 
 static int_vector_1D vector_1D_from_string_line(char* line_string);
 static int_vector_2D vector_2D_from_string_csv(char* csv_string);
+
+void read_checkpoints(int_vector_2D* checkpoint_layer,
+                      std::vector<Position>* return_checkpoint_tiles) {
+  for (size_t row_idx = 0; row_idx < checkpoint_layer->size(); row_idx++) {
+    int_vector_1D row = checkpoint_layer->at(row_idx);
+    for (size_t column_idx = 0; column_idx < row.size(); column_idx++) {
+      if (row[column_idx] != 0) {
+        Position checkpoint = Position(column_idx, row_idx);
+        (*return_checkpoint_tiles).push_back(checkpoint);
+      }
+    }
+  }
+}
 
 const Map parse_map_from_tmx(const char* tmx_path) {
   using namespace tinyxml2;
@@ -33,8 +47,10 @@ const Map parse_map_from_tmx(const char* tmx_path) {
   std::set<Position> traversable_tiles;
   read_buildability_and_traversability(&(layers[0]), &traversable_tiles,
                                        &buildable_tiles);
-  Map map = {map_shape_tl, map_src_tileshape, layers, buildable_tiles,
-             traversable_tiles};
+  std::vector<Position> checkpoint_tiles;
+  read_checkpoints(&(layers[layers.size() - 1]), &checkpoint_tiles);
+  Map map = {map_shape_tl,    map_src_tileshape, layers,
+             buildable_tiles, traversable_tiles, checkpoint_tiles};
   return map;
 }
 
@@ -91,4 +107,60 @@ static int_vector_1D vector_1D_from_string_line(char* line_string) {
     cell = strtok_r(NULL, cell_delim, &mem);
   }
   return output;
+}
+
+std::array<Position, 4> Map::neighboring_tiles(
+    Position tile,
+    std::vector<Tower>* towers) const {
+  std::array<Position, 4> neighbors;
+  for (auto& tile : neighbors)
+    tile = INVALID_POSITION;
+  size_t array_index = 0;
+
+  std::vector<Position> candidates;
+  candidates.push_back({tile.x + 1, tile.y});
+  candidates.push_back({tile.x - 1, tile.y});
+  candidates.push_back({tile.x, tile.y + 1});
+  candidates.push_back({tile.x, tile.y - 1});
+
+  for (size_t i = 0; i < candidates.size(); i++) {
+    Position candidate = candidates[i];
+
+    if (candidate.x < 0 || candidate.y < 0 || candidate.x >= shape_tl.w ||
+        candidate.y >= shape_tl.h) {
+      // ignore if out of bounds
+      continue;
+    }
+
+    if (!contains(&(traversable_tiles), candidate)) {
+      // ignore if tile is not in the set of traversable tiles
+      continue;
+    }
+
+    bool is_valid = true;
+
+    for (size_t i = 0; i < towers->size(); i++) {
+      Tower tower = towers->at(i);
+      std::set<Position> tiles_covered_by_tower;
+      for (int x_inc = 0; x_inc < tower.m_size_tl; x_inc++) {
+        for (int y_inc = 0; y_inc < tower.m_size_tl; y_inc++) {
+          tiles_covered_by_tower.insert(Position(
+              tower.m_position_tl.x + x_inc, tower.m_position_tl.y + y_inc));
+        }
+      }
+      if (contains(&tiles_covered_by_tower, candidate)) {
+        // ignore if within a towes
+        is_valid = false;
+        break;
+      }
+    }
+
+    if (!is_valid) {
+      continue;
+    }
+
+    neighbors[array_index] = candidate;
+    array_index++;
+  }
+  return neighbors;
 }

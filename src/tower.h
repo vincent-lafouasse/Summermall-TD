@@ -6,19 +6,18 @@
 
 class Tower {
  public:
-  Position m_position;
-  Dimension m_shape;
+  Position m_position_tl;
+  int m_size_tl;
   SDL_Texture* m_texture;
 
-  Tower(Position position, Dimension shape, SDL_Texture* texture);
-  void render(SDL_Renderer* renderer);
+  Tower(Position position_tl, int shape_tl, SDL_Texture* texture);
+  void render(Dimension tileshape, SDL_Renderer* renderer);
   bool operator<(const Tower& other) const;
+  Position get_position(Dimension tileshape);
 };
 
 void delete_tower_at(Position position, std::vector<Tower>* towers);
-bool can_put_tower_here(Position position,
-                        std::vector<Tower>* towers,
-                        Dimension tower_shape);
+bool can_put_tower_here(Position position_tl, std::vector<Tower>* towers);
 bool line_passes_through_tower(Position start,
                                Position end,
                                std::vector<Tower>* towers,

@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+#define INVALID_POSITION Position(-1, -1)
+
 struct Dimension {
   int w;
   int h;
@@ -42,8 +44,11 @@ struct Position {
 // @return A Position object containing the 2D coordinates.
 Position pos_1D_to_2D(int pos_1D, int width);
 int pos_2D_to_1D(Position position, int width);
+Position grid_pos_from_pixel(Position position_px, Dimension tileshape);
 Position pixel_pos_from_grid(Position position_tl, Dimension tileshape);
 Dimension pixel_shape_from_grid(Dimension shape_tl, Dimension tileshape);
+
+Position tile_center(Position tile, Dimension tileshape);
 
 float line_angle(std::vector<Position>* line);
 
